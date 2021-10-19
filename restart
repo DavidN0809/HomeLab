@@ -1,0 +1,23 @@
+#!/bin/bash
+# This will stop SAMBA, unmount the disks, and then stop the unRAID server. 
+/root/samba stop
+
+# Then unmount each disk, edit per number of drives
+# Note, a disk will not be able to be unmounted if it is busy.
+for x in {1..32}; do
+  umount /dev/md$x
+done
+
+/root/mdcmd stop
+
+#To terminate processes holding a disk busy
+for i in {a..z}; do
+        fuser -mvk /mnt/disk$i
+done
+
+#edit below your cache drive names
+fuser -mvk /mnt/download_cache
+fuser -mvk /mnt/cache
+
+# finally reboot the server
+reboot
