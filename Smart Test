@@ -1,0 +1,4 @@
+#!/bin/bash
+for i in {a..z}; do
+    smartctl --test=long /dev/sd$i
+done
