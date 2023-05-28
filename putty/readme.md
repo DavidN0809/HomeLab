@@ -5,9 +5,8 @@ This guide will help you synchronize PuTTY settings across multiple Windows devi
 ## Steps
 
 1. Generate a registry file by following these steps:
-   - Open PuTTY on the source device.
-   - Configure PuTTY settings according to your preferences.
    - Open CMD
+   - Cd Downloads
    - paste this command "regedit /e "%userprofile%\desktop\putty-registry.reg" HKEY_CURRENT_USER\Software\Simontatham"
 
 2. Transfer the registry file to your target device(s).
