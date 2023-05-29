@@ -1,0 +1,25 @@
+---
+- name: Create ansibleuser
+  hosts: all
+  become: yes
+  gather_facts: yes
+  tasks:
+    - name: Create ansibleuser
+      user:
+        name: ansibleuser
+        shell: /bin/bash
+        password: "{{ 'password' | password_hash('sha512') }}"
+        generate_ssh_key: yes
+
+    - name: Copy public key to authorized_keys
+      authorized_key:
+        user: ansibleuser
+        key: "{{ lookup('file', '/path/to/public_key.pub') }}"
+
+    - name: Add ansibleuser to sudoers
+      lineinfile:
+        dest: /etc/sudoers
+        line: "ansibleuser ALL=(ALL:ALL) NOPASSWD:ALL"
+        validate: visudo -cf %s
+        insertafter: "^# %sudo"
+        state: present
