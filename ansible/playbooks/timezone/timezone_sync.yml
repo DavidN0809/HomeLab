@@ -1,6 +1,7 @@
 - name: Set timezone to America/New_York
   hosts: all
   become: yes
+  remote_user: ansibleuser
   tasks:
     - name: Update timezone
       timezone:
