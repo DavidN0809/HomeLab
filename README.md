@@ -11,8 +11,8 @@
 ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass ----ask-become-pass
 ansible-playbook -i inventory.ini ./playbooks/wol.yml
 ansible-playbook -i inventory.ini ./playbooks/ssh_key.yml --ask-pass ----ask-become-pass
-ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml --ask-pass ----ask-become-pass
-ansible-playbook -i inventory.ini ./playbooks/apt.yml --ask-pass ----ask-become-pass --ask-user ansibleuser
+ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml
+ansible-playbook -i inventory.ini ./playbooks/apt.yml
 ```
 
 ## Putty
