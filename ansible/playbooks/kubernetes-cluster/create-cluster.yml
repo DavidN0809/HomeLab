@@ -1,0 +1,66 @@
+---
+- name: Deploy Kubernetes Cluster with kube-vip
+  hosts: all
+  become: yes
+  become_user: ansibleuser
+  become_method: sudo
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install Kubernetes packages
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+      loop:
+        - kubeadm
+        - kubelet
+        - kubectl
+
+    - name: Initialize Kubernetes cluster on the first master
+      command: kubeadm init --control-plane-endpoint "192.168.0.9:6443" --upload-certs --apiserver-advertise-address=192.168.0.10 --pod-network-cidr=192.168.0.0/16
+      args:
+        creates: /etc/kubernetes/admin.conf
+      register: kubeadm_init_output
+      when: inventory_hostname == '192.168.0.10'
+
+    - name: Join the second master to the cluster
+      command: "{{ item.stdout }}"
+      when: inventory_hostname == '192.168.0.11'
+      with_items: "{{ kubeadm_init_output.stdout_lines }}"
+      register: kubeadm_join_output
+
+    - name: Set up kubeconfig file
+      become: yes
+      become_user: root
+      copy:
+        content: |
+          {{ kubeadm_init_output.stdout | default('') }}
+        dest: /etc/kubernetes/admin.conf
+        owner: ansibleuser
+        group: ansibleuser
+      when: inventory_hostname == '192.168.0.10'
+
+    - name: Copy kubeconfig file to local machine
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: "{{ inventory_dir }}"
+        flat: yes
+      when: inventory_hostname == '192.168.0.10'
+
+    - name: Join worker nodes to the cluster
+      command: "kubeadm join 192.168.0.9:6443 --token {{ kubeadm_init_output.stdout | regex_findall('token ([^ ]+)', '\\1') | first }} --discovery-token-ca-cert-hash {{ kubeadm_init_output.stdout | regex_findall('sha256:([^ ]+)', '\\1') | first }}"
+      when: inventory_hostname in ['192.168.0.12', '192.168.0.13']
+
+    - name: Install kube-vip
+      shell: curl -sSL https://kube-vip.io/manifests/cilium | IP=192.168.0.9 sh
+
+    - name: Start kube-vip as a Kubernetes pod
+      shell: kube-vip start --interface eno1 --vip 192.168.0.9
+      args:
+        chdir: /opt/kube-vip
+

@@ -14,7 +14,7 @@
     - name: Copy public key to authorized_keys
       authorized_key:
         user: ansibleuser
-        key: "{{ lookup('file', '/path/to/public_key.pub') }}"
+        key: "{{ lookup('file', '/home/ansibleuser/.ssh/id_rsa.pub') }}"  # or '/home/ansibleuser/.ssh/id_dsa.pub'
 
     - name: Add ansibleuser to sudoers
       lineinfile:
