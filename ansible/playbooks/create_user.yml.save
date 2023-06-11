@@ -1,3 +1,4 @@
+---
 - name: Create ansibleuser
   hosts: all
   become: yes
@@ -11,13 +12,15 @@
         shell: /bin/bash
         password: "{{ 'bulletx2' | password_hash('sha512') }}"
 
-    - name: Generate ssh key on target host
-      command: ssh-keygen -t rsa -b 2048 -f /home/ansibleuser/.ssh/id_rsa -N ''
+    - name: Generate ssh key on control node
+      delegate_to: localhost
+      command: ssh-keygen -t rsa -b 2048 -f ./ansibleuser_id_rsa -N ''
       args:
-        creates: /home/ansibleuser/.ssh/id_rsa
+        creates: ./ansibleuser_id_rsa
 
     - name: Display ssh public key
-      command: cat /home/ansibleuser/.ssh/id_rsa.pub
+      delegate_to: localhost
+      command: cat ./ansibleuser_id_rsa.pub
       register: pubkey
 
     - name: Copy public key to authorized_keys
@@ -25,15 +28,23 @@
         user: ansibleuser
         key: "{{ pubkey.stdout }}"
 
+    - name: Move private key to ~/.ssh/id_rsa
+      delegate_to: localhost
+      command: mv ./ansibleuser_id_rsa ~/.ssh/id_rsa
+      args:
+        removes: ./ansibleuser_id_rsa
+
     - name: Set private key permissions
+      delegate_to: localhost
       file:
-        path: /home/ansibleuser/.ssh/id_rsa
+        path: ~/.ssh/id_rsa
         mode: 0600
 
     - name: Add ansibleuser to sudoers
       lineinfile:
-        path: /etc/sudoers
+        dest: /etc/sudoers
         line: "ansibleuser ALL=(ALL:ALL) NOPASSWD:ALL"
         validate: visudo -cf %s
         insertafter: "^# %sudo"
         state: present
+x
