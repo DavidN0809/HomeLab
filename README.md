@@ -19,9 +19,6 @@ The following Ansible playbooks are available:
 - wol.yml: Enables Wake On LAN (WOL).  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/wol.yml`
 
-- ssh_key.yml: Configures SSH key authentication on the target machines.  
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/ssh_key.yml --ask-pass --ask-become-pass`
-
 - timezone_sync.yml: Synchronizes the timezone across the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
 
