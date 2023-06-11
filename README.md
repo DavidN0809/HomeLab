@@ -13,16 +13,21 @@ These scripts are bash scripts I use on Unraid.
 
 The following Ansible playbooks are available:
 
-- create_user.yml: Creates a user on the target machines.  
-Usage: `ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass --ask-become-pass`
+- create_user.yml: Creates a user on the target machines.
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass --ask-become-pass`
+
 - wol.yml: Enables Wake On LAN (WOL).
-Usage: `ansible-playbook -i inventory.ini ./playbooks/wol.yml`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/wol.yml`
+
 - ssh_key.yml: Configures SSH key authentication on the target machines.
-Usage: `ansible-playbook -i inventory.ini ./playbooks/ssh_key.yml --ask-pass --ask-become-pass`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/ssh_key.yml --ask-pass --ask-become-pass`
+
 - timezone_sync.yml: Synchronizes the timezone across the target machines.
-Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
-- apt.yml: Manages packages using APT package manager. 
-Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
+
+- apt.yml: Manages packages using APT package manager.
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`
+
 
 ## Putty
 
