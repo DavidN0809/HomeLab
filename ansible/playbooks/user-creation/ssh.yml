@@ -18,5 +18,32 @@
       when: op.stat.exists
 
     - name: Copy public key to the nodes
-      command: sshpass -p "{{ ansible_password }}" ssh-copy-id -i "{{ id_rsa_file }}.pub" {{ ansible_user }}@"{{ ansible_host }}" -o StrictHostKeyChecking=no
+      command: sshpass -p "{{ ansible_password }}" ssh-copy-id -i "{{ id_rsa_file }}.pub" -o StrictHostKeyChecking=no {{ ansible_user }}@"{{ ansible_host }}"
+      register: copy_key_result
 
+    - name: Set correct permissions for private key
+      file:
+        path: "{{ id_rsa_file }}"
+        mode: 0600
+
+    - name: Get SSH host key
+      command: ssh-keyscan -H {{ inventory_hostname }}
+      register: ssh_host_key
+
+    - name: Add remote host to known_hosts
+      lineinfile:
+        path: "{{ ansible_env.HOME }}/.ssh/known_hosts"
+        line: "{{ ssh_host_key.stdout }}"
+
+    - name: Check connection
+      command: ssh -o ConnectTimeout=5 -i "{{ id_rsa_file }}" {{ ansible_user }}@"{{ ansible_host }}" exit
+      register: result
+      ignore_errors: true
+
+    - debug:
+        msg: "Connection successful."
+      when: result.rc == 0
+
+    - debug:
+        msg: "Connection failed."
+      when: result.rc != 0
