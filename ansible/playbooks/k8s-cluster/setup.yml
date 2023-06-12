@@ -1,5 +1,6 @@
 - hosts: all
   become: yes
+  remote_user: ansibleuser
   tasks:
   - name: Update apt and install necessary packages
     apt:
@@ -14,21 +15,16 @@
       - software-properties-common
       - gnupg2
 
-  - name: Add Docker GPG key
-    apt_key:
-      url: https://download.docker.com/linux/ubuntu/gpg
-      state: present
+  - name: Disable swap
+    command: swapoff -a
+    become: yes
 
-  - name: Add Docker APT repository
-    apt_repository:
-      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
-      state: present
-
-  - name: Install Docker
-    apt:
-      name: docker-ce
-      state: present
-      update_cache: yes
+  - name: Remove swap entry from /etc/fstab
+    lineinfile:
+      path: /etc/fstab
+      regexp: '.*swap.*'
+      state: absent
+    become: yes
 
   - name: Add Kubernetes GPG key
     apt_key:
@@ -51,20 +47,43 @@
       - kubeadm
       - kubectl
 
+  - name: Install containerd
+    apt:
+      name: containerd
+      state: present
+      update_cache: yes
+    become: yes
+
+  - name: Check containerd service status
+    command: systemctl is-active containerd
+    register: containerd_service_status
+    failed_when: containerd_service_status.stdout != 'active'
+    become: yes
+
+  - name: Report containerd service status
+    debug:
+     msg: "Containerd service is running on {{ inventory_hostname }}"
+    when: containerd_service_status.stdout == 'active'
+
+  - name: Reload systemd daemon
+    systemd:
+      daemon_reload: yes
+    become: yes
+
   - name: Initialize Kubernetes on Master1
-    shell: |
-      kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint "192.168.0.9:6443" --token-ttl 0
+    shell: kubeadm init --pod-network-cidr=10.244.0.0/16 --control-plane-endpoint "192.168.0.9:6443" --token-ttl 0 --cri-socket unix:///run/containerd/containerd.sock
+
     register: init
-    when: inventory_hostname == 'x3650'
+    when: inventory_hostname == 'hp'
 
   - name: Capture join command
     set_fact:
       join_command: "{{ init.stdout_lines[-1] }}"
-    when: inventory_hostname == 'x3650'
+    when: inventory_hostname == 'hp'
 
   - name: Initialize Kubernetes on Master2
     command: "{{ join_command }}"
-    when: inventory_hostname == 'hp'
+    when: inventory_hostname == 'x3650'
 
   - name: Join Worker nodes to cluster
     command: "{{ join_command }}"
