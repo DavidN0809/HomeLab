@@ -10,10 +10,14 @@
         name: ethtool
         state: present
 
-    - name: Get network interface name
-      shell: |
-        ip -o -4 route show to default | awk '{print $5}'
-      register: interface_name
-
     - name: Set Wake-on-LAN
-      command: ethtool -s {{ interface_name.stdout_lines[0] }} wol g
+      command: ethtool -s {{ iface }} wol g
+
+    - name: Verify Wake-on-LAN is enabled
+      command: ethtool {{ iface }}
+      register: wol_status
+      changed_when: false
+
+    - name: Show Wake-on-LAN status
+      debug:
+        var: wol_status.stdout_lines
