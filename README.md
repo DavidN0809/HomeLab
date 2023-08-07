@@ -13,6 +13,9 @@ These scripts are bash scripts I use on Unraid.
 
 The following Ansible playbooks are available:
 
+- proxmox_setup.yml: Disables annoying pop up in proxmox.  
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/proxmox_setup.yml`
+  
 - create_user.yml: Creates a user on the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass --ask-become-pass`  
 
