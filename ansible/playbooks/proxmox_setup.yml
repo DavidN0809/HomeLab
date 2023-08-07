@@ -1,6 +1,6 @@
 ---
 - name: Install pve-fake-subscription and modify /etc/hosts
-  hosts: all
+  hosts: proxmox
   become: true
   vars:
     user: root
