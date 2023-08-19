@@ -1,0 +1,14 @@
+---
+- name: Update packages on Debian and Ubuntu VMs and LXCs
+  hosts: *
+  become: true
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      apt:
+        upgrade: yes
+        autoremove: yes
+        autoclean: yes

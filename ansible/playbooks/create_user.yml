@@ -1,0 +1,26 @@
+---
+- name: Create user with sudo access on VMs and LXCs
+  hosts: *
+  become: true
+  vars_files:
+    - secrets.yml
+  tasks:
+    - name: Create ansibleuser
+      user:
+        name: ansibleuser
+        shell: /bin/bash
+        create_home: yes
+        password: "{{ 'bulletx2' | password_hash('sha512') }}"
+
+    - name: Add ansibleuser to sudoers
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL:ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Copy SSH public key to remote
+      authorized_key:
+        user: ansibleuser
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

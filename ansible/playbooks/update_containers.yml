@@ -1,0 +1,7 @@
+---
+- name: Update Docker containers on VMs and LXCs
+  hosts: *
+  become: true
+  tasks:
+    - name: Update Docker containers
+      command: docker ps -q | xargs -r docker pull
