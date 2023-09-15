@@ -14,9 +14,9 @@ This guide will help you synchronize PuTTY settings across multiple Windows devi
    - Copy the `putty-registry.reg` file to the target device(s).
    - Open the `putty-registry.reg` file by double-clicking on it.
    - Windows will ask for confirmation to merge the registry entries. Click "Yes" to proceed.
-
+   or
+   - open powershell as admin
+   - reg import putty.reg
 4. The PuTTY settings from the source device will now be synced across all the devices where you merged the registry file.
 
 Note: Modifying the registry can have unintended consequences on your system. It is recommended to back up your registry or create a system restore point before making any changes.
-
-That's it! You have successfully synced PuTTY settings across your Windows devices.
