@@ -2,10 +2,13 @@
 
 ## Proxmox
 Scripts for proxmox and VMs
+| Script          | Description                                          |
+| ----------------| ---------------------------------------------------- |
+| glusterfs.sh    | Sets up glusterfs for 3 ubuntu vms, docker swarm     |
+| zfs_snapshot.sh | daily snapshot of proxmox install pool               |
 
 ## Scripts
 These scripts are bash scripts I use on Unraid. 
-
 | Script        | Description                                          |
 | ------------- | ---------------------------------------------------- |
 | Smart Check   | Enables a long smart check on disks A to Z.           |
