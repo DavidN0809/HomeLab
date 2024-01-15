@@ -1,0 +1,63 @@
+---
+- name: Setup CephFS on Ubuntu Servers
+  hosts: master
+  become: yes
+  vars:
+    ansible_user: ansibleuser
+    ceph_admin_key: "AQBz8YllITjQJRAAomL3671SquuPjg98GlwAuQ=="
+    monitor_ips: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789"
+    mount_point: "/mnt/cephfs"
+    ceph_secret_file: "/etc/ceph/ceph.client.admin.keyring"
+
+  tasks:
+    - name: Install ceph-fuse
+      apt:
+        name: ceph-fuse
+        update_cache: yes
+        state: present
+
+    - name: Create mount directory
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+        mode: '0755'
+
+    - name: Ensure /etc/ceph directory exists
+      file:
+        path: "/etc/ceph"
+        state: directory
+        mode: '0755'
+
+    - name: Create Ceph keyring file
+      copy:
+        dest: "{{ ceph_secret_file }}"
+        content: |
+          [client.admin]
+          key = {{ ceph_admin_key }}
+          caps mds = "allow *"
+          caps mgr = "allow *"
+          caps mon = "allow *"
+          caps osd = "allow *"
+        mode: '0600'
+
+#    - name: Add CephFS mount to fstab
+#      lineinfile:
+#        path: /etc/fstab
+#        line: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789:/ {{ mount_point }} ceph name=admin,secretfile={{ ceph_secret_file }},_netdev,noatime 0 2"
+#        state: present
+
+    - name: Gather the mount facts
+      ansible.builtin.setup:
+        gather_subset:
+          - '!all'
+          - '!any'
+          - 'mounts'
+
+    - name: Mount CephFS (ensure mounted)
+      ansible.builtin.mount:
+        path: "{{ mount_point }}"
+        src: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789:/"
+        fstype: "ceph"
+        opts: "name=admin,secretfile={{ ceph_secret_file }},_netdev,noatime"
+        state: mounted
+      when: mount_point not in [item.mount for item in ansible_facts.mounts]

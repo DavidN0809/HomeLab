@@ -1,0 +1,41 @@
+- name: Install Docker and Setup Docker Swarm
+  hosts: master
+  become: yes
+  remote_user: ansibleuser
+
+  tasks:
+    - name: Install prerequisites for Docker
+      apt: 
+        name: "{{ packages }}"
+      vars:
+        packages:
+        - uidmap
+      when: ansible_os_family == "Debian"
+
+    - name: Install Docker rootless prerequisites
+      shell: |
+        curl -fsSL https://get.docker.com/rootless -o docker-rootless.sh
+        sh ./docker-rootless.sh
+      args:
+        creates: /usr/bin/dockerd-rootless-setuptool.sh
+
+    - name: Install Docker
+      shell: |
+        curl -fsSL https://get.docker.com -o get-docker.sh
+        sh ./get-docker.sh
+      args:
+        creates: /usr/bin/docker
+
+    - name: Initialize Docker Swarm on First Node
+      command: docker swarm init --advertise-addr {{ ansible_default_ipv4.address }}
+      when: inventory_hostname == groups['all'][0]
+      register: swarm_init
+
+    - name: Set Swarm Manager Token Fact
+      set_fact:
+        swarm_manager_token: "{{ swarm_init.stdout.split(' ')[-1] }}"
+      when: swarm_init is changed
+
+    - name: Join Swarm as Manager
+      command: docker swarm join --token {{ swarm_manager_token }} {{ hostvars[groups['all'][0]]['ansible_default_ipv4']['address'] }}:2377
+      when: inventory_hostname != groups['all'][0]
