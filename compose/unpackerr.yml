@@ -1,0 +1,69 @@
+services:
+  unpackerr:
+
+    container_name: "unpackerr"
+
+    entrypoint:
+      - "/unpackerr"
+
+    environment:
+      - "UN_RETRY_DELAY=5m"
+      - "TZ=America/Los_Angeles"
+      - "UN_SONARR_0_PATH=/data"
+      - "UN_LIDARR_0_URL=http://172.16.63.132:8686"
+      - "UN_LIDARR_0_API_KEY=5d7e0bb8bc4542dcaad6c3362d922101"
+      - "UN_DELETE_DELAY=5m"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "UN_LOG_FILE=/data/unpacker/unpackerr.log"
+      - "UN_SONARR_0_URL=http://100.107.249.51:8985"
+      - "UN_DEBUG=true"
+      - "UN_RADARR_0_URL=http://172.16.63.132:7879"
+      - "UN_RADARR_0_API_KEY=e86dfe9af9b1474cb23890464945ccba"
+      - "UN_RADARR_0_PATH=/data"
+      - "UN_START_DELAY=1m"
+      - "HOST_CONTAINERNAME=unpackerr"
+      - "UN_SONARR_0_API_KEY=75ae01640cbd4313aa758ee4dead38a0"
+      - "UN_TIMEOUT=15s"
+      - "UN_PARALLEL=1"
+      - "UN_INTERVAL=2m"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    hostname: "a0c1ac3c3197"
+
+    image: "golift/unpackerr"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/wiki/davidnewhall/unpackerr/images/logo.png"
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.architecture: "linux amd64"
+      org.opencontainers.image.authors: "David Newhall II <captain at golift dot io>"
+      org.opencontainers.image.created: "2023-07-30T05:09:00Z"
+      org.opencontainers.image.description: "Extracts downloads so Radarr, Sonarr, Lidarr or Readarr may\
+        \ import them."
+      org.opencontainers.image.documentation: "https://github.com/Unpackerr/unpackerr/wiki/Docker"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "0af73dc"
+      org.opencontainers.image.source: "https://github.com/Unpackerr/unpackerr"
+      org.opencontainers.image.title: "Unpackerr"
+      org.opencontainers.image.url: "https://github.com/Unpackerr/unpackerr"
+      org.opencontainers.image.vendor: "Go Lift <code@golift.io>"
+      org.opencontainers.image.version: "0.12.0-547"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    volumes:
+      - "/mnt/user/data/media:/data"
+      - "/mnt/user/data:/downloads"
+
+    working_dir: "/"
+
+version: "3.6"

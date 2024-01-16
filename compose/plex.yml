@@ -1,0 +1,104 @@
+services:
+  plex:
+
+    container_name: "plex"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "VERSION=docker"
+      - "NVIDIA_VISIBLE_DEVICES =all "
+      - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
+      - "PLEX_CLAIM=claim-oirooiFD1KfWCBn5C7VQ"
+      - "PUID=99"
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=plex"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/root"
+      - "LANGUAGE=en_US.UTF-8"
+      - "LANG=en_US.UTF-8"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "DEBIAN_FRONTEND=noninteractive"
+      - "PLEX_DOWNLOAD=https://downloads.plex.tv/plex-media-server-new"
+      - "PLEX_ARCH=amd64"
+      - "PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR=/config/Library/Application Support"
+      - "PLEX_MEDIA_SERVER_HOME=/usr/lib/plexmediaserver"
+      - "PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS=6"
+      - "PLEX_MEDIA_SERVER_USER=abc"
+      - "PLEX_MEDIA_SERVER_INFO_VENDOR=Docker"
+      - "PLEX_MEDIA_SERVER_INFO_DEVICE=Docker Container (LinuxServer.io)"
+
+    expose:
+      - "1900/udp"
+      - "32400/tcp"
+      - "32410/udp"
+      - "32412/udp"
+      - "32413/udp"
+      - "32414/udp"
+      - "32469/tcp"
+      - "5353/udp"
+      - "8324/tcp"
+
+    hostname: "Tower"
+
+    image: "lscr.io/linuxserver/plex"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 1.32.8.7639-fb6452ebf-ls199 Build-date:- 2024-01-09T14:44:41+00:00"
+      maintainer: "thelamer"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/plex-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:32400]/web/index.html"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-09T14:44:41+00:00"
+      org.opencontainers.image.description: "[Plex](https://plex.tv) organizes video, music and photos\
+        \ from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices.\
+        \ This container is packaged as a standalone Plex Media Server. Straightforward design and bulk\
+        \ actions mean getting things done faster."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-plex"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "72b6c45aab0b376f30f786282e3fc548bebb9b0f"
+      org.opencontainers.image.revision: "72b6c45aab0b376f30f786282e3fc548bebb9b0f"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-plex"
+      org.opencontainers.image.title: "Plex"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-plex/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "1.32.8.7639-fb6452ebf-ls199"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "host"
+
+    privileged: true
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/dev/shm:/transcode"
+      - "/mnt/user/Fire:/Fire"
+      - "/mnt/user/appdata/plex:/config"
+      - "/mnt/user/data/media/4k/movies:/movies"
+      - "/mnt/user/data/media/4k/tv:/tv"
+      - "/mnt/user/data/plex_streaming:/debrid-fix"
+      - "/mnt/user/data/plex_toggle:/debrid"
+
+    working_dir: "/"
+
+version: "3.6"

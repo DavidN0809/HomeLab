@@ -1,0 +1,76 @@
+services:
+  whoogle-search:
+
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "misc/tor/start-tor.sh & ./run"
+
+    container_name: "whoogle-search"
+
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=whoogle-search"
+      - "HTTPS_ONLY="
+      - "EXPOSE_PORT="
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.11.0a5"
+      - "PYTHON_PIP_VERSION=21.2.4"
+      - "PYTHON_SETUPTOOLS_VERSION=58.1.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/2caf84b14febcda8077e59e9b8a6ef9a680aa392/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=7c5239cea323cadae36083079a5ee6b2b3d56f25762a0c060d2867b89e5e06c5"
+      - "CONFIG_VOLUME=/config"
+      - "WHOOGLE_URL_PREFIX="
+      - "WHOOGLE_USER="
+      - "WHOOGLE_PASS="
+      - "WHOOGLE_PROXY_USER="
+      - "WHOOGLE_PROXY_PASS="
+      - "WHOOGLE_PROXY_TYPE="
+      - "WHOOGLE_PROXY_LOC="
+      - "WHOOGLE_DOTENV="
+      - "WHOOGLE_ALT_TW=farside.link/nitter"
+      - "WHOOGLE_ALT_YT=farside.link/invidious"
+      - "WHOOGLE_ALT_RD=farside.link/libreddit"
+      - "WHOOGLE_ALT_MD=farside.link/scribe"
+      - "WHOOGLE_ALT_TL=farside.link/lingva"
+      - "WHOOGLE_ALT_IMG=farside.link/rimgo"
+      - "WHOOGLE_ALT_WIKI=farside.link/wikiless"
+      - "WHOOGLE_ALT_IMDB=farside.link/libremdb"
+      - "WHOOGLE_ALT_QUORA=farside.link/quetre"
+
+    hostname: "1ef0820beea4"
+
+    image: "benbusby/whoogle-search"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://github.com/benbusby/whoogle-search/blob/main/app/static/img/favicon/favicon-96x96.png?raw=true"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:5000]/"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:08"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8798:5000/tcp"
+
+    user: "whoogle:whoogle"
+
+    volumes:
+      - "/mnt/user/appdata/whoogle-search:/config"
+
+    working_dir: "/whoogle"
+
+version: "3.6"

@@ -1,0 +1,80 @@
+services:
+  netbootxyz:
+
+    container_name: "netbootxyz"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_CONTAINERNAME=netbootxyz"
+      - "MENU_VERSION=1.9.9"
+      - "UMASK=022"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "PORT_RANGE=30000:30010"
+      - "SUBFOLDER=/"
+      - "PUID=99"
+      - "PGID=100"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+
+    hostname: "572f7c9667ac"
+
+    image: "lscr.io/linuxserver/netbootxyz"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 0.7.0-ls142 Build-date:- 2024-01-06T02:50:20+00:00"
+      maintainer: "thelamer"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/netbootxyz-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:3000]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-06T02:50:20+00:00"
+      org.opencontainers.image.description: "[Netbootxyz](https://netboot.xyz) is a way to PXE boot various\
+        \ operating system installers or utilities from one place within the BIOS without the need of\
+        \ having to go retrieve the media to run the tool. iPXE is used to provide a user friendly menu\
+        \ from within the BIOS that lets you easily choose the operating system you want along with any\
+        \ specific types of versions or bootable flags."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-netbootxyz"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "406c1581a22086f04fe0a0c4bb2201bb2067f57a"
+      org.opencontainers.image.revision: "406c1581a22086f04fe0a0c4bb2201bb2067f57a"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-netbootxyz"
+      org.opencontainers.image.title: "Netbootxyz"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-netbootxyz/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "0.7.0-ls142"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:05"
+
+    network_mode: "bridge"
+
+    ports:
+      - "3000:3000/tcp"
+      - "69:69/udp"
+      - "7905:80/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/netbootxyz:/config"
+      - "/mnt/user/isos/template/iso:/assets"
+
+    working_dir: "/"
+
+version: "3.6"

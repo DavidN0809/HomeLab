@@ -1,0 +1,37 @@
+services:
+  HRConvert2:
+    command:
+      - "/usr/sbin/apache2"
+      - "-D"
+      - "FOREGROUND"
+    container_name: "HRConvert2"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=HRConvert2"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "APACHE_RUN_USER=www-data"
+      - "APACHE_RUN_GROUP=www-data"
+      - "APACHE_LOG_DIR=/var/log/apache2"
+      - "APACHE_PID_FILE=/var/run/apache2/apache2.pid"
+      - "APACHE_RUN_DIR=/var/run/apache2"
+      - "APACHE_LOCK_DIR=/var/lock/apache2"
+    hostname: "7d448992ce4b"
+    image: "dwaaan/hrconvert2-docker"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/SmartPhoneLover/unraid-docker-templates/main/templates/icons/hrconvert2.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "bridge"
+    ports:
+      - "8088:80/tcp"
+    volumes:
+      - "/mnt/user/appdata/hrconvert2/config.php:/var/www/html/HRProprietary/HRConvert2/config.php:ro"
+version: "3.6"

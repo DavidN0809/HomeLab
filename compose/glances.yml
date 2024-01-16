@@ -1,0 +1,60 @@
+services:
+  glances:
+
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "/venv/bin/python3 -m glances $GLANCES_OPT"
+
+    container_name: "glances"
+
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=glances"
+      - "GLANCES_OPT=-w"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PATH=/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    expose:
+      - "61208/tcp"
+      - "61209/tcp"
+
+    hostname: "Tower"
+
+    image: "nicolargo/glances"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://github.com/nicolargo/glances/raw/master/glances/outputs/static/images/glances.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:61208]/"
+      org.opencontainers.image.created: "2023-12-13T21:00:11.340Z"
+      org.opencontainers.image.description: "Glances an Eye on your system. A top/htop alternative for\
+        \ GNU/Linux, BSD, Mac OS and Windows operating systems."
+      org.opencontainers.image.licenses: "NOASSERTION"
+      org.opencontainers.image.revision: "a3e08acdd21ba040124b98df0be29b0d534bfb22"
+      org.opencontainers.image.source: "https://github.com/nicolargo/glances"
+      org.opencontainers.image.title: "glances"
+      org.opencontainers.image.url: "https://nicolargo.github.io/glances/"
+      org.opencontainers.image.version: "master"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "host"
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/mnt:/mnt:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+    working_dir: "/app"
+
+version: "3.6"

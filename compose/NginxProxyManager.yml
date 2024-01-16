@@ -1,0 +1,64 @@
+services:
+  NginxProxyManager:
+
+    command:
+      - "/init"
+
+    container_name: "NginxProxyManager"
+
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=NginxProxyManager"
+      - "TZ=America/Los_Angeles"
+      - "HOST_HOSTNAME=Tower"
+      - "USER_ID=99"
+      - "GROUP_ID=100"
+      - "UMASK=0000"
+      - "APP_NICENESS=0"
+      - "DISABLE_IPV6=0"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/base/sbin:/opt/base/bin"
+      - "ENV=/root/.docker_rc"
+      - "SUP_GROUP_IDS="
+      - "LANG=en_US.UTF-8"
+      - "KEEP_APP_RUNNING=0"
+      - "INSTALL_PACKAGES="
+      - "PACKAGES_MIRROR="
+      - "CONTAINER_DEBUG=0"
+
+    hostname: "fae5868d9859"
+
+    image: "jlesage/nginx-proxy-manager"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/nginx-proxy-manager-icon.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8181]"
+      org.label-schema.description: "Docker container for Nginx Proxy Manager"
+      org.label-schema.name: "nginx-proxy-manager"
+      org.label-schema.schema-version: "1.0"
+      org.label-schema.vcs-url: "https://github.com/jlesage/docker-nginx-proxy-manager"
+      org.label-schema.version: "23.12.2"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:13"
+
+    network_mode: "bridge"
+
+    ports:
+      - "4431:4443/tcp"
+      - "801:8080/tcp"
+      - "7818:8181/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/NginxProxyManager:/config"
+
+    working_dir: "/tmp"
+
+version: "3.6"

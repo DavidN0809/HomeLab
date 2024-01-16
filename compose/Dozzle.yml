@@ -1,0 +1,60 @@
+services:
+  Dozzle:
+
+    container_name: "Dozzle"
+
+    entrypoint:
+      - "/dozzle"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "DOZZLE_BASE=/"
+      - "DOZZLE_TAILSIZE=300"
+      - "DOZZLE_PASSWORD="
+      - "DOZZLE_NO_ANALYTICS=true"
+      - "DOZZLE_KEY=9Q9SJ69MZhZ0WrjbF"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Dozzle"
+      - "DOZZLE_LEVEL=info"
+      - "DOZZLE_USERNAME="
+      - "PATH=/bin"
+
+    hostname: "b683f195b803"
+
+    image: "amir20/dozzle"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/dozzle.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]/"
+      org.opencontainers.image.created: "2024-01-10T19:29:57.905Z"
+      org.opencontainers.image.description: "Realtime log viewer for docker containers."
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "5cd6fc1243b2b09b353d9949c646c00dcaf259d9"
+      org.opencontainers.image.source: "https://github.com/amir20/dozzle"
+      org.opencontainers.image.title: "dozzle"
+      org.opencontainers.image.url: "https://github.com/amir20/dozzle"
+      org.opencontainers.image.version: "v6.0.7"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:12"
+
+    network_mode: "bridge"
+
+    ports:
+      - "5050:8080/tcp"
+
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+    working_dir: "/"
+
+version: "3.6"

@@ -71,6 +71,4 @@ services:
 
     working_dir: "/usr/local/searxng"
 
-    deploy:
-      replicas: 3  # Specify the number of replicas here
 version: "3.6"

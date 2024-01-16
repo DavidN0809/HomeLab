@@ -1,0 +1,58 @@
+services:
+  recyclarr:
+
+    container_name: "recyclarr"
+
+    entrypoint:
+      - "/sbin/tini"
+      - "--"
+      - "/entrypoint.sh"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=recyclarr"
+      - "CRON_SCHEDULE=@daily"
+      - "RECYCLARR_CREATE_CONFIG=false"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/app/recyclarr"
+      - "ASPNETCORE_URLS=http://+:80"
+      - "DOTNET_RUNNING_IN_CONTAINER=true"
+      - "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true"
+      - "DOTNET_VERSION=7.0.12"
+      - "RUNTIME=linux-musl-x64"
+      - "RECYCLARR_APP_DATA=/config"
+
+    hostname: "184f6a1f55c3"
+
+    image: "ghcr.io/recyclarr/recyclarr:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/recyclarr/recyclarr/master/ci/notify/trash-icon.png"
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.created: "2023-10-20T13:19:59.870Z"
+      org.opencontainers.image.description: "Automatically sync TRaSH Guides to your Sonarr and Radarr\
+        \ instances"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "5b163d9dc621f28624270e2543334d8ee8599d98"
+      org.opencontainers.image.source: "https://github.com/recyclarr/recyclarr"
+      org.opencontainers.image.title: "recyclarr"
+      org.opencontainers.image.url: "https://github.com/recyclarr/recyclarr"
+      org.opencontainers.image.version: "6.0.2"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    user: "99:100"
+
+    volumes:
+      - "/mnt/user/appdata/recyclarr:/config"
+
+version: "3.6"

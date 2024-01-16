@@ -1,0 +1,29 @@
+services:
+  iperf3:
+    command:
+      - "-s"
+    container_name: "iperf3"
+    entrypoint:
+      - "iperf3"
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=iperf3"
+      - "TCP_PORT_5201=5201"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    expose:
+      - "5201/tcp"
+    hostname: "Tower"
+    image: "networkstatic/iperf3"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://github.com/kilrah/unraid-docker-templates/raw/main/icons/iperf3.png"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "host"
+version: "3.6"

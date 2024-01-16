@@ -1,0 +1,73 @@
+services:
+  lidarr:
+
+    container_name: "lidarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=lidarr"
+      - "PUID=99"
+      - "PGID=100"
+      - "UMASK=022"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+
+    hostname: "665853f3baf4"
+
+    image: "lscr.io/linuxserver/lidarr:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 2.0.7.3849-ls149 Build-date:- 2024-01-03T02:05:54+00:00"
+      maintainer: "thelamer"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/lidarr-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8686]/system/status"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-03T02:05:54+00:00"
+      org.opencontainers.image.description: "[Lidarr](https://github.com/lidarr/Lidarr) is a music collection\
+        \ manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from\
+        \ your favorite artists and will grab, sort and rename them. It can also be configured to automatically\
+        \ upgrade the quality of files already downloaded when a better quality format becomes available."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-lidarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "6ccb7e35a7d569c50b009953cf6ea7569a415167"
+      org.opencontainers.image.revision: "6ccb7e35a7d569c50b009953cf6ea7569a415167"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-lidarr"
+      org.opencontainers.image.title: "Lidarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-lidarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "2.0.7.3849-ls149"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8687:8686/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/lidarr:/config"
+      - "/mnt/user/data:/data"
+
+    working_dir: "/"
+
+version: "3.6"

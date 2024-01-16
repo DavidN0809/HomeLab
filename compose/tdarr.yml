@@ -1,0 +1,96 @@
+services:
+  tdarr:
+
+    container_name: "tdarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "internalNode=true"
+      - "nodeIP=192.168.68.133"
+      - "NVIDIA_VISIBLE_DEVICES=GPU-3f900cb9-08b7-5725-a2c5-d18fc5e9273b"
+      - "NVIDIA_DRIVER_CAPABILITIES=all"
+      - "serverIP=192.168.68.133"
+      - "PUID=0"
+      - "PGID=0"
+      - "nodeID=1070"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=tdarr"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/home/Tdarr"
+      - "LANGUAGE=en_US.UTF-8"
+      - "LANG=en_US.UTF-8"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "LIBVA_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri"
+      - "LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu"
+      - "HANDBRAKE=1.6.1"
+      - "WEB_UI_PORT=8265"
+      - "SERVER_PORT=8266"
+      - "NODE_PORT=8267"
+      - "UMASK=002"
+      - "MODULE_LINK="
+      - "NODE_LINK="
+      - "BASE_LINK=https://tdarrs.s3.us-west-000.backblazeb2.com/dev/versions/2.17.01"
+      - "inContainer=true"
+
+    hostname: "b9e55d7c5a46"
+
+    image: "haveagitgat/tdarr"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 62a42c3c-ls123 Build-date:- 2023-08-29T23:26:53+00:00"
+      maintainer: "TheLamer"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/tdarr.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8265]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2023-08-29T23:26:53+00:00"
+      org.opencontainers.image.description: "baseimage-ubuntu image by linuxserver.io"
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-baseimage-ubuntu"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "2e98c0cce38f4e623ecc2063a11bd7aacefc13e7"
+      org.opencontainers.image.revision: "2e98c0cce38f4e623ecc2063a11bd7aacefc13e7"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-baseimage-ubuntu"
+      org.opencontainers.image.title: "Baseimage-ubuntu"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-baseimage-ubuntu/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "62a42c3c-ls123"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:06"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8264:8264/tcp"
+      - "8265:8265/tcp"
+      - "8266:8266/tcp"
+
+    privileged: true
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/mnt/user/appdata/tdarr/configs:/app/configs"
+      - "/mnt/user/appdata/tdarr/logs:/app/logs"
+      - "/mnt/user/appdata/tdarr/server:/app/server"
+      - "/mnt/user/data:/mnt/media"
+      - "/mnt/user/temp/tdarr:/temp"
+
+    working_dir: "/"
+
+version: "3.6"

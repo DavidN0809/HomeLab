@@ -1,0 +1,60 @@
+services:
+  TubeArchivist:
+
+    command:
+      - "./run.sh"
+
+    container_name: "TubeArchivist"
+
+    environment:
+      - "TZ=America/New_York"
+      - "HOST_OS=Unraid"
+      - "TA_USERNAME=tubearchivist"
+      - "ELASTIC_PASSWORD=verysecret"
+      - "HOST_GID=100"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=TubeArchivist"
+      - "TA_HOST=192.168.68.133"
+      - "TA_PASSWORD=tubearchivist"
+      - "REDIS_HOST=192.168.68.133"
+      - "ES_URL=http://192.168.68.133:9200"
+      - "HOST_UID=99"
+      - "PATH=/root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.11.3"
+      - "PYTHON_PIP_VERSION=22.3.1"
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/0d8570dc44796f4369b652222cf176b3db6ac70e/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=96461deced5c2a487ddc65207ec5a9cffeca0d34e7af7ea1afc470ff0d746207"
+      - "PYTHONUNBUFFERED=1"
+
+    hostname: "fa4ad3d4ec03"
+
+    image: "bbilly1/tubearchivist:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://i.imgur.com/6n4ljjQ.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8000]"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8069:8000/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/TubeArchivist:/cache"
+      - "/mnt/user/data/youtube:/youtube"
+
+    working_dir: "/app"
+
+version: "3.6"

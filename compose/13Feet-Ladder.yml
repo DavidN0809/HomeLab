@@ -1,0 +1,65 @@
+services:
+  13Feet-Ladder:
+
+    command:
+      - "portable.py"
+
+    container_name: "13Feet-Ladder"
+
+    entrypoint:
+      - "python"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=13Feet-Ladder"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568"
+      - "PYTHON_VERSION=3.9.18"
+      - "PYTHON_PIP_VERSION=23.0.1"
+      - "PYTHON_SETUPTOOLS_VERSION=58.1.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/4cfa4081d27285bda1220a62a5ebf5b4bd749cdb/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=9cc01665956d22b3bf057ae8287b035827bfd895da235bcea200ab3b811790b6"
+
+    hostname: "e806e82e8fca"
+
+    image: "wasimaster/13ft"
+
+    ipc: "private"
+
+    labels:
+      description: "My own custom 12ft.io replacement"
+      documentation: "https://github.com/wasi-master/13ft/blob/main/README.md"
+      maintainer: "Arian Mollik Wasi <arianmollik323@gmail.com>"
+      net.unraid.docker.icon: "https://github.com/imTHAI/unraid-templates/raw/main/13fladder.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:5000]"
+      org.opencontainers.image.authors: "Arian Mollik Wasi, Justin Paul, Alfredo Casanova"
+      org.opencontainers.image.created: "2023-10-31T22:53:00Z"
+      org.opencontainers.image.description: "My own custom 12ft.io replacement"
+      org.opencontainers.image.documentation: "https://github.com/wasi-master/13ft/blob/main/README.md"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.source: "https://github.com/wasi-master/13ft/"
+      org.opencontainers.image.url: "https://github.com/wasi-master/13ft/"
+      org.opencontainers.image.version: "0.2.3"
+      url: "https://github.com/wasi-master/13ft/"
+      version: "0.2.3"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:2b"
+
+    network_mode: "bridge"
+
+    ports:
+      - "5002:5000/tcp"
+
+    working_dir: "/app"
+
+version: "3.6"

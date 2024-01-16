@@ -1,0 +1,63 @@
+services:
+  autoscan:
+
+    container_name: "autoscan"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=autoscan"
+      - "PLEX_PASSWORD=9P83B@k&!i&@u&wC"
+      - "PUID=99"
+      - "PGID=100"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PLEX_LOGIN=alwaysbrother10@gmail.com"
+      - "UMASK=002"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "APP_DIR=/app"
+      - "CONFIG_DIR=/config"
+      - "ARGS="
+      - "XDG_CONFIG_HOME=/config/.config"
+      - "XDG_CACHE_HOME=/config/.cache"
+      - "XDG_DATA_HOME=/config/.local/share"
+      - "LANG=C.UTF-8"
+      - "LC_ALL=C.UTF-8"
+      - "S6_BEHAVIOUR_IF_STAGE2_FAILS=2"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "BUILD_ARCHITECTURE=linux-amd64"
+
+    expose:
+      - "3030/tcp"
+
+    hostname: "79561419961c"
+
+    image: "cr.hotio.dev/hotio/autoscan"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://hotio.dev/webhook-avatars/pullio.png"
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.created: "2023-12-01T02:01:07Z"
+      org.opencontainers.image.revision: "5fc238ca7d4c0f2e9b9ac5a95eb08c98aee49504"
+      org.opencontainers.image.source: "https://github.com/hotio/autoscan/tree/release"
+      org.opencontainers.image.title: "hotio/autoscan:release"
+      org.opencontainers.image.url: "https://github.com/hotio/autoscan/blob/master/README.md"
+      org.opencontainers.image.vendor: "hotio"
+      org.opencontainers.image.version: "1.4.0"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    volumes:
+      - "/mnt/user/appdata/autoscan:/config"
+
+version: "3.6"

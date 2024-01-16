@@ -1,0 +1,59 @@
+services:
+  IPMI-Tools:
+
+    command:
+      - "/start.sh"
+
+    container_name: "IPMI-Tools"
+
+    entrypoint:
+      - "/entrypoint.sh"
+
+    environment:
+      - "APP_IPMI_PASS="
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=IPMI-Tools"
+      - "APP_IPMI_HOST="
+      - "APP_IPMI_USER="
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568"
+      - "PYTHON_VERSION=3.8.6"
+      - "PYTHON_PIP_VERSION=20.3.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/91630a4867b1f93ba0a12aa81d0ec4ecc1e7eeb9/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=d48ae68f297cac54db17e4107b800faae0e5210131f9f386c30c0166bf8d81b7"
+      - "PYTHONPATH=/app"
+
+    hostname: "fb286f788a6c"
+
+    image: "edchamberlain/ipmi-tools"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "Sebastian Ramirez <tiangolo@gmail.com>"
+      net.unraid.docker.icon: "https://github.com/EdwardChamberlain/unraid-templates/blob/main/assets/server_icon.png?raw=true"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]/"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:26"
+
+    network_mode: "bridge"
+
+    ports:
+      - "4017:80/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/ipmi_tools:/data"
+
+    working_dir: "/app"
+
+version: "3.6"

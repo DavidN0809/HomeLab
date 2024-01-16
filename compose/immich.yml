@@ -1,0 +1,101 @@
+services:
+  immich:
+
+    container_name: "immich"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "DB_USERNAME=immich"
+      - "DISABLE_TYPESENSE=false"
+      - "REDIS_PASSWORD=immich"
+      - "MACHINE_LEARNING_WORKERS=1"
+      - "PUID=99"
+      - "UMASK=022"
+      - "HOST_OS=Unraid"
+      - "DB_PASSWORD=immich"
+      - "HOST_CONTAINERNAME=immich"
+      - "HOST_HOSTNAME=Tower"
+      - "DB_HOSTNAME=192.168.68.133"
+      - "REDIS_HOSTNAME=192.168.68.133"
+      - "DISABLE_MACHINE_LEARNING=false"
+      - "DB_PORT=5432"
+      - "REDIS_PORT=6379"
+      - "TZ=America/Los_Angeles"
+      - "MACHINE_LEARNING_WORKER_TIMEOUT=120"
+      - "PGID=100"
+      - "DB_DATABASE_NAME=immich"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/root"
+      - "LANGUAGE=en_US.UTF-8"
+      - "LANG=en_US.UTF-8"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003"
+      - "IMMICH_MEDIA_LOCATION=/photos"
+      - "MACHINE_LEARNING_CACHE_FOLDER=/config/machine-learning"
+      - "TRANSFORMERS_CACHE=/config/machine-learning"
+      - "SERVER_PORT=8080"
+      - "IMMICH_WEB_ROOT=/app/immich/server/www"
+      - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
+      - "NODE_ENV=production"
+
+    hostname: "41c75c7d83be"
+
+    image: "ghcr.io/imagegenius/immich"
+
+    ipc: "private"
+
+    labels:
+      build_version: "ImageGenius Version:- v1.92.1-ig237 Build-date:- 2024-01-09T04:22:35+11:00"
+      maintainer: "hydazz, martabal"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/imagegenius/templates/main/unraid/img/immich.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
+      org.opencontainers.image.authors: "imagegenius.io"
+      org.opencontainers.image.created: "2024-01-09T04:22:35+11:00"
+      org.opencontainers.image.description: "Immich is a high performance self-hosted photo and video\
+        \ backup solution."
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "e44da802951da217255e73a70f19926778c5e851"
+      org.opencontainers.image.revision: "e44da802951da217255e73a70f19926778c5e851"
+      org.opencontainers.image.source: "https://github.com/imagegenius/docker-immich"
+      org.opencontainers.image.title: "Immich"
+      org.opencontainers.image.url: "https://github.com/imagegenius/docker-immich/packages"
+      org.opencontainers.image.vendor: "imagegenius.io"
+      org.opencontainers.image.version: "v1.92.1-ig237"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "7005:8080/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/immich/model:/config/machine-learning"
+      - "/mnt/user/appdata/immich:/config"
+      - "/mnt/user/cloud/immich:/photos"
+      - "27fe3edb91263909b23c6452ec1b031b62f9be13c5ca954be03999aee6f52d58:/uploads"
+      - "5ee972eba92ec37da74b0ab7a64bb40d1918b43972555fd910b8aae94bdc1720::/import:ro"
+      - "bbe9c6b9cee63a0042a99caf23fec625bf2245f43d49b3443b7a7b56c23964a8:/import"
+
+    working_dir: "/"
+
+version: "3.6"
+
+volumes:
+  27fe3edb91263909b23c6452ec1b031b62f9be13c5ca954be03999aee6f52d58:
+    external: true
+  5ee972eba92ec37da74b0ab7a64bb40d1918b43972555fd910b8aae94bdc1720:
+    external: true
+  bbe9c6b9cee63a0042a99caf23fec625bf2245f43d49b3443b7a7b56c23964a8:
+    external: true

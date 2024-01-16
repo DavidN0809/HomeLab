@@ -1,0 +1,81 @@
+networks:
+  wg0:
+    external: true
+    name: "wg0"
+
+services:
+  binhex-sabnzbdvpn:
+
+    command:
+      - "/bin/bash"
+      - "/usr/local/bin/init.sh"
+
+    container_name: "binhex-sabnzbdvpn"
+
+    entrypoint:
+      - "/usr/bin/tini"
+      - "-g"
+      - "--"
+
+    environment:
+      - "UMASK=000"
+      - "PUID=0"
+      - "VPN_ENABLED=no"
+      - "NAME_SERVERS=209.222.18.222,84.200.69.80,37.235.1.174,1.1.1.1,209.222.18.218,37.235.1.177,84.200.70.40,1.0.0.1"
+      - "PGID=0"
+      - "VPN_OPTIONS="
+      - "VPN_INPUT_PORTS=8080,8084"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=binhex-sabnzbdvpn"
+      - "VPN_PROV=custom"
+      - "VPN_CLIENT=wireguard"
+      - "STRICT_PORT_FORWARD=yes"
+      - "VPN_OUTPUT_PORTS=8080,8084"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "DEBUG=false"
+      - "ENABLE_PRIVOXY=no"
+      - "LAN_NETWORK=192.168.68.1/24"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/home/nobody"
+      - "TERM=xterm"
+      - "LANG=en_GB.UTF-8"
+
+    hostname: "6dd275b835c9"
+
+    image: "binhex/arch-sabnzbdvpn:3.5.3-1-01"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/sabnzbd-icon.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]/"
+      org.opencontainers.image.authors: "= binhex"
+      org.opencontainers.image.source: "= https://github.com/binhex/arch-sabnzbdvpn"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    networks:
+      - "wg0"
+
+    ports:
+      - "8084:8080/tcp"
+      - "8092:8092/tcp"
+      - "8119:8119/tcp"
+
+    privileged: true
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/mnt/user/appdata/binhex-sabnzbdvpn:/config"
+      - "/mnt/user/data:/data"
+      - "/mnt/user/temp/sabnzbd:/intermediate"
+
+version: "3.6"

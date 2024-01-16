@@ -1,0 +1,44 @@
+services:
+  anaconda3:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "jupyter notebook \t--notebook-dir=${NOTEBOOK_DIR} \t--ip=${NOTEBOOK_IP} \t--port=${NOTEBOOK_PORT}\
+        \ \t--NotebookApp.token='' \t--no-browser \t--allow-root"
+    container_name: "anaconda3"
+    entrypoint:
+      - "/usr/bin/tini"
+      - "--"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=anaconda3"
+      - "PATH=/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "LC_ALL=C.UTF-8"
+      - "DEBIAN_FRONTEND=noninteractive"
+      - "NOTEBOOK_DIR=/src/notebooks"
+      - "NOTEBOOK_IP=0.0.0.0"
+      - "NOTEBOOK_PORT=8888"
+    hostname: "a7fb72cd891b"
+    image: "okwrtdsh/anaconda3:latest"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/anaconda3.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8888]"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:29"
+    network_mode: "bridge"
+    ports:
+      - "8888:8888/tcp"
+    user: "root"
+    volumes:
+      - "/mnt/user/ML:/src/notebooks"
+
+version: "3.6"

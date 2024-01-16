@@ -1,0 +1,58 @@
+services:
+  Plex-Meta-Manager:
+
+    container_name: "Plex-Meta-Manager"
+
+    entrypoint:
+      - "/tini"
+      - "-s"
+      - "python3"
+      - "plex_meta_manager.py"
+      - "--"
+
+    environment:
+      - "time=6:00"
+      - "divider=="
+      - "PMM_DIVIDER=="
+      - "PMM_WIDTH=200"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Plex-Meta-Manager"
+      - "width=200"
+      - "PMM_TIME=6:00"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.11.4"
+      - "PYTHON_PIP_VERSION=23.1.2"
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/0d8570dc44796f4369b652222cf176b3db6ac70e/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=96461deced5c2a487ddc65207ec5a9cffeca0d34e7af7ea1afc470ff0d746207"
+      - "BRANCH_NAME=master"
+      - "TINI_VERSION=v0.19.0"
+      - "PMM_DOCKER=True"
+
+    hostname: "c882e2fffc8e"
+
+    image: "meisnate12/plex-meta-manager"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://metamanager.wiki/en/latest/_static/pmm.png"
+      net.unraid.docker.managed: "dockerman"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    volumes:
+      - "/mnt/user/appdata/Plex-Meta-Manager:/config"
+      - "/mnt/user/data:/data"
+
+version: "3.6"

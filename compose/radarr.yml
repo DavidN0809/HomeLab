@@ -1,0 +1,73 @@
+services:
+  radarr:
+
+    container_name: "radarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=radarr"
+      - "PUID=99"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+
+    hostname: "b25846a96aca"
+
+    image: "lscr.io/linuxserver/radarr:develop"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 5.2.6.8376-ls129 Build-date:- 2023-12-31T16:57:28+00:00"
+      maintainer: "Roxedus,thespad"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:7878]/system/status"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2023-12-31T16:57:28+00:00"
+      org.opencontainers.image.description: "[Radarr](https://github.com/Radarr/Radarr) - A fork of Sonarr\
+        \ to work with movies à la Couchpotato.  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-radarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "53ba78a732e471d71ed78d1789ad5efecc2b9ff7"
+      org.opencontainers.image.revision: "53ba78a732e471d71ed78d1789ad5efecc2b9ff7"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-radarr"
+      org.opencontainers.image.title: "Radarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-radarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "5.2.6.8376-ls129"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:0c"
+
+    network_mode: "bridge"
+
+    ports:
+      - "7878:7878/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/radarr-extended:/config"
+      - "/mnt/user/data:/data"
+
+    working_dir: "/"
+
+version: "3.6"

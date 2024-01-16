@@ -1,0 +1,38 @@
+services:
+  ollama:
+    command:
+      - "serve"
+    container_name: "ollama"
+    entrypoint:
+      - "/bin/ollama"
+    environment:
+      - "NVIDIA_VISIBLE_DEVICES=all"
+      - "NVIDIA_DRIVER_CAPABILITIES=all"
+      - "OLLAMA_ORIGINS=*"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=ollama"
+      - "PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "OLLAMA_HOST=0.0.0.0"
+      - "LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64"
+    hostname: "8266edcabedd"
+    image: "ollama/ollama"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://ollama.ai/public/ollama.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:11434]/"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.version: "22.04"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "bridge"
+    ports:
+      - "11434:11434/tcp"
+    volumes:
+      - "/mnt/user/appdata/ollama:/root/.ollama"
+version: "3.6"

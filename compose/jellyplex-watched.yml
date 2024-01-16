@@ -1,0 +1,135 @@
+services:
+  jellyplex-watched:
+
+    command:
+      - "python"
+      - "-u"
+      - "main.py"
+
+    container_name: "jellyplex-watched"
+
+    entrypoint:
+      - "/sbin/tini"
+      - "--"
+
+    environment:
+
+      - "BLACKLIST_USERS="
+
+      - "SSL_BYPASS=True"
+
+      - "SYNC_FROM_PLEX_TO_PLEX =True"
+
+      - "PLEX_PASSWORD="
+
+      - "JELLYFIN_BASEURL=http://192.168.68.133:8096"
+
+      - "HOST_OS=Unraid"
+
+      - "LIBRARY_MAPPING={ \"Tv Shows\" : \"Shows\"}"
+
+      - "SYNC_FROM_JELLYFIN_TO_PLEX =True"
+
+      - "PLEX_USERNAME="
+
+      - "PLEX_BASEURL=http://192.168.68.133:32400"
+
+      - "WHITELIST_LIBRARY_TYPE="
+
+      - "WHITELIST_USERS="
+
+      - "PLEX_TOKEN=cFVjEf3ZE8DY5f68W-kf"
+
+      - "HOST_HOSTNAME=Tower"
+
+      - "SLEEP_DURATION=3600"
+
+      - "LOGFILE=/tmp/log.log"
+
+      - "BLACKLIST_LIBRARY="
+
+      - "DEBUG_LEVEL=INFO"
+
+      - "SYNC_FROM_PLEX_TO_JELLYFIN =True"
+
+      - "PLEX_SERVERNAME="
+
+      - "JELLYFIN_TOKEN=e7075c6f6ef24ffabff43f6fdfc3ad6e"
+
+      - "BLACKLIST_LIBRARY_TYPE="
+
+      - "SYNC_FROM_JELLYFIN_TO_JELLYFIN =True"
+
+      - "USER_MAPPING={\"blackops010\" : \"admin\", \"reaghan\" : \"reaghan1\", \"luken0306\" : \"luken83\"\
+        }"
+
+      - "WHITELIST_LIBRARY="
+
+      - "TZ=America/Los_Angeles"
+
+      - "HOST_CONTAINERNAME=jellyplex-watched"
+
+      - "DRYRUN=True"
+
+      - "DEBUG=True"
+
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+      - "LANG=C.UTF-8"
+
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+
+      - "PYTHON_VERSION=3.11.7"
+
+      - "PYTHON_PIP_VERSION=23.2.1"
+
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/4cfa4081d27285bda1220a62a5ebf5b4bd749cdb/public/get-pip.py"
+
+      - "PYTHON_GET_PIP_SHA256=9cc01665956d22b3bf057ae8287b035827bfd895da235bcea200ab3b811790b6"
+
+      - "RUN_ONLY_ONCE=False"
+
+      - "MARKFILE=mark.log"
+
+      - "SYNC_FROM_PLEX_TO_JELLYFIN=True"
+
+      - "SYNC_FROM_JELLYFIN_TO_PLEX=True"
+
+      - "SYNC_FROM_PLEX_TO_PLEX=True"
+
+      - "SYNC_FROM_JELLYFIN_TO_JELLYFIN=True"
+
+    hostname: "15fd3fbdef87"
+
+    image: "luigi311/jellyplex-watched:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.created: "2024-01-06T11:46:18.973Z"
+      org.opencontainers.image.description: "Sync watched between jellyfin and plex locally"
+      org.opencontainers.image.licenses: "GPL-3.0"
+      org.opencontainers.image.revision: "6ec003f8993dfefebca20824ffb8bf4d1d86a1e6"
+      org.opencontainers.image.source: "https://github.com/luigi311/JellyPlex-Watched"
+      org.opencontainers.image.title: "JellyPlex-Watched"
+      org.opencontainers.image.url: "https://github.com/luigi311/JellyPlex-Watched"
+      org.opencontainers.image.version: "main-alpine"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:03"
+
+    network_mode: "bridge"
+
+    user: "jellyplex_user"
+
+    working_dir: "/app"
+
+version: "3.6"

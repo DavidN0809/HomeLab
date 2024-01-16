@@ -1,0 +1,58 @@
+services:
+  vm_custom_icons:
+
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "bash ./iconsync/icon_download.sh ; sleep 5"
+
+    container_name: "vm_custom_icons"
+
+    devices:
+      - "/dev/tty0:/dev/tty0"
+
+    environment:
+      - "HOST_CONTAINERNAME=vm_custom_icons"
+      - "windows=yes"
+      - "linux=yes"
+      - "macos=yes"
+      - "other=yes"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "delete=no"
+      - "tune=no"
+      - "freebsd=yes"
+      - "stock=yes"
+      - "sleeptimehuman=30 seconds"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    hostname: "273f81c00344"
+
+    image: "spaceinvaderone/vm_custom_icons"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/SpaceinvaderOne/unraid_vm_icons/master/dockericon.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "https://github.com/SpaceinvaderOne/unraid_vm_icons"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    privileged: true
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/mnt/user/appdata/vm_custom_icons:/config"
+      - "/usr/local/emhttp/plugins/dynamix.vm.manager/templates/images:/unraid_vm_icons"
+
+version: "3.6"

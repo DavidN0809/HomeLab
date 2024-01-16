@@ -1,0 +1,64 @@
+services:
+  Krusader:
+
+    container_name: "Krusader"
+
+    entrypoint:
+      - "/opt/scripts/start.sh"
+
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Krusader"
+      - "USER_LOCALES=en_US.UTF-8 UTF-8"
+      - "RUNASROOT=true"
+      - "CUSTOM_RES_W=1280"
+      - "TZ=America/Los_Angeles"
+      - "NOVNC_RESIZE=remote"
+      - "CUSTOM_RES_H=768"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=en_US.UTF-8"
+      - "LANGUAGE=en_US:en"
+      - "LC_ALL=en_US.UTF-8"
+      - "DATA_DIR=/krusader"
+      - "CUSTOM_DEPTH=16"
+      - "NOVNC_PORT=8080"
+      - "RFB_PORT=5900"
+      - "TURBOVNC_PARAMS=-securitytypes none"
+      - "UMASK=000"
+      - "UID=99"
+      - "GID=100"
+      - "DATA_PERM=770"
+      - "USER=krusader"
+
+    hostname: "0cf12b6991ef"
+
+    image: "ich777/krusader"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/ich777/docker-templates/master/ich777/images/krusader.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]/vnc.html?autoconnect=true"
+      org.opencontainers.image.authors: "admin@minenet.at"
+      org.opencontainers.image.source: "https://github.com/ich777/docker-krusader"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "7080:8080/tcp"
+
+    restart: "unless-stopped"
+
+    volumes:
+      - "/mnt/cache/appdata/krusader:/krusader"
+      - "/mnt:/mnt/user"
+
+version: "3.6"

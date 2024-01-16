@@ -1,0 +1,35 @@
+services:
+  watchtower:
+    command:
+      - "--schedule"
+      - "0 0 1 * * *"
+      - "--cleanup"
+    container_name: "watchtower"
+    entrypoint:
+      - "/watchtower"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=watchtower"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    expose:
+      - "8080/tcp"
+    hostname: "5c1e8f34732c"
+    image: "containrrr/watchtower"
+    ipc: "private"
+    labels:
+      com.centurylinklabs.watchtower: "true"
+      net.unraid.docker.icon: "https://containrrr.dev/watchtower/images/logo-450px.png"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:0b"
+    network_mode: "bridge"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    working_dir: "/"
+version: "3.6"

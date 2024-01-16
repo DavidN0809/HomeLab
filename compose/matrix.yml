@@ -1,0 +1,62 @@
+services:
+  matrix:
+
+    command:
+      - "autostart"
+
+    container_name: "matrix"
+
+    entrypoint:
+      - "/start.sh"
+
+    environment:
+      - "SERVER_NAME=matrix"
+      - "SYNAPSE_CACHE_FACTOR=0.5"
+      - "HOST_CONTAINERNAME=matrix"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "REPORT_STATS=no"
+      - "MATRIX_UID=99"
+      - "MATRIX_GID=100"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/matrix/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "COTURN_ENABLE=true"
+
+    hostname: "40deb59e4c26"
+
+    image: "avhost/docker-matrix:latest"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "Andreas Peters <support@aventer.biz>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/A75G/docker-templates/master/templates/icons/matrix.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8008]"
+      org.opencontainers.image.description: "The one fits all docker image for synapse (matrix) chat server."
+      org.opencontainers.image.source: "https://github.com/AVENTER-UG/docker-matrix"
+      org.opencontainers.image.title: "docker-matrix"
+      org.opencontainers.image.vendor: "AVENTER UG (haftungsbeschränkt)"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:2b"
+
+    network_mode: "bridge"
+
+    ports:
+      - "3478:3478/tcp"
+      - "3478:3478/udp"
+      - "8008:8008/tcp"
+      - "8448:8448/tcp"
+
+    user: "matrix"
+
+    volumes:
+      - "/mnt/user/appdata/matrix:/data"
+
+version: "3.6"

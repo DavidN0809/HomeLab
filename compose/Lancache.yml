@@ -1,0 +1,87 @@
+networks:
+  br0:
+    external: true
+    name: "br0"
+
+services:
+  Lancache:
+
+    command:
+      - "/init/supervisord"
+
+    container_name: "Lancache"
+
+    entrypoint:
+      - "/bin/bash"
+      - "-e"
+      - "/init/entrypoint"
+
+    environment:
+      - "TCP_PORT_80=80"
+      - "TCP_PORT_443=443"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Lancache"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "SUPERVISORD_EXIT_ON_FATAL=1"
+      - "LC_ALL=en_GB.UTF-8"
+      - "LANG=en_GB.UTF-8"
+      - "LANGUAGE=en_GB.UTF-8"
+      - "SUPERVISORD_LOGLEVEL=WARN"
+      - "GENERICCACHE_VERSION=2"
+      - "CACHE_MODE=monolithic"
+      - "WEBUSER=www-data"
+      - "CACHE_INDEX_SIZE=500m"
+      - "CACHE_DISK_SIZE=1000g"
+      - "CACHE_MAX_AGE=3560d"
+      - "CACHE_SLICE_SIZE=1m"
+      - "UPSTREAM_DNS=8.8.8.8 8.8.4.4"
+      - "BEAT_TIME=1h"
+      - "LOGFILE_RETENTION=3560"
+      - "CACHE_DOMAINS_REPO=https://github.com/uklans/cache-domains.git"
+      - "CACHE_DOMAINS_BRANCH=master"
+      - "NGINX_WORKER_PROCESSES=auto"
+      - "NGINX_LOG_FORMAT=cachelog"
+
+    expose:
+      - "443/tcp"
+      - "80/tcp"
+
+    hostname: "f91eb1123e61"
+
+    image: "lancachenet/monolithic:latest"
+
+    ipc: "private"
+
+    labels:
+      description: "Single caching container for caching game content at LAN parties."
+      maintainer: "LanCache.Net Team <team@lancache.net>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/redvex2460/docker-templates/master/redvex2460/images/lancache.png"
+      net.unraid.docker.managed: "dockerman"
+      version: "3"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    networks:
+      - "br0"
+
+    volumes:
+      - "/mnt/user/Games/lancache:/data/cache"
+      - "/mnt/user/appdata/lancache/logs:/data/logs"
+      - "3e63fda9733adfb1ce1af17098fe8e9dfb0991d2a2615b9cc5b1c135c93847e6:/var/www"
+      - "5b9dd9e9ba36a7ee78892c079d895914402b61f2c622c1b274810863ccd5c763:/data/cachedomains"
+
+    working_dir: "/scripts"
+
+version: "3.6"
+
+volumes:
+  3e63fda9733adfb1ce1af17098fe8e9dfb0991d2a2615b9cc5b1c135c93847e6:
+    external: true
+  5b9dd9e9ba36a7ee78892c079d895914402b61f2c622c1b274810863ccd5c763:
+    external: true

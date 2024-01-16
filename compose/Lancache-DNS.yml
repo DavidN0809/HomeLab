@@ -1,0 +1,65 @@
+networks:
+  br0:
+    external: true
+    name: "br0"
+
+services:
+  Lancache-DNS:
+
+    command:
+      - "/init/supervisord"
+
+    container_name: "Lancache-DNS"
+
+    entrypoint:
+      - "/bin/bash"
+      - "-e"
+      - "/init/entrypoint"
+
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Lancache-DNS"
+      - "UDP_PORT_53=53"
+      - "USE_GENERIC_CACHE=true"
+      - "LANCACHE_IP=192.168.68.3"
+      - "UPSTREAM_DNS=192.168.68.6"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "SUPERVISORD_EXIT_ON_FATAL=1"
+      - "LC_ALL=en_GB.UTF-8"
+      - "LANG=en_GB.UTF-8"
+      - "LANGUAGE=en_GB.UTF-8"
+      - "SUPERVISORD_LOGLEVEL=WARN"
+      - "STEAMCACHE_DNS_VERSION=1"
+      - "ENABLE_DNSSEC_VALIDATION=false"
+      - "LANCACHE_DNSDOMAIN=cache.lancache.net"
+      - "CACHE_DOMAINS_REPO=https://github.com/uklans/cache-domains.git"
+      - "CACHE_DOMAINS_BRANCH=master"
+
+    expose:
+      - "53/tcp"
+      - "53/udp"
+
+    hostname: "df882d75f09c"
+
+    image: "lancachenet/lancache-dns:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/redvex2460/docker-templates/master/redvex2460/images/lancache.png"
+      net.unraid.docker.managed: "dockerman"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    networks:
+      - "br0"
+
+    working_dir: "/scripts"
+
+version: "3.6"

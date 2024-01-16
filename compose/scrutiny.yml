@@ -1,0 +1,71 @@
+services:
+  scrutiny:
+
+    container_name: "scrutiny"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "SCRUTINY_COLLECTOR=true"
+      - "TZ=America/Los_Angeles"
+      - "PUID=99"
+      - "SCRUTINY_WEB=true"
+      - "PGID=100"
+      - "SCRUTINY_API_ENDPOINT=http://10.0.0.3:8075"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=scrutiny"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+
+    hostname: "487109832d63"
+
+    image: "linuxserver/scrutiny"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 145c819f-ls37 Build-date:- 2022-06-14T10:42:25-05:00"
+      maintainer: "alex-phillips"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/scrutiny-icon.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2022-06-14T10:42:25-05:00"
+      org.opencontainers.image.description: "[Scrutiny](https://github.com/AnalogJ/scrutiny) WebUI for\
+        \ smartd S.M.A.R.T monitoring. Scrutiny is a Hard Drive Health Dashboard & Monitoring solution,\
+        \ merging manufacturer provided S.M.A.R.T metrics with real-world failure rates from Backblaze."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-scrutiny"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "68e6e85a6c006b8d1dc494a390a95b55a4d4ae22"
+      org.opencontainers.image.revision: "68e6e85a6c006b8d1dc494a390a95b55a4d4ae22"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-scrutiny"
+      org.opencontainers.image.title: "Scrutiny"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-scrutiny/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "145c819f-ls37"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8075:8080/tcp"
+
+    privileged: true
+
+    security_opt:
+      - "label=disable"
+
+    volumes:
+      - "/mnt/user/appdata/scrutiny:/config"
+      - "/run/udev:/run/udev:ro"
+
+version: "3.6"

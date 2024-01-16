@@ -1,0 +1,57 @@
+services:
+  gaps:
+
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "./start.sh"
+
+    container_name: "gaps"
+
+    environment:
+      - "HOST_CONTAINERNAME=gaps"
+      - "ENABLE_SSL=false"
+      - "ENABLE_LOGIN=false"
+      - "BASE_URL=/"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=en_US.UTF-8"
+      - "LANGUAGE=en_US:en"
+      - "LC_ALL=en_US.UTF-8"
+      - "JAVA_VERSION=jdk-11.0.14.1+1"
+      - "JAVA_HOME=/opt/java/openjdk"
+      - "JAR_FILE=gaps.jar"
+
+    hostname: "4c8d20b7cea9"
+
+    image: "housewrecker/gaps"
+
+    ipc: "private"
+
+    labels:
+      github: "https://github.com/JasonHHouse/Gaps"
+      maintainer: "jh5975@gmail.com"
+      name: "Jason House"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/JasonHHouse/Gaps/master/images/gaps.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8484]"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8484:8484/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/gaps:/usr/data"
+
+    working_dir: "/usr/app"
+
+version: "3.6"

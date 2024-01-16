@@ -1,0 +1,87 @@
+services:
+  archivebox:
+
+    command:
+      - "server"
+      - "--quick-init"
+      - "0.0.0.0:8000"
+
+    container_name: "archivebox"
+
+    entrypoint:
+      - "dumb-init"
+      - "--"
+      - "/app/bin/docker_entrypoint.sh"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=archivebox"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/venv/bin:/app/.venv/bin:/app/node_modules/.bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.11"
+      - "PYTHON_PIP_VERSION=23.2.1"
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/4cfa4081d27285bda1220a62a5ebf5b4bd749cdb/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=9cc01665956d22b3bf057ae8287b035827bfd895da235bcea200ab3b811790b6"
+      - "LANGUAGE=en_US:en"
+      - "LC_ALL=C.UTF-8"
+      - "DEBIAN_FRONTEND=noninteractive"
+      - "APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1"
+      - "PYTHONIOENCODING=UTF-8"
+      - "PYTHONUNBUFFERED=1"
+      - "PIP_DISABLE_PIP_VERSION_CHECK=1"
+      - "npm_config_loglevel=error"
+      - "NODE_VERSION=20"
+      - "ARCHIVEBOX_USER=archivebox"
+      - "DEFAULT_PUID=911"
+      - "DEFAULT_PGID=911"
+      - "CODE_DIR=/app"
+      - "DATA_DIR=/data"
+      - "GLOBAL_VENV=/venv"
+      - "PLAYWRIGHT_BROWSERS_PATH=/browsers"
+      - "APP_VENV=/app/.venv"
+      - "NODE_MODULES=/app/node_modules"
+      - "IN_DOCKER=True"
+
+    hostname: "efa916a3c99c"
+
+    image: "archivebox/archivebox:latest"
+
+    ipc: "private"
+
+    labels:
+      description: "All-in-one personal internet archiving container"
+      documentation: "https://github.com/ArchiveBox/ArchiveBox/wiki/Docker#docker"
+      homepage: "https://github.com/ArchiveBox/ArchiveBox"
+      maintainer: "Nick Sweeting <dockerfile@archivebox.io>"
+      name: "archivebox"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/A75G/docker-templates/master/templates/icons/archivebox.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8000]/"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:09"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8000:8000/tcp"
+
+    stdin_open: true
+
+    tty: true
+
+    volumes:
+      - "/mnt/user/data/archive/archivebox:/data"
+
+    working_dir: "/data"
+
+version: "3.6"

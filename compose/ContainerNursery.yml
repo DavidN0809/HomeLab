@@ -1,0 +1,38 @@
+services:
+  ContainerNursery:
+    command:
+      - "node"
+      - "build/index.js"
+    container_name: "ContainerNursery"
+    entrypoint:
+      - "docker-entrypoint.sh"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=ContainerNursery"
+      - "CN_LOG_LEVEL=info"
+      - "CN_LOG_JSON=false"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NODE_VERSION=17.9.1"
+      - "YARN_VERSION=1.22.19"
+    expose:
+      - "80/tcp"
+    hostname: "a4517f520fda"
+    image: "ghcr.io/itsecholot/containernursery:latest"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/ItsEcholot/ContainerNursery/main/logo512.png"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:10"
+    network_mode: "bridge"
+    volumes:
+      - "/mnt/user/appdata/ContainerNursery/config:/usr/src/app/config"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    working_dir: "/usr/src/app"
+version: "3.6"

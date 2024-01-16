@@ -1,0 +1,84 @@
+services:
+  TabbyML-CUDA:
+
+    command:
+      - "serve"
+      - "--model"
+      - "TabbyML/DeepseekCoder-1.3B"
+      - "--device"
+      - "cuda"
+
+    container_name: "TabbyML-CUDA"
+
+    entrypoint:
+      - "/opt/tabby/bin/tabby"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=TabbyML-CUDA"
+      - "PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NVARCH=x86_64"
+      - "NVIDIA_REQUIRE_CUDA=cuda>=11.7 brand=tesla,driver>=470,driver<471 brand=unknown,driver>=470,driver<471\
+        \ brand=nvidia,driver>=470,driver<471 brand=nvidiartx,driver>=470,driver<471 brand=geforce,driver>=470,driver<471\
+        \ brand=geforcertx,driver>=470,driver<471 brand=quadro,driver>=470,driver<471 brand=quadrortx,driver>=470,driver<471\
+        \ brand=titan,driver>=470,driver<471 brand=titanrtx,driver>=470,driver<471"
+      - "NV_CUDA_CUDART_VERSION=11.7.99-1"
+      - "NV_CUDA_COMPAT_PACKAGE=cuda-compat-11-7"
+      - "CUDA_VERSION=11.7.1"
+      - "LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64"
+      - "NVIDIA_VISIBLE_DEVICES=all"
+      - "NVIDIA_DRIVER_CAPABILITIES=compute,utility"
+      - "NV_CUDA_LIB_VERSION=11.7.1-1"
+      - "NV_NVTX_VERSION=11.7.91-1"
+      - "NV_LIBNPP_VERSION=11.7.4.75-1"
+      - "NV_LIBNPP_PACKAGE=libnpp-11-7=11.7.4.75-1"
+      - "NV_LIBCUSPARSE_VERSION=11.7.4.91-1"
+      - "NV_LIBCUBLAS_PACKAGE_NAME=libcublas-11-7"
+      - "NV_LIBCUBLAS_VERSION=11.10.3.66-1"
+      - "NV_LIBCUBLAS_PACKAGE=libcublas-11-7=11.10.3.66-1"
+      - "NV_LIBNCCL_PACKAGE_NAME=libnccl2"
+      - "NV_LIBNCCL_PACKAGE_VERSION=2.13.4-1"
+      - "NCCL_VERSION=2.13.4-1"
+      - "NV_LIBNCCL_PACKAGE=libnccl2=2.13.4-1+cuda11.7"
+      - "NVIDIA_PRODUCT_NAME=CUDA"
+      - "TABBY_ROOT=/data"
+
+    hostname: "b74aa6430950"
+
+    image: "tabbyml/tabby"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "NVIDIA CORPORATION <cudatools@nvidia.com>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/quimnut/unraid-docker-templates/master/quimnut/tabby.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8945]/"
+      org.opencontainers.image.created: "2023-12-15T05:49:40.247Z"
+      org.opencontainers.image.description: "Self-hosted AI coding assistant"
+      org.opencontainers.image.licenses: "NOASSERTION"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.revision: "c3db6d829f3125db8c49552c0425dde174bc6649"
+      org.opencontainers.image.source: "https://github.com/TabbyML/tabby"
+      org.opencontainers.image.title: "tabby"
+      org.opencontainers.image.url: "https://github.com/TabbyML/tabby"
+      org.opencontainers.image.version: "0.7.0"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8946:8080/tcp"
+      - "8945:8945/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/TabbyML:/data"
+
+version: "3.6"

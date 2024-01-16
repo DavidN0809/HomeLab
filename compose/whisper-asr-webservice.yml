@@ -1,0 +1,63 @@
+services:
+  whisper-asr-webservice:
+
+    container_name: "whisper-asr-webservice"
+
+    entrypoint:
+      - "gunicorn"
+      - "--bind"
+      - "0.0.0.0:9000"
+      - "--workers"
+      - "1"
+      - "--timeout"
+      - "0"
+      - "app.webservice:app"
+      - "-k"
+      - "uvicorn.workers.UvicornWorker"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=whisper-asr-webservice"
+      - "ASR_MODEL=medium.en"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/app/.venv/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.10.13"
+      - "PYTHON_PIP_VERSION=23.0.1"
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/c6add47b0abf67511cdfb4734771cbab403af062/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=22b849a10f86f5ddf7ce148ca2a31214504ee6c83ef626840fde6e5dcd809d11"
+      - "POETRY_VENV=/app/.venv"
+
+    hostname: "80f07d53997e"
+
+    image: "onerahmet/openai-whisper-asr-webservice"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/taha-yassine/unraid-templates/main/whisper-asr-webservice/logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:9000]"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:25"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9000:9000/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/whisper-asr:/root/.cache/whisper"
+
+    working_dir: "/app"
+
+version: "3.6"

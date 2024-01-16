@@ -1,0 +1,42 @@
+services:
+  checkrr:
+    container_name: "checkrr"
+    entrypoint:
+      - "/checkrr"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=checkrr"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "22e0f28f4d8a"
+    image: "aetaric/checkrr:latest"
+    ipc: "private"
+    labels:
+      maintainer: "aetaric@gmail.com"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/MountainGod2/unraid-templates/main/checkrr/magnify-scan.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8585]"
+      org.opencontainers.image.created: "2023-12-12T07:28:28Z"
+      org.opencontainers.image.description: "checkrr"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "5b141e66750e9d2aad55b9855c545a7256ea2ed4"
+      org.opencontainers.image.source: "https://github.com/aetaric/checkrr"
+      org.opencontainers.image.title: "checkrr"
+      org.opencontainers.image.url: "https://github.com/aetaric/checkrr"
+      org.opencontainers.image.version: "3.2.2"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "bridge"
+    ports:
+      - "8585:8585/tcp"
+    volumes:
+      - "/mnt/user/appdata/checkrr/config/checkrr.db:/checkrr.db"
+      - "/mnt/user/appdata/checkrr/config/checkrr.yaml:/etc/checkrr.yaml"
+      - "/mnt/user/data:/media"
+    working_dir: "/"
+
+version: "3.6"

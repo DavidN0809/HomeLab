@@ -1,0 +1,75 @@
+services:
+  TubeArchivist-ES:
+
+    command:
+      - "eswrapper"
+
+    container_name: "TubeArchivist-ES"
+
+    entrypoint:
+      - "/bin/tini"
+      - "--"
+      - "/usr/local/bin/docker-entrypoint.sh"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_HOSTNAME=Tower"
+      - "xpack.security.enabled=true"
+      - "path.repo=/usr/share/elasticsearch/data/snapshot"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=TubeArchivist-ES"
+      - "ELASTIC_PASSWORD=verysecret"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+      - "PATH=/usr/share/elasticsearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "ELASTIC_CONTAINER=true"
+
+    hostname: "e0196d5938e7"
+
+    image: "bbilly1/tubearchivist-es:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://i.imgur.com/ftggG6O.jpg"
+      net.unraid.docker.managed: "dockerman"
+      org.label-schema.build-date: "2023-11-04T10:04:57.184859352Z"
+      org.label-schema.license: "Elastic-License-2.0"
+      org.label-schema.name: "Elasticsearch"
+      org.label-schema.schema-version: "1.0"
+      org.label-schema.url: "https://www.elastic.co/products/elasticsearch"
+      org.label-schema.usage: "https://www.elastic.co/guide/en/elasticsearch/reference/index.html"
+      org.label-schema.vcs-ref: "d9ec3fa628c7b0ba3d25692e277ba26814820b20"
+      org.label-schema.vcs-url: "https://github.com/elastic/elasticsearch"
+      org.label-schema.vendor: "Elastic"
+      org.label-schema.version: "8.11.0"
+      org.opencontainers.image.created: "2023-11-04T10:04:57.184859352Z"
+      org.opencontainers.image.documentation: "https://www.elastic.co/guide/en/elasticsearch/reference/index.html"
+      org.opencontainers.image.licenses: "Elastic-License-2.0"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.revision: "d9ec3fa628c7b0ba3d25692e277ba26814820b20"
+      org.opencontainers.image.source: "https://github.com/elastic/elasticsearch"
+      org.opencontainers.image.title: "Elasticsearch"
+      org.opencontainers.image.url: "https://www.elastic.co/products/elasticsearch"
+      org.opencontainers.image.vendor: "Elastic"
+      org.opencontainers.image.version: "8.11.0"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9200:9200/tcp"
+
+    user: "1000:0"
+
+    volumes:
+      - "/mnt/user/appdata/TubeArchivist/es:/usr/share/elasticsearch/data"
+
+    working_dir: "/usr/share/elasticsearch"
+
+version: "3.6"

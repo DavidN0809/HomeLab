@@ -1,0 +1,32 @@
+services:
+  github-backup:
+    command:
+      - "./backup.sh"
+    container_name: "github-backup"
+    environment:
+      - "SCHEDULE=3600"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=github-backup"
+      - "TOKEN=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"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/home/docker"
+    hostname: "8a24778118bd"
+    image: "lnxd/github-backup"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/lnxd/docker-github-backup/master/github-backup-logo.png"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:0a"
+    network_mode: "bridge"
+    user: "99:98"
+    volumes:
+      - "/mnt/user/cloud/github:/home/docker/backups"
+    working_dir: "/home/docker/github-backup"
+version: "3.6"

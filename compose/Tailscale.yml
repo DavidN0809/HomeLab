@@ -1,0 +1,36 @@
+services:
+  Tailscale:
+    container_name: "Tailscale"
+    entrypoint:
+      - "/app/docker-entrypoint.sh"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Tailscale"
+      - "UP_FLAGS=--advertise-routes=192.168.68.0/24"
+      - "ENABLE_DOWNLOADS=false"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "unraid"
+    image: "deasmi/unraid-tailscale:latest"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/deasmi/unraid-tailscale/master/logo.png"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "host"
+    privileged: true
+    security_opt:
+      - "label=disable"
+    volumes:
+      - "/mnt/user/appdata/tailscale:/state"
+      - "982faa316d8529c2c49f28fe1059769073d9185d9facb4cc12b8fa1d991dcacf::/downloads:rw"
+    working_dir: "/app"
+version: "3.6"
+volumes:
+  982faa316d8529c2c49f28fe1059769073d9185d9facb4cc12b8fa1d991dcacf:
+    external: true

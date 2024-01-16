@@ -1,0 +1,69 @@
+services:
+  Cleanarr:
+
+    command:
+      - "/start.sh"
+
+    container_name: "Cleanarr"
+
+    entrypoint:
+      - "/entrypoint.sh"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Cleanarr"
+      - "PLEX_BASE_URL=http://192.168.68.133:32400"
+      - "PLEX_TOKEN=DTw4THUf35ns6Tneyy8W"
+      - "LIBRARY_NAMES=Movies"
+      - "BYPASS_SSL_VERIFY=0"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
+      - "PYTHON_VERSION=3.7.16"
+      - "PYTHON_PIP_VERSION=22.0.4"
+      - "PYTHON_SETUPTOOLS_VERSION=57.5.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/d5cb0afaf23b8520f1bbcfed521017b4a95f5c01/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=394be00f13fa1b9aaa47e911bdb59a09c3b2986472130f30aa0bfaf7f3980637"
+      - "UWSGI_INI=/app/uwsgi.ini"
+      - "UWSGI_CHEAPER=2"
+      - "UWSGI_PROCESSES=16"
+      - "NGINX_MAX_UPLOAD=0"
+      - "NGINX_WORKER_PROCESSES=1"
+      - "LISTEN_PORT=80"
+      - "STATIC_URL=/static"
+      - "STATIC_PATH=/app/static"
+      - "STATIC_INDEX=1"
+      - "PYTHONPATH=/app"
+      - "CONFIG_DIR=/config"
+
+    hostname: "5e2d96d49254"
+
+    image: "selexin/cleanarr:v2.2.0"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "Sebastian Ramirez <tiangolo@gmail.com>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/Alphacosmos/unraid-templetes/main/Images/plex-library-cleaner.ico"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]/"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "5000:80/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/plex-library-cleaner:/config"
+
+    working_dir: "/app"
+
+version: "3.6"

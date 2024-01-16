@@ -1,0 +1,39 @@
+services:
+  FileBrowser:
+    command:
+      - "-d"
+      - "/db/database.db"
+    container_name: "FileBrowser"
+    entrypoint:
+      - "/filebrowser"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=FileBrowser"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "Tower"
+    image: "filebrowser/filebrowser"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://github.com/maschhoff/docker/raw/master/filebrowser/35781395.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:802]/files/"
+      org.opencontainers.image.created: "2024-01-02T14:32:12Z"
+      org.opencontainers.image.name: "filebrowser"
+      org.opencontainers.image.revision: "04e03a83b4db4a9e8bda5ae47b203bd785f93ca4"
+      org.opencontainers.image.source: "https://github.com/filebrowser/filebrowser"
+      org.opencontainers.image.version: "2.27.0"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "host"
+    ports:
+      - "802:80/tcp"
+    volumes:
+      - "/mnt/user/appdata/filebrowser/.filebrowser.json:/.filebrowser.json"
+      - "/mnt/user/appdata/filebrowser:/db"
+      - "/mnt/user:/srv"
+version: "3.6"

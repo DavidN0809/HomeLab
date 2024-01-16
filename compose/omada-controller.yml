@@ -1,0 +1,79 @@
+services:
+  omada-controller:
+
+    command:
+      - "/usr/bin/java"
+      - "-server"
+      - "-Xms128m"
+      - "-Xmx1024m"
+      - "-XX:MaxHeapFreeRatio=60"
+      - "-XX:MinHeapFreeRatio=30"
+      - "-XX:+HeapDumpOnOutOfMemoryError"
+      - "-XX:HeapDumpPath=/opt/tplink/EAPController/logs/java_heapdump.hprof"
+      - "-Djava.awt.headless=true"
+      - "--add-opens"
+      - "java.base/java.util=ALL-UNNAMED"
+      - "-cp"
+      - "/opt/tplink/EAPController/lib/*::/opt/tplink/EAPController/properties:"
+      - "com.tplink.smb.omada.starter.OmadaLinuxMain"
+
+    container_name: "omada-controller"
+
+    entrypoint:
+      - "/entrypoint.sh"
+
+    environment:
+      - "HOST_CONTAINERNAME=omada-controller"
+      - "MANAGE_HTTPS_PORT=18043"
+      - "MANAGE_HTTP_PORT=18088"
+      - "PORTAL_HTTPS_PORT=18843"
+      - "PORTAL_HTTP_PORT=18088"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    expose:
+      - "29810/udp"
+      - "29811/tcp"
+      - "29812/tcp"
+      - "29813/tcp"
+      - "29814/tcp"
+      - "8043/tcp"
+      - "8088/tcp"
+      - "8843/tcp"
+
+    hostname: "Tower"
+
+    image: "mbentley/omada-controller"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "Matt Bentley <mbentley@mbentley.net>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/benhedrington/hedrington-unraid-docker-templates/main/hedrington-unraid-docker-templates/omada-controller.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "https://[IP]:[PORT:18043]/login"
+      org.opencontainers.image.source: "https://github.com/mbentley/docker-omada-controller"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "host"
+
+    ulimits:
+      - Hard: 8192
+        Name: "nofile"
+        Soft: 4096
+
+    volumes:
+      - "/mnt/user/appdata/omada/docker-settings/omada-controller/data:/opt/tplink/EAPController/data"
+      - "/mnt/user/appdata/omada/docker-settings/omada-controller/logs:/opt/tplink/EAPController/logs"
+      - "/mnt/user/appdata/omada/docker-settings/omada-controller/work:/opt/tplink/EAPController/work"
+
+    working_dir: "/opt/tplink/EAPController/lib"
+
+version: "3.6"

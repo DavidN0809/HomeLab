@@ -1,0 +1,72 @@
+services:
+  rdt-client:
+
+    container_name: "rdt-client"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=rdt-client"
+      - "PUID=99"
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/share/dotnet"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "TARGETPLATFORM=linux/amd64"
+      - "BUILDPLATFORM=linux/amd64"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "RDTCLIENT_BRANCH=main"
+
+    hostname: "82b487f1f1a8"
+
+    image: "rogerfar/rdtclient:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io extended version:-  Build-date:- "
+      maintainer: "ravensorb"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/fizzyfrys/unraid-templates/main/icons/premrealldebrid.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:6500]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-11T01:13:17.421Z"
+      org.opencontainers.image.description: "Real-Debrid Client Proxy"
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-baseimage-alpine"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.ref.name: "7baf77eb3a70413d3d08398ae85433f0656148bf"
+      org.opencontainers.image.revision: "c95f0171f72099f53a47b8643ddd0ec38becee07"
+      org.opencontainers.image.source: "https://github.com/rogerfar/rdt-client"
+      org.opencontainers.image.title: "rdt-client"
+      org.opencontainers.image.url: "https://github.com/rogerfar/rdt-client"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "2.0.58"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "6500:6500/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/rdt-client/db:/data/db"
+      - "/mnt/user/data:/data"
+
+    working_dir: "/app"
+
+version: "3.6"

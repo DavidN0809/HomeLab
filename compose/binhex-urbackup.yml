@@ -1,0 +1,59 @@
+services:
+  binhex-urbackup:
+
+    command:
+      - "/bin/bash"
+      - "/usr/local/bin/init.sh"
+
+    container_name: "binhex-urbackup"
+
+    entrypoint:
+      - "/usr/bin/dumb-init"
+      - "--"
+
+    environment:
+      - "HOST_CONTAINERNAME=binhex-urbackup"
+      - "UMASK=000"
+      - "PUID=99"
+      - "PGID=100"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/home/nobody"
+      - "TERM=xterm"
+      - "LANG=en_GB.UTF-8"
+
+    expose:
+      - "55413/tcp"
+      - "55414/tcp"
+      - "55415/tcp"
+
+    hostname: "Tower"
+
+    image: "binhex/arch-urbackup"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/urbackup-icon.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:55414]/"
+      org.opencontainers.image.authors: "= binhex"
+      org.opencontainers.image.source: "= https://github.com/binhex/arch-urbackup"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "host"
+
+    volumes:
+      - "/mnt/user/Backup/PCs:/media"
+      - "/mnt/user/appdata/binhex-urbackup:/config"
+
+    working_dir: "/"
+
+version: "3.6"

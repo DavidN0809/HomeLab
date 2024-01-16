@@ -1,0 +1,88 @@
+networks:
+  wg0:
+    external: true
+    name: "wg0"
+
+services:
+  qbittorrent:
+
+    container_name: "qbittorrent"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=qbittorrent"
+      - "WEBUI_PORT=8080"
+      - "PUID=99"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/config"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config"
+      - "XDG_DATA_HOME=/config"
+
+    hostname: "1a22c00a7247"
+
+    image: "lscr.io/linuxserver/qbittorrent"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 4.6.2-r0-ls303 Build-date:- 2023-12-25T20:24:42+00:00"
+      maintainer: "thespad"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/qbittorrent-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2023-12-25T20:24:42+00:00"
+      org.opencontainers.image.description: "The [Qbittorrent](https://www.qbittorrent.org/) project aims\
+        \ to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit\
+        \ and libtorrent-rasterbar library."
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-qbittorrent"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "2bd9a6634b92f70b99b0aa7aafd1251b093dd667"
+      org.opencontainers.image.revision: "2bd9a6634b92f70b99b0aa7aafd1251b093dd667"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-qbittorrent"
+      org.opencontainers.image.title: "Qbittorrent"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-qbittorrent/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "4.6.2-r0-ls303"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    networks:
+      - "wg0"
+
+    ports:
+      - "33548:33548/tcp"
+      - "33548:33548/udp"
+      - "56211:6881/tcp"
+      - "56211:6881/udp"
+      - "8080:8080/tcp"
+
+    volumes:
+      - "/mnt/user/Games/gamevault/repacks:/games"
+      - "/mnt/user/appdata/qbittorrent:/config"
+      - "/mnt/user/data/software:/software"
+      - "/mnt/user/data:/data"
+      - "/mnt/user/isos:/isos"
+      - "/mnt/user/temp/qbittorrent:/temp"
+
+    working_dir: "/"
+
+version: "3.6"

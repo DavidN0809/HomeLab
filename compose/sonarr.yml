@@ -1,0 +1,77 @@
+services:
+  sonarr:
+
+    container_name: "sonarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=sonarr"
+      - "PUID=99"
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+      - "SONARR_BRANCH=develop"
+
+    hostname: "ba81f246c558"
+
+    image: "lscr.io/linuxserver/sonarr:develop"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 4.0.0.752-ls25 Build-date:- 2024-01-06T01:36:18+00:00"
+      maintainer: "thespad"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8989]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-06T01:36:18+00:00"
+      org.opencontainers.image.description: "[Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR\
+        \ for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your\
+        \ favorite shows and will grab, sort and rename them. It can also be configured to automatically\
+        \ upgrade the quality of files already downloaded when a better quality format becomes available.\
+        \  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-sonarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "408e3510ac65675f7be558123cebcdc20b7d592f"
+      org.opencontainers.image.revision: "408e3510ac65675f7be558123cebcdc20b7d592f"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-sonarr"
+      org.opencontainers.image.title: "Sonarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-sonarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "4.0.0.752-ls25"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:0d"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8989:8989/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/sonarr:/config"
+      - "/mnt/user/data:/data"
+
+    working_dir: "/"
+
+version: "3.6"

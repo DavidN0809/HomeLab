@@ -1,0 +1,38 @@
+services:
+  ollama-webui:
+    command:
+      - "npm"
+      - "run"
+      - "start"
+    container_name: "ollama-webui"
+    entrypoint:
+      - "docker-entrypoint.sh"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=ollama-webui"
+      - "OLLAMA_API_BASE_URL=http://192.168.68.133:11434"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NODE_VERSION=21.1.0"
+      - "YARN_VERSION=1.22.19"
+      - "ENV=prod"
+      - "PUBLIC_API_BASE_URL="
+    hostname: "41d01ffae7ad"
+    image: "ollamawebui/ollama-webui:latest"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://github.com/jmorganca/ollama/assets/3325447/56ea1849-1284-4645-8970-956de6e51c3c?raw=1"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]/"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:06"
+    network_mode: "bridge"
+    ports:
+      - "3006:8080/tcp"
+    working_dir: "/app"
+version: "3.6"

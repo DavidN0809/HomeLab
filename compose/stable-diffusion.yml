@@ -1,0 +1,88 @@
+services:
+  stable-diffusion:
+
+    container_name: "stable-diffusion"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=stable-diffusion"
+      - "WEBUI_VERSION=04"
+      - "NVIDIA_VISIBLE_DEVICES=all"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "HOME=/home/abc"
+      - "LANGUAGE=en_US.UTF-8"
+      - "LANG=en_US.UTF-8"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "DEBIAN_FRONTEND=noninteractive"
+      - "BASE_DIR=/config"
+      - "SD_INSTALL_DIR=/opt/sd-install"
+      - "SD01_DIR=/config/01-easy-diffusion"
+      - "SD02_DIR=/config/02-sd-webui"
+      - "SD03_DIR=/config/03-invokeai"
+      - "SD04_DIR=/config/04-SD-Next"
+      - "SD05_DIR=/config/05-comfy-ui"
+      - "SD06_DIR=/config/06-Fooocus"
+      - "SD07_DIR=/config/07-StableSwarm"
+      - "SD08_DIR=/config/08-voltaML"
+      - "SD20_DIR=/config/20-kubin"
+      - "SD50_DIR=/config/50-lama-cleaner"
+      - "SD51_DIR=/config/51-facefusion"
+      - "SD70_DIR=/config/70-kohya"
+      - "XDG_CACHE_HOME=/config/temp"
+      - "XDG_CONFIG_HOME=/home/abc"
+
+    hostname: "f2774ab8eb86"
+
+    image: "holaflenain/stable-diffusion:latest"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 8c5c2abc-ls91 Build-date:- 2023-12-19T23:25:45+00:00"
+      maintainer: "TheLamer"
+      net.unraid.docker.icon: "https://github.com/superboki/ressources/blob/6e39a0d104bf2c2de286743bf60b46134c3f043d/stable-diffusion-advanced/stable-diffusion-advanced.png?raw=true"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:9000]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2023-12-30T13:24:57.438Z"
+      org.opencontainers.image.description: "Easy Image Generation"
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-baseimage-ubuntu"
+      org.opencontainers.image.licenses: "GPL-3.0"
+      org.opencontainers.image.ref.name: "697f869c4023afd1af87c1b94d0dadb4f674c5ed"
+      org.opencontainers.image.revision: "80b7dec09db2fe7bd1d7707572bf53be7f3a9097"
+      org.opencontainers.image.source: "https://github.com/grokuku/stable-diffusion"
+      org.opencontainers.image.title: "stable-diffusion"
+      org.opencontainers.image.url: "https://github.com/grokuku/stable-diffusion"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "latest"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:2a"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9000:9000/tcp"
+
+    volumes:
+      - "/mnt/cache/appdata/stable-diffusion/cache:/cache"
+      - "/mnt/cache/appdata/stable-diffusion/outputs:/outputs"
+      - "/mnt/cache/appdata/stable-diffusion:/opt/stable-diffusion"
+
+    working_dir: "/"
+
+version: "3.6"

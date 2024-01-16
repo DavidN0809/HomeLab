@@ -1,0 +1,75 @@
+services:
+  prowlarr:
+
+    container_name: "prowlarr"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "HOST_CONTAINERNAME=prowlarr"
+      - "PUID=99"
+      - "PGID=100"
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/root"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+      - "XDG_CONFIG_HOME=/config/xdg"
+
+    hostname: "01f912f874ef"
+
+    image: "lscr.io/linuxserver/prowlarr"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- 1.11.4.4173-ls46 Build-date:- 2024-01-10T03:45:56+00:00"
+      maintainer: "Roxedus,thespad"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:9696]/system/status"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-10T03:45:56+00:00"
+      org.opencontainers.image.description: "[Prowlarr](https://github.com/Prowlarr/Prowlarr) is a indexer\
+        \ manager/proxy built on the popular arr .net/reactjs base stack to integrate with your various\
+        \ PVR apps. Prowlarr supports both Torrent Trackers and Usenet Indexers. It integrates seamlessly\
+        \ with Sonarr, Radarr, Lidarr, and Readarr offering complete management of your indexers with\
+        \ no per app Indexer setup required (we do it all).  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-prowlarr"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "232fbefe5cac9a012fadd0a56730e87faf197a6d"
+      org.opencontainers.image.revision: "232fbefe5cac9a012fadd0a56730e87faf197a6d"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-prowlarr"
+      org.opencontainers.image.title: "Prowlarr"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-prowlarr/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "1.11.4.4173-ls46"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:0f"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9696:9696/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/prowlarr:/config"
+
+    working_dir: "/"
+
+version: "3.6"
