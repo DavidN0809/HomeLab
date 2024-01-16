@@ -1,41 +1,82 @@
-- name: Install Docker and Setup Docker Swarm
-  hosts: master
+---
+- name: Configure Cluster Hosts and Install Docker CE
+  hosts: all
   become: yes
   remote_user: ansibleuser
 
   tasks:
-    - name: Install prerequisites for Docker
-      apt: 
+    - name: Update /etc/hosts file
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      loop:
+        - "192.168.68.80 manager-1"
+        - "192.168.68.82 manager-2"
+        - "192.168.68.82 manager-3"
+
+    - name: Update system packages
+      apt:
+        update_cache: yes
+
+    - name: Install required packages for Docker
+      apt:
         name: "{{ packages }}"
+        state: present
       vars:
         packages:
-        - uidmap
-      when: ansible_os_family == "Debian"
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
 
-    - name: Install Docker rootless prerequisites
-      shell: |
-        curl -fsSL https://get.docker.com/rootless -o docker-rootless.sh
-        sh ./docker-rootless.sh
-      args:
-        creates: /usr/bin/dockerd-rootless-setuptool.sh
+    - name: Add Docker GPG key
+      apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
 
-    - name: Install Docker
-      shell: |
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sh ./get-docker.sh
-      args:
-        creates: /usr/bin/docker
+    - name: Add Docker Repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        state: present
 
-    - name: Initialize Docker Swarm on First Node
-      command: docker swarm init --advertise-addr {{ ansible_default_ipv4.address }}
-      when: inventory_hostname == groups['all'][0]
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: yes
+
+    - name: Ensure Docker service is enabled and running
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add current user to Docker group
+      user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: yes
+
+- name: Initialize Docker Swarm
+  hosts: manager
+  become: yes
+  remote_user: ansibleuser
+
+  tasks:
+    - name: Initialize Docker Swarm on Manager Node
+      command: docker swarm init --advertise-addr 192.168.68.81
       register: swarm_init
 
     - name: Set Swarm Manager Token Fact
       set_fact:
-        swarm_manager_token: "{{ swarm_init.stdout.split(' ')[-1] }}"
+        swarm_manager_token: "{{ swarm_init.stdout | regex_search('(SWMTKN[^\\n]+)', '\\1') }}"
       when: swarm_init is changed
 
-    - name: Join Swarm as Manager
-      command: docker swarm join --token {{ swarm_manager_token }} {{ hostvars[groups['all'][0]]['ansible_default_ipv4']['address'] }}:2377
-      when: inventory_hostname != groups['all'][0]
+- name: Join Docker Swarm as Worker Nodes
+  hosts: workers
+  become: yes
+  remote_user: ansibleuser
+
+  tasks:
+    - name: Join Swarm as Worker
+      command: docker swarm join --token {{ hostvars['manager']['swarm_manager_token'] }} 192.168.68.81:2377
