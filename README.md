@@ -7,7 +7,7 @@ Scripts for proxmox and VMs
 | glusterfs.sh    | Sets up glusterfs for 3 ubuntu vms, docker swarm     |
 | zfs_snapshot.sh | daily snapshot of proxmox install pool               |
 
-## Scripts
+## Unraid Scripts
 These scripts are bash scripts I use on Unraid. 
 | Script        | Description                                          |
 | ------------- | ---------------------------------------------------- |
