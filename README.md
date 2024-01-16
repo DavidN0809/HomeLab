@@ -25,11 +25,14 @@ The following Ansible playbooks are available:
 - create_user.yml: Creates a user and ssh access on the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass --ask-become-pass`  
 - docker.yml: installs docker, adds to /etc/hosts, creates docker swarm
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/docker.yml --ask-pass --ask-become-pass` 
+  
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/docker.yml` 
 - install_curl.yml: installs curl
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/install_curl.yml --ask-pass --ask-become-pass` 
+  
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/install_curl.yml` 
 - setup-cephfs.yml: installs ceph client and connects to cluster
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/setup-cephfs.yml --ask-pass --ask-become-pass` 
+  
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/setup-cephfs.yml` 
 - sync_time_zones.yml: Synchronizes the timezone across the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
 -update_containers.yml: updates all contaienrs
