@@ -1,0 +1,51 @@
+---
+- name: Mount NFS Shares under /mnt/unraid
+  hosts: your_target_hosts
+  become: true
+  tasks:
+    - name: Ensure NFS packages are installed
+      ansible.builtin.package:
+        name: nfs-common
+        state: present
+
+    - name: Create mount parent directory
+      ansible.builtin.file:
+        path: "/mnt/unraid"
+        state: directory
+
+    - name: Create mount subdirectories under /mnt/unraid
+      ansible.builtin.file:
+        path: "/mnt/unraid/{{ item }}"
+        state: directory
+      loop:
+        - '3D_Printing'
+        - 'Backup'
+        - 'appdata'
+        - 'data'
+        - 'cloud'
+        - 'lancache'
+        - 'ML'
+        - 'NVR'
+        - 'Recordings'
+        - 'Servers'
+        - 'temp'
+
+    - name: Mount NFS shares under /mnt/unraid
+      ansible.builtin.mount:
+        path: "/mnt/unraid/{{ item.mount }}"
+        src: "192.168.68.133:/{{ item.source }}"
+        fstype: nfs
+        opts: "defaults,guest"
+        state: mounted
+      loop:
+        - { mount: '3D_Printing', source: '3D_Printing' }
+        - { mount: 'Backup', source: 'Backup' }
+        - { mount: 'appdata', source: 'appdata' }
+        - { mount: 'data', source: 'data' }
+        - { mount: 'cloud', source: 'cloud' }
+        - { mount: 'lancache', source: 'lancache' }
+        - { mount: 'ML', source: 'ML' }
+        - { mount: 'NVR', source: 'NVR' }
+        - { mount: 'Recordings', source: 'Recordings' }
+        - { mount: 'Servers', source: 'Servers' }
+        - { mount: 'temp', source: 'temp'
