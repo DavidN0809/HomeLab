@@ -15,23 +15,26 @@ These scripts are bash scripts I use on Unraid.
 | Restart       | Forces a server restart every 24 hours.               |
 | Auto Delete   | Automatically deletes files with "unpack" and "failed" in the filename. |
 
+## preseed
+Preseed is a preseeded ubuntu iso
+
 ## Ansible Playbooks
 
 The following Ansible playbooks are available:
 
-- proxmox_setup.yml: Disables annoying pop up in proxmox.  
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/proxmox_setup.yml`
-  
-- create_user.yml: Creates a user on the target machines.  
+- create_user.yml: Creates a user and ssh access on the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/create_user.yml --ask-pass --ask-become-pass`  
-
-- wol.yml: Enables Wake On LAN (WOL).  
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/wol.yml`
-
-- timezone_sync.yml: Synchronizes the timezone across the target machines.  
+- docker.yml: installs docker, adds to /etc/hosts, creates docker swarm
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/docker.yml --ask-pass --ask-become-pass` 
+- install_curl.yml: installs curl
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/install_curl.yml --ask-pass --ask-become-pass` 
+- setup-cephfs.yml: installs ceph client and connects to cluster
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/setup-cephfs.yml --ask-pass --ask-become-pass` 
+- sync_time_zones.yml: Synchronizes the timezone across the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
-
-- apt.yml: Manages packages using APT package manager.  
+-update_containers.yml: updates all contaienrs
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/update_containers.yml`
+- update_packages.yml: Manages packages using APT package manager.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`  
 
 ## Putty
