@@ -1,4 +1,9 @@
 # HomeLab
+## Scripts
+iommu.sh - installs deps and enables iommu on the host
+
+
+dmesg | grep -e DMAR -e IOMMU
 
 ## Proxmox
 Scripts for proxmox and VMs
