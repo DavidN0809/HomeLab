@@ -30,6 +30,24 @@ echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
 
 # Update initramfs
 update-initramfs -u -k all
+# Update boot configuration
+proxmox-boot-tool refresh
+
+# Configure modules for VFIO
+echo -e "vfio\nvfio_iommu_type1\nvfio_pci\nvfio_virqfd" >> /etc/modules
+echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
+
+# Capture the NVIDIA device ID
+nvidia_ids=$(lspci | grep -i nvidia | cut -d ' ' -f 1)
+
+# Loop through each NVIDIA device ID and append to vfio.conf
+for id in $nvidia_ids; do
+    lspci_n_ids=$(lspci -n -s $id | cut -d ' ' -f 3)
+    echo "options vfio-pci ids=$lspci_n_ids disable_vga=1" >> /etc/modprobe.d/vfio.conf
+done
+
+# Update initramfs
+update-initramfs -u -k all
 
 # Reboot the system
 echo "System will reboot in 5 seconds..."
