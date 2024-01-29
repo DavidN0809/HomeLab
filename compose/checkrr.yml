@@ -9,7 +9,7 @@ services:
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=checkrr"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    hostname: "22e0f28f4d8a"
+    hostname: "9f090bdf84b0"
     image: "aetaric/checkrr:latest"
     ipc: "private"
     labels:
@@ -17,14 +17,14 @@ services:
       net.unraid.docker.icon: "https://raw.githubusercontent.com/MountainGod2/unraid-templates/main/checkrr/magnify-scan.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:8585]"
-      org.opencontainers.image.created: "2023-12-12T07:28:28Z"
+      org.opencontainers.image.created: "2024-01-27T17:41:33Z"
       org.opencontainers.image.description: "checkrr"
       org.opencontainers.image.licenses: "MIT"
-      org.opencontainers.image.revision: "5b141e66750e9d2aad55b9855c545a7256ea2ed4"
+      org.opencontainers.image.revision: "34321931e823f93f4f640b6447aa94fb9306b2ad"
       org.opencontainers.image.source: "https://github.com/aetaric/checkrr"
       org.opencontainers.image.title: "checkrr"
       org.opencontainers.image.url: "https://github.com/aetaric/checkrr"
-      org.opencontainers.image.version: "3.2.2"
+      org.opencontainers.image.version: "3.3.0"
     logging:
       driver: "json-file"
       options:

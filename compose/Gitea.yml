@@ -1,0 +1,61 @@
+services:
+  Gitea:
+
+    command:
+      - "/bin/s6-svscan"
+      - "/etc/s6"
+
+    container_name: "Gitea"
+
+    entrypoint:
+      - "/usr/bin/entrypoint"
+
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Gitea"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "USER=git"
+      - "GITEA_CUSTOM=/data/gitea"
+
+    hostname: "6ee11db8e233"
+
+    image: "gitea/gitea"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "maintainers@gitea.io"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/fanningert/unraid-docker-templates/master/fanningert/icons/gitea.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:3000]"
+      org.opencontainers.image.created: "2024-01-17T02:49:10.805Z"
+      org.opencontainers.image.description: "Git with a cup of tea! Painless self-hosted all-in-one software\
+        \ development service, including Git hosting, code review, team collaboration, package registry\
+        \ and CI/CD"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "f4923854f660c75f75592b9506c0471475ecc7cf"
+      org.opencontainers.image.source: "https://github.com/go-gitea/gitea"
+      org.opencontainers.image.title: "gitea"
+      org.opencontainers.image.url: "https://github.com/go-gitea/gitea"
+      org.opencontainers.image.version: "1"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:0f"
+
+    network_mode: "bridge"
+
+    ports:
+      - "21:22/tcp"
+      - "3034:3000/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/gitea:/data"
+
+version: "3.6"

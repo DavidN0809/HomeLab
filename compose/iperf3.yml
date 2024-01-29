@@ -6,11 +6,12 @@ services:
     entrypoint:
       - "iperf3"
     environment:
+      - "TCP_PORT_5202=5202"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=iperf3"
       - "TCP_PORT_5201=5201"
-      - "TZ=America/Los_Angeles"
-      - "HOST_OS=Unraid"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     expose:
       - "5201/tcp"

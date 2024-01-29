@@ -7,13 +7,13 @@ services:
       - "/init"
 
     environment:
+      - "HOST_CONTAINERNAME=nextcloud"
       - "PUID=99"
       - "PGID=100"
       - "UMASK=022"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
-      - "HOST_CONTAINERNAME=nextcloud"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
       - "HOME=/root"
@@ -25,20 +25,20 @@ services:
       - "LSIO_FIRST_PARTY=true"
       - "LD_PRELOAD=/usr/lib/preloadable_libiconv.so"
 
-    hostname: "d9afbdfb6255"
+    hostname: "a4f70d83712d"
 
     image: "lscr.io/linuxserver/nextcloud:latest"
 
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- 28.0.1-ls296 Build-date:- 2024-01-09T11:55:59+00:00"
+      build_version: "Linuxserver.io version:- 28.0.1-ls298 Build-date:- 2024-01-23T11:51:36+00:00"
       maintainer: "aptalca"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/nextcloud-logo.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "https://[IP]:[PORT:443]"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2024-01-09T11:55:59+00:00"
+      org.opencontainers.image.created: "2024-01-23T11:51:36+00:00"
       org.opencontainers.image.description: "[Nextcloud](https://nextcloud.com/) gives you access to all\
         \ your files wherever you are.    Where are your photos and documents? With Nextcloud you pick\
         \ a server of your choice, at home, in a data center or at a provider. And that is where your\
@@ -47,13 +47,13 @@ services:
         \ data on that FTP drive at the office, a Dropbox or a NAS you have at home.  "
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-nextcloud"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "2d4551b309770bf0165980b99ecd18712df8479d"
-      org.opencontainers.image.revision: "2d4551b309770bf0165980b99ecd18712df8479d"
+      org.opencontainers.image.ref.name: "195b4b9f84f8a032c819998595c4b3ac30e1374b"
+      org.opencontainers.image.revision: "195b4b9f84f8a032c819998595c4b3ac30e1374b"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-nextcloud"
       org.opencontainers.image.title: "Nextcloud"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-nextcloud/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "28.0.1-ls296"
+      org.opencontainers.image.version: "28.0.1-ls298"
 
     logging:
       driver: "json-file"
@@ -61,7 +61,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:27"
+    mac_address: "02:42:ac:11:00:13"
 
     network_mode: "bridge"
 

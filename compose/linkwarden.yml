@@ -1,0 +1,63 @@
+services:
+  linkwarden:
+
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "yarn prisma migrate deploy && yarn start"
+
+    container_name: "linkwarden"
+
+    entrypoint:
+      - "docker-entrypoint.sh"
+
+    environment:
+      - "NEXT_PUBLIC_DISABLE_REGISTRATION=false"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=linkwarden"
+      - "DATABASE_URL=postgresql://linkwarden:linkwarden@postgres15-linkwarden:5532/linkwarden"
+      - "NEXTAUTH_SECRET=linkwarden"
+      - "NEXTAUTH_URL=http://192.168.68.133:3002"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NODE_VERSION=18.18.2"
+      - "YARN_VERSION=1.22.19"
+
+    hostname: "bf85a95dc6ab"
+
+    image: "ghcr.io/linkwarden/linkwarden:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://avatars.githubusercontent.com/u/135248736?s=200&v=4"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:3002]/"
+      org.opencontainers.image.created: "2024-01-17T18:04:37.822Z"
+      org.opencontainers.image.description: "⚡️⚡️⚡️Self-hosted collaborative bookmark manager to collect,\
+        \ organize, and preserve webpages and articles."
+      org.opencontainers.image.licenses: "AGPL-3.0"
+      org.opencontainers.image.revision: "047e156cfbe9a0794287ebac1768e1677470f94c"
+      org.opencontainers.image.source: "https://github.com/linkwarden/linkwarden"
+      org.opencontainers.image.title: "linkwarden"
+      org.opencontainers.image.url: "https://github.com/linkwarden/linkwarden"
+      org.opencontainers.image.version: "v2.4.9"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "3002:3000/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/linkwarden:/volume1/docker/linkwarden/data"
+
+    working_dir: "/data"
+
+version: "3.6"

@@ -11,18 +11,18 @@ services:
 
     environment:
       - "SERVER_NAME=matrix"
-      - "SYNAPSE_CACHE_FACTOR=0.5"
-      - "HOST_CONTAINERNAME=matrix"
-      - "HOST_OS=Unraid"
-      - "HOST_HOSTNAME=Tower"
       - "REPORT_STATS=no"
-      - "MATRIX_UID=99"
       - "MATRIX_GID=100"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=matrix"
+      - "SYNAPSE_CACHE_FACTOR=0.5"
+      - "MATRIX_UID=99"
       - "TZ=America/Los_Angeles"
+      - "HOST_HOSTNAME=Tower"
       - "PATH=/matrix/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "COTURN_ENABLE=true"
 
-    hostname: "40deb59e4c26"
+    hostname: "49f5ab728b13"
 
     image: "avhost/docker-matrix:latest"
 
@@ -43,8 +43,6 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
-
-    mac_address: "02:42:ac:11:00:2b"
 
     network_mode: "bridge"
 

@@ -1,0 +1,53 @@
+networks:
+  br0:
+    external: true
+    name: "br0"
+
+services:
+  unbound:
+    command:
+      - "/unbound.sh"
+    container_name: "unbound"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=unbound"
+      - "TCP_PORT_53=53"
+      - "UDP_PORT_53=53"
+      - "PATH=/opt/unbound/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "NAME=unbound"
+      - "VERSION=1.2"
+      - "SUMMARY= is a validating, recursive, and caching DNS resolver."
+      - "DESCRIPTION= is a validating, recursive, and caching DNS resolver."
+    expose:
+      - "53/tcp"
+      - "53/udp"
+    hostname: "5e89834f8970"
+    image: "kutzilla/unbound:latest"
+    ipc: "private"
+    labels:
+      description: " is a validating, recursive, and caching DNS resolver."
+      io.k8s.description: " is a validating, recursive, and caching DNS resolver."
+      io.k8s.display-name: "Unbound "
+      maintainer: "Matthew Vance"
+      name: "mvance/unbound"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/kutzilla/unraid-templates/master/images/unbound.png"
+      net.unraid.docker.managed: "dockerman"
+      summary: " is a validating, recursive, and caching DNS resolver."
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    networks:
+      - "br0"
+    volumes:
+      - "44d5ddecda1636a179001f0009def189d1a0ccb2142fec5319c8c545e507e204::/opt/unbound/etc/unbound/:rw"
+    working_dir: "/opt/unbound"
+
+version: "3.6"
+
+volumes:
+  44d5ddecda1636a179001f0009def189d1a0ccb2142fec5319c8c545e507e204:
+    external: true

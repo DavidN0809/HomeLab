@@ -14,64 +14,64 @@ services:
 
     environment:
 
-      - "BLACKLIST_USERS="
-
-      - "SSL_BYPASS=True"
-
-      - "SYNC_FROM_PLEX_TO_PLEX =True"
+      - "SYNC_FROM_JELLYFIN_TO_JELLYFIN =True"
 
       - "PLEX_PASSWORD="
 
+      - "JELLYFIN_TOKEN=e7075c6f6ef24ffabff43f6fdfc3ad6e"
+
+      - "SLEEP_DURATION=3600"
+
+      - "WHITELIST_USERS="
+
+      - "LOGFILE=/tmp/log.log"
+
+      - "HOST_CONTAINERNAME=jellyplex-watched"
+
+      - "PLEX_USERNAME="
+
       - "JELLYFIN_BASEURL=http://192.168.68.133:8096"
+
+      - "TZ=America/Los_Angeles"
+
+      - "WHITELIST_LIBRARY="
+
+      - "PLEX_SERVERNAME="
+
+      - "USER_MAPPING={\"blackops010\" : \"admin\", \"reaghan\" : \"reaghan1\", \"luken0306\" : \"luken83\"\
+        }"
+
+      - "SYNC_FROM_PLEX_TO_JELLYFIN =True"
+
+      - "DEBUG=True"
+
+      - "PLEX_TOKEN=cFVjEf3ZE8DY5f68W-kf"
 
       - "HOST_OS=Unraid"
 
       - "LIBRARY_MAPPING={ \"Tv Shows\" : \"Shows\"}"
 
-      - "SYNC_FROM_JELLYFIN_TO_PLEX =True"
-
-      - "PLEX_USERNAME="
+      - "BLACKLIST_USERS="
 
       - "PLEX_BASEURL=http://192.168.68.133:32400"
 
-      - "WHITELIST_LIBRARY_TYPE="
-
-      - "WHITELIST_USERS="
-
-      - "PLEX_TOKEN=cFVjEf3ZE8DY5f68W-kf"
-
       - "HOST_HOSTNAME=Tower"
-
-      - "SLEEP_DURATION=3600"
-
-      - "LOGFILE=/tmp/log.log"
-
-      - "BLACKLIST_LIBRARY="
 
       - "DEBUG_LEVEL=INFO"
 
-      - "SYNC_FROM_PLEX_TO_JELLYFIN =True"
-
-      - "PLEX_SERVERNAME="
-
-      - "JELLYFIN_TOKEN=e7075c6f6ef24ffabff43f6fdfc3ad6e"
+      - "BLACKLIST_LIBRARY="
 
       - "BLACKLIST_LIBRARY_TYPE="
 
-      - "SYNC_FROM_JELLYFIN_TO_JELLYFIN =True"
+      - "WHITELIST_LIBRARY_TYPE="
 
-      - "USER_MAPPING={\"blackops010\" : \"admin\", \"reaghan\" : \"reaghan1\", \"luken0306\" : \"luken83\"\
-        }"
+      - "SYNC_FROM_JELLYFIN_TO_PLEX =True"
 
-      - "WHITELIST_LIBRARY="
+      - "SYNC_FROM_PLEX_TO_PLEX =True"
 
-      - "TZ=America/Los_Angeles"
-
-      - "HOST_CONTAINERNAME=jellyplex-watched"
+      - "SSL_BYPASS=True"
 
       - "DRYRUN=True"
-
-      - "DEBUG=True"
 
       - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
@@ -85,9 +85,9 @@ services:
 
       - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
 
-      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/4cfa4081d27285bda1220a62a5ebf5b4bd749cdb/public/get-pip.py"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/049c52c665e8c5fd1751f942316e0a5c777d304f/public/get-pip.py"
 
-      - "PYTHON_GET_PIP_SHA256=9cc01665956d22b3bf057ae8287b035827bfd895da235bcea200ab3b811790b6"
+      - "PYTHON_GET_PIP_SHA256=7cfd4bdc4d475ea971f1c0710a5953bcc704d171f83c797b9529d9974502fcc6"
 
       - "RUN_ONLY_ONCE=False"
 
@@ -101,7 +101,7 @@ services:
 
       - "SYNC_FROM_JELLYFIN_TO_JELLYFIN=True"
 
-    hostname: "15fd3fbdef87"
+    hostname: "5595a28b023b"
 
     image: "luigi311/jellyplex-watched:latest"
 
@@ -109,10 +109,10 @@ services:
 
     labels:
       net.unraid.docker.managed: "dockerman"
-      org.opencontainers.image.created: "2024-01-06T11:46:18.973Z"
+      org.opencontainers.image.created: "2024-01-26T00:54:57.867Z"
       org.opencontainers.image.description: "Sync watched between jellyfin and plex locally"
       org.opencontainers.image.licenses: "GPL-3.0"
-      org.opencontainers.image.revision: "6ec003f8993dfefebca20824ffb8bf4d1d86a1e6"
+      org.opencontainers.image.revision: "86b30e18873e1a2137e86465c521f416f9991198"
       org.opencontainers.image.source: "https://github.com/luigi311/JellyPlex-Watched"
       org.opencontainers.image.title: "JellyPlex-Watched"
       org.opencontainers.image.url: "https://github.com/luigi311/JellyPlex-Watched"
@@ -124,7 +124,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:03"
+    mac_address: "02:42:ac:11:00:07"
 
     network_mode: "bridge"
 

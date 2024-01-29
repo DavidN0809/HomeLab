@@ -1,0 +1,70 @@
+services:
+  adguardhome-sync:
+
+    container_name: "adguardhome-sync"
+
+    entrypoint:
+      - "/init"
+
+    environment:
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=adguardhome-sync"
+      - "CONFIGFILE=/config/adguardhome-sync.yaml"
+      - "PUID=99"
+      - "PGID=100"
+      - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
+      - "HOME=/config"
+      - "TERM=xterm"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_VERBOSITY=1"
+      - "S6_STAGE2_HOOK=/docker-mods"
+      - "VIRTUAL_ENV=/lsiopy"
+      - "LSIO_FIRST_PARTY=true"
+
+    hostname: "ccc9a223972c"
+
+    image: "lscr.io/linuxserver/adguardhome-sync"
+
+    ipc: "private"
+
+    labels:
+      build_version: "Linuxserver.io version:- v0.6.3-ls88 Build-date:- 2024-01-24T06:34:35+00:00"
+      maintainer: "thespad"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver-ls-logo.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
+      org.opencontainers.image.authors: "linuxserver.io"
+      org.opencontainers.image.created: "2024-01-24T06:34:35+00:00"
+      org.opencontainers.image.description: "[Adguardhome-sync](https://github.com/bakito/adguardhome-sync/)\
+        \ is a tool to synchronize AdGuardHome config to replica instances.  "
+      org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-adguardhome-sync"
+      org.opencontainers.image.licenses: "GPL-3.0-only"
+      org.opencontainers.image.ref.name: "d6aa2aa44a787802d34a11d7f2f4fe138f45ce2e"
+      org.opencontainers.image.revision: "d6aa2aa44a787802d34a11d7f2f4fe138f45ce2e"
+      org.opencontainers.image.source: "https://github.com/linuxserver/docker-adguardhome-sync"
+      org.opencontainers.image.title: "Adguardhome-sync"
+      org.opencontainers.image.url: "https://github.com/linuxserver/docker-adguardhome-sync/packages"
+      org.opencontainers.image.vendor: "linuxserver.io"
+      org.opencontainers.image.version: "v0.6.3-ls88"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "8070:8080/tcp"
+
+    volumes:
+      - "/mnt/user/appdata/adguardhome-sync:/config"
+
+    working_dir: "/"
+
+version: "3.6"

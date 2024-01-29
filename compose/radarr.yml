@@ -25,31 +25,31 @@ services:
       - "LSIO_FIRST_PARTY=true"
       - "XDG_CONFIG_HOME=/config/xdg"
 
-    hostname: "b25846a96aca"
+    hostname: "7453dcb84911"
 
     image: "lscr.io/linuxserver/radarr:develop"
 
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- 5.2.6.8376-ls129 Build-date:- 2023-12-31T16:57:28+00:00"
+      build_version: "Linuxserver.io version:- 5.3.2.8504-ls132 Build-date:- 2024-01-28T16:58:09+00:00"
       maintainer: "Roxedus,thespad"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr-logo.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:7878]/system/status"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2023-12-31T16:57:28+00:00"
+      org.opencontainers.image.created: "2024-01-28T16:58:09+00:00"
       org.opencontainers.image.description: "[Radarr](https://github.com/Radarr/Radarr) - A fork of Sonarr\
         \ to work with movies à la Couchpotato.  "
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-radarr"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "53ba78a732e471d71ed78d1789ad5efecc2b9ff7"
-      org.opencontainers.image.revision: "53ba78a732e471d71ed78d1789ad5efecc2b9ff7"
+      org.opencontainers.image.ref.name: "9984cebf1a6a7a9137d059e6f0801e57ffc8c0e0"
+      org.opencontainers.image.revision: "9984cebf1a6a7a9137d059e6f0801e57ffc8c0e0"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-radarr"
       org.opencontainers.image.title: "Radarr"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-radarr/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "5.2.6.8376-ls129"
+      org.opencontainers.image.version: "5.3.2.8504-ls132"
 
     logging:
       driver: "json-file"
@@ -57,7 +57,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:0c"
+    mac_address: "02:42:ac:11:00:14"
 
     network_mode: "bridge"
 

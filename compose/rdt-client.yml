@@ -7,13 +7,13 @@ services:
       - "/init"
 
     environment:
+      - "UMASK=022"
+      - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=rdt-client"
       - "PUID=99"
       - "PGID=100"
-      - "UMASK=022"
-      - "TZ=America/Los_Angeles"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/share/dotnet"
       - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
       - "HOME=/root"
@@ -27,7 +27,7 @@ services:
       - "XDG_CONFIG_HOME=/config/xdg"
       - "RDTCLIENT_BRANCH=main"
 
-    hostname: "82b487f1f1a8"
+    hostname: "5fe87a17cf63"
 
     image: "rogerfar/rdtclient:latest"
 
@@ -40,17 +40,17 @@ services:
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:6500]"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2024-01-11T01:13:17.421Z"
+      org.opencontainers.image.created: "2024-01-22T00:12:18.723Z"
       org.opencontainers.image.description: "Real-Debrid Client Proxy"
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-baseimage-alpine"
       org.opencontainers.image.licenses: "MIT"
-      org.opencontainers.image.ref.name: "7baf77eb3a70413d3d08398ae85433f0656148bf"
-      org.opencontainers.image.revision: "c95f0171f72099f53a47b8643ddd0ec38becee07"
+      org.opencontainers.image.ref.name: "b67ba8c8ff041aa4fea6d12c18ea839250b6b58f"
+      org.opencontainers.image.revision: "e85366f874876b3c4337bfd482f2a4b339c4e4d9"
       org.opencontainers.image.source: "https://github.com/rogerfar/rdt-client"
       org.opencontainers.image.title: "rdt-client"
       org.opencontainers.image.url: "https://github.com/rogerfar/rdt-client"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "2.0.58"
+      org.opencontainers.image.version: "2.0.59"
 
     logging:
       driver: "json-file"

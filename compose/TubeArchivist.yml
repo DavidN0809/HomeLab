@@ -7,18 +7,18 @@ services:
     container_name: "TubeArchivist"
 
     environment:
+      - "HOST_UID=99"
       - "TZ=America/New_York"
-      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=TubeArchivist"
       - "TA_USERNAME=tubearchivist"
       - "ELASTIC_PASSWORD=verysecret"
+      - "ES_URL=http://192.168.68.133:9200"
       - "HOST_GID=100"
+      - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
-      - "HOST_CONTAINERNAME=TubeArchivist"
       - "TA_HOST=192.168.68.133"
       - "TA_PASSWORD=tubearchivist"
       - "REDIS_HOST=192.168.68.133"
-      - "ES_URL=http://192.168.68.133:9200"
-      - "HOST_UID=99"
       - "PATH=/root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "LANG=C.UTF-8"
       - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
@@ -29,7 +29,7 @@ services:
       - "PYTHON_GET_PIP_SHA256=96461deced5c2a487ddc65207ec5a9cffeca0d34e7af7ea1afc470ff0d746207"
       - "PYTHONUNBUFFERED=1"
 
-    hostname: "fa4ad3d4ec03"
+    hostname: "1ad639327753"
 
     image: "bbilly1/tubearchivist:latest"
 

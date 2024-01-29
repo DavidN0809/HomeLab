@@ -50,7 +50,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:07"
+    mac_address: "02:42:ac:11:00:05"
 
     network_mode: "bridge"
 

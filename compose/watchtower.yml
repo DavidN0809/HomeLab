@@ -27,7 +27,7 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
-    mac_address: "02:42:ac:11:00:0b"
+    mac_address: "02:42:ac:11:00:09"
     network_mode: "bridge"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"

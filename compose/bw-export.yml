@@ -1,0 +1,39 @@
+services:
+  bw-export:
+    container_name: "bw-export"
+    entrypoint:
+      - "/app/bw_export.sh"
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=bw-export"
+      - "BW_URL_SERVER="
+      - "BW_ORGANIZATIONS_LIST="
+      - "EXPORT_PASSWORD=Bullet0306!"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "BW_CLIENTID=user.e8c70053-6e40-47d1-817c-ab8f0146db4d"
+      - "BW_CLIENTSECRET=aWJ0TdcxfnLMgL4HPeCSxbPOQ5r7sG"
+      - "BW_PASSWORD=Bullet0306!"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "1d9639aa09fd"
+    image: "0netx/bw-export"
+    ipc: "private"
+    labels:
+      description: "Bitwarden exporter docker container"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/dani-garcia/vaultwarden/main/resources/vaultwarden-icon.svg"
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.version: "22.04"
+      version: "0.2"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:05"
+    network_mode: "bridge"
+    volumes:
+      - "/mnt/user/appdata/bw-export:/var/attachments"
+      - "/mnt/user/appdata/bw-export:/var/data"
+    working_dir: "/app"
+version: "3.6"

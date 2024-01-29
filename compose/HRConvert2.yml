@@ -29,6 +29,7 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
+    mac_address: "02:42:ac:11:00:1f"
     network_mode: "bridge"
     ports:
       - "8088:80/tcp"

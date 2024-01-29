@@ -1,24 +1,24 @@
 services:
-  mariadb-nextcloud:
+  mariadb-tabbyweb:
 
-    container_name: "mariadb-nextcloud"
+    container_name: "mariadb-tabbyweb"
 
     entrypoint:
       - "/init"
 
     environment:
-      - "PGID=100"
       - "UMASK=022"
-      - "MYSQL_DATABASE=nextcloud"
-      - "MYSQL_USER=nextcloud"
-      - "REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql"
-      - "PUID=99"
-      - "MYSQL_ROOT_PASSWORD=nextcloud"
-      - "MYSQL_PASSWORD=nextcloud"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
-      - "HOST_CONTAINERNAME=mariadb-nextcloud"
+      - "MYSQL_USER=tabbyweb"
+      - "REMOTE_SQL=http://URL1/your.sql,https://URL2/your.sql"
+      - "PUID=99"
+      - "HOST_CONTAINERNAME=mariadb-tabbyweb"
+      - "MYSQL_ROOT_PASSWORD=tabbyweb"
+      - "MYSQL_DATABASE=tabbyweb"
+      - "MYSQL_PASSWORD=tabbyweb"
+      - "PGID=100"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
       - "HOME=/root"
@@ -31,7 +31,7 @@ services:
       - "MYSQL_DIR=/config"
       - "DATADIR=/config/databases"
 
-    hostname: "376ee74324e5"
+    hostname: "839c0b694363"
 
     image: "lscr.io/linuxserver/mariadb"
 
@@ -62,15 +62,15 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:0d"
+    mac_address: "02:42:ac:11:00:1a"
 
     network_mode: "bridge"
 
     ports:
-      - "3307:3306/tcp"
+      - "3310:3306/tcp"
 
     volumes:
-      - "/mnt/user/appdata/mariadb-nextcloud:/config"
+      - "/mnt/user/appdata/mariadb-tabbyweb:/config"
 
     working_dir: "/"
 

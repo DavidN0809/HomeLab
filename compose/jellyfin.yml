@@ -7,16 +7,14 @@ services:
       - "/init"
 
     environment:
-      - "HOST_CONTAINERNAME=jellyfin"
-      - "JELLYFIN_PublishedServerUrl=192.168.68.133"
-      - "PUID=99"
       - "PGID=100"
+      - "UMASK=022"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
-      - "NVIDIA_VISIBLE_DEVICES=GPU-3f900cb9-08b7-5725-a2c5-d18fc5e9273b"
-      - "NVIDIA_DRIVER_CAPABILITIES=all"
-      - "UMASK=022"
+      - "HOST_CONTAINERNAME=jellyfin"
+      - "JELLYFIN_PublishedServerUrl=192.168.68.122"
+      - "PUID=99"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "HOME=/root"
       - "LANGUAGE=en_US.UTF-8"
@@ -27,21 +25,22 @@ services:
       - "S6_STAGE2_HOOK=/docker-mods"
       - "VIRTUAL_ENV=/lsiopy"
       - "LSIO_FIRST_PARTY=true"
+      - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
 
-    hostname: "9cbb64a1da64"
+    hostname: "86e655437f19"
 
     image: "lscr.io/linuxserver/jellyfin"
 
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- 10.8.13-1-ls240 Build-date:- 2023-12-26T12:42:32+00:00"
+      build_version: "Linuxserver.io version:- 10.8.13-1-ls242 Build-date:- 2024-01-23T12:47:21+00:00"
       maintainer: "thelamer"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/jellyfin-logo.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:8096]"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2023-12-26T12:42:32+00:00"
+      org.opencontainers.image.created: "2024-01-23T12:47:21+00:00"
       org.opencontainers.image.description: "[Jellyfin](https://github.com/jellyfin/jellyfin) is a Free\
         \ Software Media System that puts you in control of managing and streaming your media. It is an\
         \ alternative to the proprietary Emby and Plex, to provide media from a dedicated server to end-user\
@@ -51,19 +50,21 @@ services:
         \ better and work together to achieve it."
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-jellyfin"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "56e94b27335fcf9448f3dbf5fc0354576f11baea"
-      org.opencontainers.image.revision: "56e94b27335fcf9448f3dbf5fc0354576f11baea"
+      org.opencontainers.image.ref.name: "f70f1831a8bb3a4e6085e0b11794b56dbf737154"
+      org.opencontainers.image.revision: "f70f1831a8bb3a4e6085e0b11794b56dbf737154"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-jellyfin"
       org.opencontainers.image.title: "Jellyfin"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-jellyfin/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "10.8.13-1-ls240"
+      org.opencontainers.image.version: "10.8.13-1-ls242"
 
     logging:
       driver: "json-file"
       options:
         max-file: "1"
         max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:10"
 
     network_mode: "bridge"
 

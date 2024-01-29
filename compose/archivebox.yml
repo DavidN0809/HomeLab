@@ -14,18 +14,18 @@ services:
       - "/app/bin/docker_entrypoint.sh"
 
     environment:
-      - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=archivebox"
+      - "TZ=America/Los_Angeles"
       - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/venv/bin:/app/.venv/bin:/app/node_modules/.bin"
       - "LANG=C.UTF-8"
       - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
       - "PYTHON_VERSION=3.11"
       - "PYTHON_PIP_VERSION=23.2.1"
       - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
-      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/4cfa4081d27285bda1220a62a5ebf5b4bd749cdb/public/get-pip.py"
-      - "PYTHON_GET_PIP_SHA256=9cc01665956d22b3bf057ae8287b035827bfd895da235bcea200ab3b811790b6"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/049c52c665e8c5fd1751f942316e0a5c777d304f/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=7cfd4bdc4d475ea971f1c0710a5953bcc704d171f83c797b9529d9974502fcc6"
       - "LANGUAGE=en_US:en"
       - "LC_ALL=C.UTF-8"
       - "DEBIAN_FRONTEND=noninteractive"
@@ -46,7 +46,7 @@ services:
       - "NODE_MODULES=/app/node_modules"
       - "IN_DOCKER=True"
 
-    hostname: "efa916a3c99c"
+    hostname: "e51bcb2e6d35"
 
     image: "archivebox/archivebox:latest"
 
@@ -68,7 +68,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:09"
+    mac_address: "02:42:ac:11:00:04"
 
     network_mode: "bridge"
 

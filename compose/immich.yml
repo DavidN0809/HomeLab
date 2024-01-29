@@ -7,25 +7,25 @@ services:
       - "/init"
 
     environment:
-      - "DB_USERNAME=immich"
       - "DISABLE_TYPESENSE=false"
-      - "REDIS_PASSWORD=immich"
       - "MACHINE_LEARNING_WORKERS=1"
-      - "PUID=99"
-      - "UMASK=022"
-      - "HOST_OS=Unraid"
-      - "DB_PASSWORD=immich"
-      - "HOST_CONTAINERNAME=immich"
-      - "HOST_HOSTNAME=Tower"
-      - "DB_HOSTNAME=192.168.68.133"
-      - "REDIS_HOSTNAME=192.168.68.133"
+      - "PGID=100"
       - "DISABLE_MACHINE_LEARNING=false"
+      - "HOST_HOSTNAME=Tower"
+      - "DB_DATABASE_NAME=immich"
+      - "REDIS_PASSWORD=immich"
+      - "TZ=America/Los_Angeles"
+      - "DB_PASSWORD=immich"
       - "DB_PORT=5432"
       - "REDIS_PORT=6379"
-      - "TZ=America/Los_Angeles"
       - "MACHINE_LEARNING_WORKER_TIMEOUT=120"
-      - "PGID=100"
-      - "DB_DATABASE_NAME=immich"
+      - "PUID=99"
+      - "DB_HOSTNAME=192.168.68.133"
+      - "HOST_CONTAINERNAME=immich"
+      - "DB_USERNAME=immich"
+      - "REDIS_HOSTNAME=192.168.68.133"
+      - "UMASK=022"
+      - "HOST_OS=Unraid"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "HOME=/root"
       - "LANGUAGE=en_US.UTF-8"
@@ -44,30 +44,30 @@ services:
       - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
       - "NODE_ENV=production"
 
-    hostname: "41c75c7d83be"
+    hostname: "2895f53fedfb"
 
     image: "ghcr.io/imagegenius/immich"
 
     ipc: "private"
 
     labels:
-      build_version: "ImageGenius Version:- v1.92.1-ig237 Build-date:- 2024-01-09T04:22:35+11:00"
+      build_version: "ImageGenius Version:- v1.93.3-ig243 Build-date:- 2024-01-25T02:48:52+11:00"
       maintainer: "hydazz, martabal"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/imagegenius/templates/main/unraid/img/immich.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:8080]"
       org.opencontainers.image.authors: "imagegenius.io"
-      org.opencontainers.image.created: "2024-01-09T04:22:35+11:00"
+      org.opencontainers.image.created: "2024-01-25T02:48:52+11:00"
       org.opencontainers.image.description: "Immich is a high performance self-hosted photo and video\
         \ backup solution."
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "e44da802951da217255e73a70f19926778c5e851"
-      org.opencontainers.image.revision: "e44da802951da217255e73a70f19926778c5e851"
+      org.opencontainers.image.ref.name: "3d6f6121a2e7c21b164e4502dcadfb85ddae6086"
+      org.opencontainers.image.revision: "3d6f6121a2e7c21b164e4502dcadfb85ddae6086"
       org.opencontainers.image.source: "https://github.com/imagegenius/docker-immich"
       org.opencontainers.image.title: "Immich"
       org.opencontainers.image.url: "https://github.com/imagegenius/docker-immich/packages"
       org.opencontainers.image.vendor: "imagegenius.io"
-      org.opencontainers.image.version: "v1.92.1-ig237"
+      org.opencontainers.image.version: "v1.93.3-ig243"
 
     logging:
       driver: "json-file"
@@ -84,18 +84,18 @@ services:
       - "/mnt/user/appdata/immich/model:/config/machine-learning"
       - "/mnt/user/appdata/immich:/config"
       - "/mnt/user/cloud/immich:/photos"
-      - "27fe3edb91263909b23c6452ec1b031b62f9be13c5ca954be03999aee6f52d58:/uploads"
-      - "5ee972eba92ec37da74b0ab7a64bb40d1918b43972555fd910b8aae94bdc1720::/import:ro"
-      - "bbe9c6b9cee63a0042a99caf23fec625bf2245f43d49b3443b7a7b56c23964a8:/import"
+      - "1f8315a2e947865edfb8b60052fe2f18456b4aac35d1da96f4778c1027401b53::/import:ro"
+      - "d622fb6fd3819d02c31a7dba9315e9a2c7ce1f96417ee7acdd637204baa1f4df:/uploads"
+      - "e33c7af37947f52b17b31535abacfabc232617df6190660770dcd8b4ce379583:/import"
 
     working_dir: "/"
 
 version: "3.6"
 
 volumes:
-  27fe3edb91263909b23c6452ec1b031b62f9be13c5ca954be03999aee6f52d58:
+  1f8315a2e947865edfb8b60052fe2f18456b4aac35d1da96f4778c1027401b53:
     external: true
-  5ee972eba92ec37da74b0ab7a64bb40d1918b43972555fd910b8aae94bdc1720:
+  d622fb6fd3819d02c31a7dba9315e9a2c7ce1f96417ee7acdd637204baa1f4df:
     external: true
-  bbe9c6b9cee63a0042a99caf23fec625bf2245f43d49b3443b7a7b56c23964a8:
+  e33c7af37947f52b17b31535abacfabc232617df6190660770dcd8b4ce379583:
     external: true

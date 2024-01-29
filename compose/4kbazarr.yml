@@ -7,12 +7,12 @@ services:
       - "/init"
 
     environment:
+      - "PUID=1000"
+      - "PGID=100"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=4kbazarr"
-      - "PUID=1000"
-      - "PGID=100"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "PS1=$(whoami)@$(hostname):$(pwd)\\$ "
       - "HOME=/root"
@@ -23,32 +23,32 @@ services:
       - "VIRTUAL_ENV=/lsiopy"
       - "LSIO_FIRST_PARTY=true"
 
-    hostname: "f81648a5eed7"
+    hostname: "d5b39d9fb642"
 
     image: "linuxserver/bazarr"
 
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- v1.4.0-ls231 Build-date:- 2024-01-09T21:27:22+00:00"
+      build_version: "Linuxserver.io version:- v1.4.0-ls234 Build-date:- 2024-01-25T02:35:24+00:00"
       maintainer: "chbmb"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/bazarr.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:6767]"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2024-01-09T21:27:22+00:00"
+      org.opencontainers.image.created: "2024-01-25T02:35:24+00:00"
       org.opencontainers.image.description: "[Bazarr](https://www.bazarr.media/) is a companion application\
         \ to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define\
         \ your preferences by TV show or movie and Bazarr takes care of everything for you."
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-bazarr"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "473aa750922da13498b241075eb3a3fd8b6b912d"
-      org.opencontainers.image.revision: "473aa750922da13498b241075eb3a3fd8b6b912d"
+      org.opencontainers.image.ref.name: "553e7cbdf721df31709f7ce40db77913a15218ae"
+      org.opencontainers.image.revision: "553e7cbdf721df31709f7ce40db77913a15218ae"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-bazarr"
       org.opencontainers.image.title: "Bazarr"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-bazarr/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "v1.4.0-ls231"
+      org.opencontainers.image.version: "v1.4.0-ls234"
 
     logging:
       driver: "json-file"
@@ -56,7 +56,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:0e"
+    mac_address: "02:42:ac:11:00:1e"
 
     network_mode: "bridge"
 

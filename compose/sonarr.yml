@@ -25,21 +25,22 @@ services:
       - "LSIO_FIRST_PARTY=true"
       - "XDG_CONFIG_HOME=/config/xdg"
       - "SONARR_BRANCH=develop"
+      - "SONARR_CHANNEL=v4-nightly"
 
-    hostname: "ba81f246c558"
+    hostname: "911da1db18e5"
 
     image: "lscr.io/linuxserver/sonarr:develop"
 
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- 4.0.0.752-ls25 Build-date:- 2024-01-06T01:36:18+00:00"
+      build_version: "Linuxserver.io version:- 4.0.1.1014-ls32 Build-date:- 2024-01-27T07:27:28+00:00"
       maintainer: "thespad"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-logo.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:8989]"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2024-01-06T01:36:18+00:00"
+      org.opencontainers.image.created: "2024-01-27T07:27:28+00:00"
       org.opencontainers.image.description: "[Sonarr](https://sonarr.tv/) (formerly NZBdrone) is a PVR\
         \ for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your\
         \ favorite shows and will grab, sort and rename them. It can also be configured to automatically\
@@ -47,13 +48,13 @@ services:
         \  "
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-sonarr"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "408e3510ac65675f7be558123cebcdc20b7d592f"
-      org.opencontainers.image.revision: "408e3510ac65675f7be558123cebcdc20b7d592f"
+      org.opencontainers.image.ref.name: "1a0ced76478c73267fdacddc280831841477c696"
+      org.opencontainers.image.revision: "1a0ced76478c73267fdacddc280831841477c696"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-sonarr"
       org.opencontainers.image.title: "Sonarr"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-sonarr/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "4.0.0.752-ls25"
+      org.opencontainers.image.version: "4.0.1.1014-ls32"
 
     logging:
       driver: "json-file"
@@ -61,7 +62,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:0d"
+    mac_address: "02:42:ac:11:00:15"
 
     network_mode: "bridge"
 

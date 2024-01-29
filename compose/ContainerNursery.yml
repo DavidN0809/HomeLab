@@ -29,7 +29,7 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
-    mac_address: "02:42:ac:11:00:10"
+    mac_address: "02:42:ac:11:00:0a"
     network_mode: "bridge"
     volumes:
       - "/mnt/user/appdata/ContainerNursery/config:/usr/src/app/config"

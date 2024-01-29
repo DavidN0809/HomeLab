@@ -1,0 +1,61 @@
+services:
+  tabby-web:
+
+    command:
+      - "/start.sh"
+
+    container_name: "tabby-web"
+
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=tabby-web"
+      - "DATABASE_URL=mysql://root:123@db/tabby"
+      - "DEBUG=false"
+      - "DOCKERIZE_ARGS=-wait tcp://db:3306 -timeout 60s"
+      - "PORT=80"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D"
+      - "PYTHON_VERSION=3.7.17"
+      - "PYTHON_PIP_VERSION=23.0.1"
+      - "PYTHON_SETUPTOOLS_VERSION=57.5.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/9af82b715db434abb94a0a6f3569f43e72157346/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=45a2bb8bf2bb5eff16fdd00faef6f29731831c7c59bd9fc2bf1f3bed511ff1fe"
+      - "APP_DIST_STORAGE=file:///app-dist"
+      - "DOCKERIZE_VERSION=v0.6.1"
+      - "DOCKERIZE_ARCH=amd64"
+
+    hostname: "6d6134dfa95f"
+
+    image: "ghcr.io/eugeny/tabby-web:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]"
+      org.opencontainers.image.created: "2024-01-28T12:34:26.790Z"
+      org.opencontainers.image.description: "Tabby Web - an SSH/Telnet/Serial client in your browser."
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "abcdfbcd4e003168189d6698db901e50ca39a1c0"
+      org.opencontainers.image.source: "https://github.com/Eugeny/tabby-web"
+      org.opencontainers.image.title: "tabby-web"
+      org.opencontainers.image.url: "https://github.com/Eugeny/tabby-web"
+      org.opencontainers.image.version: "nightly"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:1b"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9090:80/tcp"
+
+version: "3.6"

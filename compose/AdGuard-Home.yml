@@ -1,0 +1,85 @@
+networks:
+  br0:
+    external: true
+    name: "br0"
+
+services:
+  AdGuard-Home:
+
+    command:
+      - "--no-check-update"
+      - "-c"
+      - "/opt/adguardhome/conf/AdGuardHome.yaml"
+      - "-w"
+      - "/opt/adguardhome/work"
+
+    container_name: "AdGuard-Home"
+
+    entrypoint:
+      - "/opt/adguardhome/AdGuardHome"
+
+    environment:
+      - "TCP_PORT_3000=3000"
+      - "TCP_PORT_53=53"
+      - "UDP_PORT_53=53"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=AdGuard-Home"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    expose:
+      - "3000/tcp"
+      - "3000/udp"
+      - "443/tcp"
+      - "443/udp"
+      - "53/tcp"
+      - "53/udp"
+      - "5443/tcp"
+      - "5443/udp"
+      - "6060/tcp"
+      - "67/udp"
+      - "68/udp"
+      - "80/tcp"
+      - "853/tcp"
+      - "853/udp"
+
+    hostname: "f485fce1e816"
+
+    image: "adguard/adguardhome"
+
+    ipc: "private"
+
+    labels:
+      maintainer: "AdGuard Team <devteam@adguard.com>"
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/SiwatINC/unraid-ca-repository/master/icons/adguard.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]/"
+      org.opencontainers.image.authors: "AdGuard Team <devteam@adguard.com>"
+      org.opencontainers.image.created: "2023-12-11T14:15:09Z"
+      org.opencontainers.image.description: "Network-wide ads & trackers blocking DNS server"
+      org.opencontainers.image.documentation: "https://github.com/AdguardTeam/AdGuardHome/wiki/"
+      org.opencontainers.image.licenses: "GPL-3.0"
+      org.opencontainers.image.revision: "f6ad64bf692430b62a83bc715b5d5795d5182098"
+      org.opencontainers.image.source: "https://github.com/AdguardTeam/AdGuardHome"
+      org.opencontainers.image.title: "AdGuard Home"
+      org.opencontainers.image.url: "https://adguard.com/en/adguard-home/overview.html"
+      org.opencontainers.image.vendor: "AdGuard"
+      org.opencontainers.image.version: "v0.107.43"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    networks:
+      - "br0"
+
+    volumes:
+      - "/mnt/user/appdata/adguard/config:/opt/adguardhome/conf"
+      - "/mnt/user/appdata/adguard/workingdir:/opt/adguardhome/work"
+
+    working_dir: "/opt/adguardhome/work"
+
+version: "3.6"

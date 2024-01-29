@@ -17,14 +17,14 @@ services:
       - "/init/entrypoint"
 
     environment:
-      - "HOST_OS=Unraid"
-      - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=Lancache-DNS"
       - "UDP_PORT_53=53"
       - "USE_GENERIC_CACHE=true"
       - "LANCACHE_IP=192.168.68.3"
-      - "UPSTREAM_DNS=192.168.68.6"
+      - "UPSTREAM_DNS=192.168.68.11"
       - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "SUPERVISORD_EXIT_ON_FATAL=1"
       - "LC_ALL=en_GB.UTF-8"
@@ -41,7 +41,7 @@ services:
       - "53/tcp"
       - "53/udp"
 
-    hostname: "df882d75f09c"
+    hostname: "c6a74941ed68"
 
     image: "lancachenet/lancache-dns:latest"
 

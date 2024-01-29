@@ -23,7 +23,7 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
-    mac_address: "02:42:ac:11:00:0a"
+    mac_address: "02:42:ac:11:00:08"
     network_mode: "bridge"
     user: "99:98"
     volumes:

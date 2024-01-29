@@ -7,15 +7,15 @@ services:
       - "/opt/scripts/start.sh"
 
     environment:
-      - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
-      - "HOST_CONTAINERNAME=Krusader"
       - "USER_LOCALES=en_US.UTF-8 UTF-8"
       - "RUNASROOT=true"
-      - "CUSTOM_RES_W=1280"
-      - "TZ=America/Los_Angeles"
-      - "NOVNC_RESIZE=remote"
       - "CUSTOM_RES_H=768"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=Krusader"
+      - "NOVNC_RESIZE=remote"
+      - "CUSTOM_RES_W=1280"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "LANG=en_US.UTF-8"
       - "LANGUAGE=en_US:en"
@@ -31,7 +31,7 @@ services:
       - "DATA_PERM=770"
       - "USER=krusader"
 
-    hostname: "0cf12b6991ef"
+    hostname: "c72af2b34f1d"
 
     image: "ich777/krusader"
 

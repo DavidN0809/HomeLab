@@ -1,25 +1,25 @@
 services:
-  postgresql15-nextcloud:
+  postgresql15-linkwarden:
     command:
       - "postgres"
-    container_name: "postgresql15-nextcloud"
+    container_name: "postgresql15-linkwarden"
     entrypoint:
       - "docker-entrypoint.sh"
     environment:
-      - "HOST_CONTAINERNAME=postgresql15-nextcloud"
-      - "POSTGRES_PASSWORD=nextcloud"
-      - "POSTGRES_USER=nextcloud"
-      - "POSTGRES_DB=nextcloud"
+      - "POSTGRES_PASSWORD=linkwarden"
+      - "POSTGRES_USER=linkwarden"
+      - "POSTGRES_DB=linkwarden"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=postgresql15-linkwarden"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/15/bin"
       - "GOSU_VERSION=1.16"
       - "LANG=en_US.utf8"
       - "PG_MAJOR=15"
       - "PG_VERSION=15.5-1.pgdg120+1"
       - "PGDATA=/var/lib/postgresql/data"
-    hostname: "c5aed75c9914"
+    hostname: "f138eb21c826"
     image: "postgres:15"
     ipc: "private"
     labels:
@@ -30,9 +30,10 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
+    mac_address: "02:42:ac:11:00:22"
     network_mode: "bridge"
     ports:
-      - "5434:5432/tcp"
+      - "5432:5432/tcp"
     volumes:
-      - "/mnt/cache/appdata/postgresql15-nextcloud:/var/lib/postgresql/data"
+      - "/mnt/cache/appdata/postgresql15-linkwarden:/var/lib/postgresql/data"
 version: "3.6"

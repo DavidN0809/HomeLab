@@ -1,0 +1,36 @@
+services:
+  linkstack:
+    command:
+      - "docker-entrypoint.sh"
+    container_name: "linkstack"
+    environment:
+      - "TZ=America/Chicago"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=linkstack"
+      - "HTTP_SERVER_NAME=link.EXAMPLE.COM"
+      - "HTTPS_SERVER_NAME=link.EXAMPLE.COM"
+      - "PHP_MEMORY_LIMIT=512M"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    hostname: "a1efdd8d77a1"
+    image: "linkstackorg/linkstack:unraid"
+    ipc: "private"
+    labels:
+      SERVER_ADMIN: ""
+      description: "LinkStack Docker"
+      maintainer: "JulianPrieber"
+      net.unraid.docker.icon: "https://i.imgur.com/qdL82EK.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    mac_address: "02:42:ac:11:00:0c"
+    network_mode: "bridge"
+    ports:
+      - "28443:443/tcp"
+      - "2880:80/tcp"
+    working_dir: "/htdocs"
+version: "3.6"

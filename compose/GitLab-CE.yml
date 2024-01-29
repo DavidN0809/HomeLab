@@ -1,0 +1,41 @@
+services:
+  GitLab-CE:
+    command:
+      - "/assets/wrapper"
+    container_name: "GitLab-CE"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=GitLab-CE"
+      - "GITLAB_OMNIBUS_CONFIG=external_url 'http://unraid:9080/'"
+      - "PATH=/opt/gitlab/embedded/bin:/opt/gitlab/bin:/assets:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "EDITOR=/bin/vi"
+      - "GITLAB_ALLOW_SHA1_RSA=false"
+      - "TERM=xterm"
+    hostname: "7dd5ae821277"
+    image: "gitlab/gitlab-ce"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://raw.githubusercontent.com/tynor88/docker-templates/master/images/gitlab_small.png"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:9080]"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.version: "22.04"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "bridge"
+    ports:
+      - "9022:22/tcp"
+      - "9080:9080/tcp"
+      - "9443:9443/tcp"
+    volumes:
+      - "/mnt/cache/appdata/gitlab-ce/config:/etc/gitlab"
+      - "/mnt/cache/appdata/gitlab-ce/data:/var/opt/gitlab"
+      - "/mnt/cache/appdata/gitlab-ce/log:/var/log/gitlab"
+
+version: "3.6"

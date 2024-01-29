@@ -4,17 +4,17 @@ services:
       - "/entrypoint.sh"
     container_name: "TubeArchivist-RedisJSON"
     environment:
-      - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
       - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=TubeArchivist-RedisJSON"
+      - "TZ=America/Los_Angeles"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "REDISBLOOM_ARGS="
       - "REDISEARCH_ARGS="
       - "REDISJSON_ARGS="
       - "REDISTIMESERIES_ARGS="
       - "REDIS_ARGS="
-    hostname: "63baed0d9a66"
+    hostname: "9fb0948dc370"
     image: "redis/redis-stack-server"
     ipc: "private"
     labels:
@@ -27,7 +27,6 @@ services:
       options:
         max-file: "1"
         max-size: "50m"
-    mac_address: "02:42:ac:11:00:24"
     network_mode: "bridge"
     ports:
       - "6379:6379/tcp"

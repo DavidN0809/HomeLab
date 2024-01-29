@@ -7,16 +7,16 @@ services:
       - "/init"
 
     environment:
+      - "UMASK=022"
+      - "HOST_HOSTNAME=Tower"
+      - "PLEX_CLAIM=claim-oirooiFD1KfWCBn5C7VQ"
+      - "PUID=99"
       - "VERSION=docker"
       - "NVIDIA_VISIBLE_DEVICES =all "
       - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
-      - "PLEX_CLAIM=claim-oirooiFD1KfWCBn5C7VQ"
-      - "PUID=99"
       - "PGID=100"
-      - "UMASK=022"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
-      - "HOST_HOSTNAME=Tower"
       - "HOST_CONTAINERNAME=plex"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "HOME=/root"
@@ -56,26 +56,26 @@ services:
     ipc: "private"
 
     labels:
-      build_version: "Linuxserver.io version:- 1.32.8.7639-fb6452ebf-ls199 Build-date:- 2024-01-09T14:44:41+00:00"
+      build_version: "Linuxserver.io version:- 1.32.8.7639-fb6452ebf-ls201 Build-date:- 2024-01-22T09:20:52+00:00"
       maintainer: "thelamer"
       net.unraid.docker.icon: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/plex-logo.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:32400]/web/index.html"
       org.opencontainers.image.authors: "linuxserver.io"
-      org.opencontainers.image.created: "2024-01-09T14:44:41+00:00"
+      org.opencontainers.image.created: "2024-01-22T09:20:52+00:00"
       org.opencontainers.image.description: "[Plex](https://plex.tv) organizes video, music and photos\
         \ from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices.\
         \ This container is packaged as a standalone Plex Media Server. Straightforward design and bulk\
         \ actions mean getting things done faster."
       org.opencontainers.image.documentation: "https://docs.linuxserver.io/images/docker-plex"
       org.opencontainers.image.licenses: "GPL-3.0-only"
-      org.opencontainers.image.ref.name: "72b6c45aab0b376f30f786282e3fc548bebb9b0f"
-      org.opencontainers.image.revision: "72b6c45aab0b376f30f786282e3fc548bebb9b0f"
+      org.opencontainers.image.ref.name: "0ae63a4bc562b57bed6b749b9ad0ff750be1c75f"
+      org.opencontainers.image.revision: "0ae63a4bc562b57bed6b749b9ad0ff750be1c75f"
       org.opencontainers.image.source: "https://github.com/linuxserver/docker-plex"
       org.opencontainers.image.title: "Plex"
       org.opencontainers.image.url: "https://github.com/linuxserver/docker-plex/packages"
       org.opencontainers.image.vendor: "linuxserver.io"
-      org.opencontainers.image.version: "1.32.8.7639-fb6452ebf-ls199"
+      org.opencontainers.image.version: "1.32.8.7639-fb6452ebf-ls201"
 
     logging:
       driver: "json-file"
@@ -97,7 +97,6 @@ services:
       - "/mnt/user/data/media/4k/movies:/movies"
       - "/mnt/user/data/media/4k/tv:/tv"
       - "/mnt/user/data/plex_streaming:/debrid-fix"
-      - "/mnt/user/data/plex_toggle:/debrid"
 
     working_dir: "/"
 

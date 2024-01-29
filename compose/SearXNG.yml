@@ -9,11 +9,11 @@ services:
       - "/usr/local/searxng/dockerfiles/docker-entrypoint.sh"
 
     environment:
-      - "HOST_CONTAINERNAME=SearXNG"
       - "INSTANCE_NAME=unraid"
       - "TZ=America/Los_Angeles"
       - "HOST_OS=Unraid"
-      - "HOST_HOSTNAME=docker swarm"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=SearXNG"
       - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "AUTOCOMPLETE="
       - "BASE_URL="
@@ -24,7 +24,7 @@ services:
       - "UWSGI_WORKERS=%k"
       - "UWSGI_THREADS=4"
 
-    hostname: "6cb1f2e5bcb8"
+    hostname: "7e5003431be0"
 
     image: "searxng/searxng"
 
@@ -36,22 +36,22 @@ services:
       net.unraid.docker.icon: "https://github.com/kilrah/unraid-docker-templates/raw/main/icons/searxng.png"
       net.unraid.docker.managed: "dockerman"
       net.unraid.docker.webui: "http://[IP]:[PORT:8080]/"
-      org.label-schema.build-date: "2024-01-09T15:35:28Z"
+      org.label-schema.build-date: "2024-01-25T05:16:15Z"
       org.label-schema.name: "searxng"
       org.label-schema.schema-version: "1.0"
       org.label-schema.url: "https://github.com/searxng/searxng"
       org.label-schema.usage: "https://github.com/searxng/searxng-docker"
-      org.label-schema.vcs-ref: "54a6626582d199d5e9914628ac68ffc9c3611628"
+      org.label-schema.vcs-ref: "8c73aa772b7d4446f77be82d8f9d9eef1e348deb"
       org.label-schema.vcs-url: "https://github.com/searxng/searxng"
-      org.label-schema.version: "2024.1.9+54a662658"
-      org.opencontainers.image.created: "2024-01-09T15:35:28Z"
+      org.label-schema.version: "2024.1.25+8c73aa772"
+      org.opencontainers.image.created: "2024-01-25T05:16:15Z"
       org.opencontainers.image.documentation: "https://github.com/searxng/searxng-docker"
-      org.opencontainers.image.revision: "54a6626582d199d5e9914628ac68ffc9c3611628"
+      org.opencontainers.image.revision: "8c73aa772b7d4446f77be82d8f9d9eef1e348deb"
       org.opencontainers.image.source: "https://github.com/searxng/searxng"
       org.opencontainers.image.title: "searxng"
       org.opencontainers.image.url: "https://github.com/searxng/searxng"
-      org.opencontainers.image.version: "2024.1.9-54a662658"
-      version: "2024.1.9+54a662658"
+      org.opencontainers.image.version: "2024.1.25-8c73aa772"
+      version: "2024.1.25+8c73aa772"
 
     logging:
       driver: "json-file"
@@ -59,7 +59,7 @@ services:
         max-file: "1"
         max-size: "50m"
 
-    mac_address: "02:42:ac:11:00:02"
+    mac_address: "02:42:ac:11:00:03"
 
     network_mode: "bridge"
 
@@ -67,7 +67,7 @@ services:
       - "7006:8080/tcp"
 
     volumes:
-      - "/home/ubuntu/appdata/searxng:/etc/searxng"
+      - "/mnt/user/appdata/searxng:/etc/searxng"
 
     working_dir: "/usr/local/searxng"
 
