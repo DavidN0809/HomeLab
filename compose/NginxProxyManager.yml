@@ -1,3 +1,4 @@
+version: "3.6"
 services:
   NginxProxyManager:
 
@@ -57,8 +58,40 @@ services:
       - "7818:8181/tcp"
 
     volumes:
-      - "/mnt/user/appdata/NginxProxyManager:/config"
-
+      - "/home/ubuntu/appdata/NginxProxyManager:/config"
     working_dir: "/tmp"
 
-version: "3.6"
+
+networks:
+  net:
+    driver: bridge
+
+services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    volumes:
+      - /home/ubuntu/appdata/authelia:/config
+    networks:
+      - net
+    expose:
+      - 9091
+    restart: unless-stopped
+    healthcheck:
+      ## In production the healthcheck section should be commented.
+      disable: true
+    environment:
+      - TZ=America/Los_Angeles
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      -  /home/ubuntu/appdata/redis-authelia:/data
+    networks:
+      - net
+    expose:
+      - 6379
+    restart: unless-stopped
+    environment:
+      - TZ=America/Los_Angeles
