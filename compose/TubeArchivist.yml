@@ -90,7 +90,7 @@ services:
     volumes:
       - "/home/ubuntu/appdata/TubeArchivist/redis:/data"
 
-TubeArchivist-ES:
+  TubeArchivist-ES:
 
     command:
       - "eswrapper"
