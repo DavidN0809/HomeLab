@@ -1,14 +1,11 @@
+version: "3.6"
 services:
   plex:
-
     container_name: "plex"
-
     entrypoint:
       - "/init"
-
     environment:
       - "UMASK=022"
-      - "HOST_HOSTNAME=Tower"
       - "PLEX_CLAIM=claim-oirooiFD1KfWCBn5C7VQ"
       - "PUID=99"
       - "VERSION=docker"
@@ -16,7 +13,6 @@ services:
       - "NVIDIA_DRIVER_CAPABILITIES=compute,video,utility"
       - "PGID=100"
       - "TZ=America/Los_Angeles"
-      - "HOST_OS=Unraid"
       - "HOST_CONTAINERNAME=plex"
       - "PATH=/lsiopy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "HOME=/root"
@@ -37,7 +33,6 @@ services:
       - "PLEX_MEDIA_SERVER_USER=abc"
       - "PLEX_MEDIA_SERVER_INFO_VENDOR=Docker"
       - "PLEX_MEDIA_SERVER_INFO_DEVICE=Docker Container (LinuxServer.io)"
-
     expose:
       - "1900/udp"
       - "32400/tcp"
@@ -48,13 +43,8 @@ services:
       - "32469/tcp"
       - "5353/udp"
       - "8324/tcp"
-
-    hostname: "Tower"
-
     image: "lscr.io/linuxserver/plex"
-
     ipc: "private"
-
     labels:
       build_version: "Linuxserver.io version:- 1.32.8.7639-fb6452ebf-ls201 Build-date:- 2024-01-22T09:20:52+00:00"
       maintainer: "thelamer"
@@ -92,12 +82,158 @@ services:
 
     volumes:
       - "/dev/shm:/transcode"
-      - "/mnt/user/Fire:/Fire"
-      - "/mnt/user/appdata/plex:/config"
-      - "/mnt/user/data/media/4k/movies:/movies"
-      - "/mnt/user/data/media/4k/tv:/tv"
-      - "/mnt/user/data/plex_streaming:/debrid-fix"
+      - "/mnt/unraid/Fire:/Fire"
+      - "/home/ubuntu/appdata/plex:/config"
+      - "/mnt/unraid/data/media/4k/movies:/movies"
+      - "/mnt/unraid/data/media/4k/tv:/tv"
+      - "/mnt/unraid/data/plex_streaming:/debrid-fix"
 
     working_dir: "/"
 
-version: "3.6"
+  Plex-Meta-Manager:
+    container_name: "Plex-Meta-Manager"
+    entrypoint:
+      - "/tini"
+      - "-s"
+      - "python3"
+      - "plex_meta_manager.py"
+      - "--"
+
+    environment:
+      - "time=6:00"
+      - "divider=="
+      - "PMM_DIVIDER=="
+      - "PMM_WIDTH=200"
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=Plex-Meta-Manager"
+      - "width=200"
+      - "PMM_TIME=6:00"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
+      - "PYTHON_VERSION=3.11.4"
+      - "PYTHON_PIP_VERSION=23.1.2"
+      - "PYTHON_SETUPTOOLS_VERSION=65.5.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/0d8570dc44796f4369b652222cf176b3db6ac70e/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=96461deced5c2a487ddc65207ec5a9cffeca0d34e7af7ea1afc470ff0d746207"
+      - "BRANCH_NAME=master"
+      - "TINI_VERSION=v0.19.0"
+      - "PMM_DOCKER=True"
+
+    image: "meisnate12/plex-meta-manager"
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://metamanager.wiki/en/latest/_static/pmm.png"
+      net.unraid.docker.managed: "dockerman"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    volumes:
+      - "/home/ubuntu/appdata/Plex-Meta-Manager:/config"
+      - "/mnt/unraid/data:/data"
+
+services:
+  Plex-debrid:
+    command:
+      - "python"
+      - "./main.py"
+      - "--config-dir"
+      - "config"
+      - "-e"
+      - "TERM=xterm"
+    container_name: "Plex-debrid"
+    environment:
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=Plex-debrid"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305"
+      - "PYTHON_VERSION=3.12.0"
+      - "PYTHON_PIP_VERSION=23.2.1"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/c6add47b0abf67511cdfb4734771cbab403af062/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=22b849a10f86f5ddf7ce148ca2a31214504ee6c83ef626840fde6e5dcd809d11"
+      - "TERM=xterm"
+    hostname: "Tower"
+    image: "docker.io/itstoggle/plex_debrid:latest"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://avatars.githubusercontent.com/u/71379623?s=48&v=4"
+      net.unraid.docker.managed: "dockerman"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "host"
+    stdin_open: true
+    tty: true
+    volumes:
+      - "/mnt/user/appdata/plex_toggle:/config"
+
+services:
+  plex-utills:
+    command:
+      - "/app/start.sh"
+    container_name: "plex-utills"
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=plex-utills"
+      - "PUID=99"
+      - "PGID=100"
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "GPG_KEY=E3FF2839C048B25C084DEBE9B26995E310250568"
+      - "PYTHON_VERSION=3.9.16"
+      - "PYTHON_PIP_VERSION=22.0.4"
+      - "PYTHON_SETUPTOOLS_VERSION=58.1.0"
+      - "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/66030fa03382b4914d4c4d0896961a0bdeeeb274/public/get-pip.py"
+      - "PYTHON_GET_PIP_SHA256=1e501cf004eac1b7eb1f97266d28f995ae835d30250bec7f8850562703067dc6"
+    image: "jkirkcaldy/plex-utills"
+
+    ipc: "private"
+
+    labels:
+      discord: "= https://discord.gg/z3FYhHwHMw"
+      maintainer: "JKirkcaldy"
+      net.unraid.docker.icon: "https://github.com/jkirkcaldy/plex-utills/blob/7cf707f3aee6aa865a811b88d9ced865626bf7bd/app/img/plex-utills_square.png?raw=1"
+      net.unraid.docker.managed: "dockerman"
+      net.unraid.docker.webui: "http://[IP]:[PORT:80]"
+      org.opencontainers.image.created: "2023-02-02T11:52:30.944Z"
+      org.opencontainers.image.description: "Manage your Plex library automatically"
+      org.opencontainers.image.licenses: "MIT"
+      org.opencontainers.image.revision: "e945c0cb113b8ec3bb0b0f15c544f600e6e16d3f"
+      org.opencontainers.image.source: "https://github.com/jkirkcaldy/plex-utills"
+      org.opencontainers.image.title: "plex-utills"
+      org.opencontainers.image.url: "https://github.com/jkirkcaldy/plex-utills"
+      org.opencontainers.image.version: "master"
+      support: "= https://github.com/jkirkcaldy/plex-utills"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    mac_address: "02:42:ac:11:00:05"
+
+    network_mode: "bridge"
+
+    ports:
+      - "805:80/tcp"
+
+    volumes:
+      - "/home/ubuntu/appdata/plex-utills/logs:/logs"
+      - "/home/ubuntu/appdata/plex-utills:/config"
+      - "/mnt/unraid/data/media/4k:/films:ro"
+
+    working_dir: "/app"

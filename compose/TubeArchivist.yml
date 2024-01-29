@@ -1,3 +1,4 @@
+version: "3.6"
 services:
   TubeArchivist:
 
@@ -14,11 +15,9 @@ services:
       - "ELASTIC_PASSWORD=verysecret"
       - "ES_URL=http://192.168.68.133:9200"
       - "HOST_GID=100"
-      - "HOST_OS=Unraid"
-      - "HOST_HOSTNAME=Tower"
-      - "TA_HOST=192.168.68.133"
+      - "TA_HOST=192.168.68.80"
       - "TA_PASSWORD=tubearchivist"
-      - "REDIS_HOST=192.168.68.133"
+      - "REDIS_HOST=192.168.68.80"
       - "PATH=/root/.local/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
       - "LANG=C.UTF-8"
       - "GPG_KEY=A035C8C19219BA821ECEA86B64E628F8D684696D"
@@ -52,9 +51,113 @@ services:
       - "8069:8000/tcp"
 
     volumes:
-      - "/mnt/user/appdata/TubeArchivist:/cache"
-      - "/mnt/user/data/youtube:/youtube"
+      - "/home/ubuntu/appdata/TubeArchivist:/cache"
+      - "/mnt/unraid/data/youtube:/youtube"
 
     working_dir: "/app"
 
-version: "3.6"
+  TubeArchivist-RedisJSON:
+    command:
+      - "/entrypoint.sh"
+    container_name: "TubeArchivist-RedisJSON"
+    environment:
+      - "HOST_OS=Unraid"
+      - "HOST_HOSTNAME=Tower"
+      - "HOST_CONTAINERNAME=TubeArchivist-RedisJSON"
+      - "TZ=America/Los_Angeles"
+      - "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "REDISBLOOM_ARGS="
+      - "REDISEARCH_ARGS="
+      - "REDISJSON_ARGS="
+      - "REDISTIMESERIES_ARGS="
+      - "REDIS_ARGS="
+    hostname: "9fb0948dc370"
+    image: "redis/redis-stack-server"
+    ipc: "private"
+    labels:
+      net.unraid.docker.icon: "https://i.imgur.com/dtGJa5y.jpeg"
+      net.unraid.docker.managed: "dockerman"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.version: "22.04"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    network_mode: "bridge"
+    ports:
+      - "6379:6379/tcp"
+    volumes:
+      - "/home/ubuntu/appdata/TubeArchivist/redis:/data"
+
+TubeArchivist-ES:
+
+    command:
+      - "eswrapper"
+
+    container_name: "TubeArchivist-ES"
+
+    entrypoint:
+      - "/bin/tini"
+      - "--"
+      - "/usr/local/bin/docker-entrypoint.sh"
+
+    environment:
+      - "TZ=America/Los_Angeles"
+      - "xpack.security.enabled=true"
+      - "path.repo=/usr/share/elasticsearch/data/snapshot"
+      - "HOST_OS=Unraid"
+      - "HOST_CONTAINERNAME=TubeArchivist-ES"
+      - "ELASTIC_PASSWORD=verysecret"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+      - "PATH=/usr/share/elasticsearch/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "ELASTIC_CONTAINER=true"
+
+    hostname: "a85ec009c58b"
+
+    image: "bbilly1/tubearchivist-es:latest"
+
+    ipc: "private"
+
+    labels:
+      net.unraid.docker.icon: "https://i.imgur.com/ftggG6O.jpg"
+      net.unraid.docker.managed: "dockerman"
+      org.label-schema.build-date: "2024-01-11T10:05:27.953830042Z"
+      org.label-schema.license: "Elastic-License-2.0"
+      org.label-schema.name: "Elasticsearch"
+      org.label-schema.schema-version: "1.0"
+      org.label-schema.url: "https://www.elastic.co/products/elasticsearch"
+      org.label-schema.usage: "https://www.elastic.co/guide/en/elasticsearch/reference/index.html"
+      org.label-schema.vcs-ref: "1665f706fd9354802c02146c1e6b5c0fbcddfbc9"
+      org.label-schema.vcs-url: "https://github.com/elastic/elasticsearch"
+      org.label-schema.vendor: "Elastic"
+      org.label-schema.version: "8.12.0"
+      org.opencontainers.image.created: "2024-01-11T10:05:27.953830042Z"
+      org.opencontainers.image.documentation: "https://www.elastic.co/guide/en/elasticsearch/reference/index.html"
+      org.opencontainers.image.licenses: "Elastic-License-2.0"
+      org.opencontainers.image.ref.name: "ubuntu"
+      org.opencontainers.image.revision: "1665f706fd9354802c02146c1e6b5c0fbcddfbc9"
+      org.opencontainers.image.source: "https://github.com/elastic/elasticsearch"
+      org.opencontainers.image.title: "Elasticsearch"
+      org.opencontainers.image.url: "https://www.elastic.co/products/elasticsearch"
+      org.opencontainers.image.vendor: "Elastic"
+      org.opencontainers.image.version: "8.12.0"
+
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+    network_mode: "bridge"
+
+    ports:
+      - "9200:9200/tcp"
+
+    user: "1000:0"
+
+    volumes:
+      - "/home/ubuntu/appdata/TubeArchivist/es:/usr/share/elasticsearch/data"
+
+    working_dir: "/usr/share/elasticsearch"
