@@ -1,0 +1,13 @@
+---
+- name: Grant ubuntu user passwordless sudo
+  hosts: manager_nodes
+  become: yes
+  tasks:
+    - name: Ensure ubuntu has passwordless sudo
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers.d/ubuntu
+        line: 'ubuntu ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+        state: present
+        create: yes
+      become: true
