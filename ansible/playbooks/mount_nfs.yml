@@ -48,4 +48,4 @@
         - { mount: 'NVR', source: 'NVR' }
         - { mount: 'Recordings', source: 'Recordings' }
         - { mount: 'Servers', source: 'Servers' }
-        - { mount: 'temp', source: 'temp'
+        - { mount: 'temp', source: 'temp'}
