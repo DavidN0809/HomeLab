@@ -23,7 +23,7 @@ The following Ansible playbooks are available:
 - sync_time_zones.yml: Synchronizes the timezone across the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
 
--update_containers.yml: updates all contaienrs
+- update_containers.yml: updates all contaienrs
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/update_containers.yml`
 
 - update_packages.yml: Manages packages using APT package manager.  
