@@ -1,0 +1,14 @@
+---
+- name: Extend logical volume and resize filesystem
+  hosts: masters
+  become: yes
+  tasks:
+    - name: Extend the logical volume to use all free space
+      ansible.builtin.command:
+        cmd: lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+      register: lvextend_result
+
+    - name: Resize the filesystem
+      ansible.builtin.command:
+        cmd: resize2fs /dev/ubuntu-vg/ubuntu-lv
+      when: lvextend_result is changed
