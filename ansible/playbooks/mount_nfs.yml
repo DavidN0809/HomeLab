@@ -38,7 +38,7 @@
         opts: "defaults,rw,hard,intr,timeo=600,retrans=5,nofail"
         state: mounted
       loop:
-        - { mount: '3D_Printing', source: '3D_Printing' }
+        - { mount: '3D_Printing', source: '3D Printing' }
         - { mount: 'Backup', source: 'Backup' }
         - { mount: 'appdata', source: 'appdata' }
         - { mount: 'data', source: 'data' }
@@ -47,5 +47,4 @@
         - { mount: 'ML', source: 'ML' }
         - { mount: 'NVR', source: 'NVR' }
         - { mount: 'Recordings', source: 'Recordings' }
-        - { mount: 'Servers', source: 'Servers' }
         - { mount: 'temp', source: 'temp'}
