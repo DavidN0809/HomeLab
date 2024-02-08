@@ -1,6 +1,6 @@
 ---
 - name: Sync time zones on VMs and LXCs
-  hosts: *
+  hosts: ubuntu
   become: true
   tasks:
     - name: Set time zone
