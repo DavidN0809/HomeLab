@@ -1,6 +1,6 @@
 ---
 - name: Install curl on Debian
-  hosts: *
+  hosts: ubuntu
   become: true
   tasks:
     - name: Install curl
