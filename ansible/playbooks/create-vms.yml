@@ -1,20 +1,35 @@
----
 - name: Deploy Ubuntu VMs on Proxmox Nodes
   hosts: proxmox
   become: yes
   gather_facts: no
-  vars_files:
-    - secrets.yml
+
+  vars:
+    starting_vmid: 115 # Default starting VM ID, will be updated dynamically
 
   tasks:
-    - name: Create VM on each Proxmox node
+    - name: List all VMs on Proxmox node
       community.general.proxmox_kvm:
-        api_user: ansible@pve
-        api_password: "{{ proxmox_password }}"
+        api_user: ansible@pam
+        api_password: d0a11dba-4a1b-46b9-8543-fd3d11ef35be
         api_host: "{{ ansible_host }}"
         validate_certs: no
         node: "{{ inventory_hostname }}"
-        vmid: "{{ item.vmid }}"
+        state: "list"
+      register: vm_list
+
+    - name: Find the highest VM ID
+      set_fact:
+        starting_vmid: "{{ vm_list.vms | map(attribute='vmid') | map('int') | max + 1 }}"
+      when: vm_list.vms | length > 0
+
+    - name: Create VM on each Proxmox node
+      community.general.proxmox_kvm:
+        api_user: ansible@pam
+        api_password: d0a11dba-4a1b-46b9-8543-fd3d11ef35be
+        api_host: "{{ ansible_host }}"
+        validate_certs: no
+        node: "{{ inventory_hostname }}"
+        vmid: "{{ starting_vmid | int + loop.index0 }}"
         name: "{{ item.name }}"
         clone: ubuntu-template
         cores: 4
@@ -24,8 +39,8 @@
         netif: '{"net0":"virtio,bridge=vmbr0"}'
         ipconfig0: "ip=192.168.68.{{ 80 + loop.index }}/24,gw=192.168.68.1"
       loop:
-        - { vmid: 101, name: 'ubuntu-vm1' }
-        - { vmid: 102, name: 'ubuntu-vm2' }
-        - { vmid: 103, name: 'ubuntu-vm3' }
+        - { name: 'ubuntu-vm1' }
+        - { name: 'ubuntu-vm2' }
+        - { name: 'ubuntu-vm3' }
       loop_control:
         index_var: loop.index
