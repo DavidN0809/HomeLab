@@ -1,6 +1,6 @@
 ---
 - name: Update packages on Debian and Ubuntu VMs and LXCs
-  hosts: *
+  hosts: ubuntu
   become: true
   tasks:
     - name: Update apt cache
