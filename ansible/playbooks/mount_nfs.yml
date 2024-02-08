@@ -47,5 +47,4 @@
         - { mount: 'ML', source: 'ML' }
         - { mount: 'NVR', source: 'NVR' }
         - { mount: 'Recordings', source: 'Recordings' }
-        - { mount: 'Servers', source: 'Servers' }
         - { mount: 'temp', source: 'temp'}
