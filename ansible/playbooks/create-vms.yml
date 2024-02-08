@@ -29,5 +29,3 @@
         - { vmid: 103, name: 'ubuntu-vm3' }
       loop_control:
         index_var: loop.index
-      delegate_to: "{{ item }}"
-      with_inventory_hostnames: proxmox
