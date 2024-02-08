@@ -28,3 +28,6 @@ The following Ansible playbooks are available:
 
 - update_packages.yml: Manages packages using APT package manager.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`  
+
+- create_vms: creating ubuntu vms
+  Usage: `ansible-playbook playbook.yml --ask-vault-pass -e @secrets.yml`

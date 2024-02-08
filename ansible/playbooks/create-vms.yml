@@ -1,0 +1,33 @@
+---
+- name: Deploy Ubuntu VMs on Proxmox Nodes
+  hosts: proxmox
+  become: yes
+  gather_facts: no
+  vars_files:
+    - secrets.yml
+
+  tasks:
+    - name: Create VM on each Proxmox node
+      community.general.proxmox_kvm:
+        api_user: ansible@pve
+        api_password: "{{ proxmox_password }}"
+        api_host: "{{ ansible_host }}"
+        validate_certs: no
+        node: "{{ inventory_hostname }}"
+        vmid: "{{ item.vmid }}"
+        name: "{{ item.name }}"
+        clone: ubuntu-template
+        cores: 4
+        memory: 8192
+        disk: 64
+        bootdisk: virtio0
+        netif: '{"net0":"virtio,bridge=vmbr0"}'
+        ipconfig0: "ip=192.168.68.{{ 80 + loop.index }}/24,gw=192.168.68.1"
+      loop:
+        - { vmid: 101, name: 'ubuntu-vm1' }
+        - { vmid: 102, name: 'ubuntu-vm2' }
+        - { vmid: 103, name: 'ubuntu-vm3' }
+      loop_control:
+        index_var: loop.index
+      delegate_to: "{{ item }}"
+      with_inventory_hostnames: proxmox
