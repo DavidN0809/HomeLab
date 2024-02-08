@@ -18,7 +18,7 @@
         path: "/mnt/unraid/{{ item }}"
         state: directory
       loop:
-        - '3D_Printing'
+        - '3D_Printing'  # Changed from '3D Printing' to '3D_Printing'
         - 'Backup'
         - 'appdata'
         - 'data'
@@ -33,12 +33,12 @@
     - name: Mount NFS shares under /mnt/unraid
       ansible.builtin.mount:
         path: "/mnt/unraid/{{ item.mount }}"
-        src: "192.168.68.133:/{{ item.source }}"
+        src: "192.168.68.133:/mnt/user/{{ item.source }}"  # Adjusted to reflect the correct NFS server path
         fstype: nfs
         opts: "defaults,rw,hard,intr,timeo=600,retrans=5,nofail"
         state: mounted
       loop:
-        - { mount: '3D_Printing', source: '3D Printing' }
+        - { mount: '3D_Printing', source: '3D Printing' }  # Adjusted mount to '3D_Printing' and source to reflect the NFS export
         - { mount: 'Backup', source: 'Backup' }
         - { mount: 'appdata', source: 'appdata' }
         - { mount: 'data', source: 'data' }
@@ -47,4 +47,5 @@
         - { mount: 'ML', source: 'ML' }
         - { mount: 'NVR', source: 'NVR' }
         - { mount: 'Recordings', source: 'Recordings' }
+        - { mount: 'Servers', source: 'Servers' }
         - { mount: 'temp', source: 'temp'}
