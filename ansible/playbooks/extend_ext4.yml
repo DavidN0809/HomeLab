@@ -1,6 +1,6 @@
 ---
 - name: Extend logical volume and resize filesystem
-  hosts: masters
+  hosts: ubuntu
   become: yes
   tasks:
     - name: Extend the logical volume to use all free space
