@@ -1,6 +1,6 @@
 ---
 - name: Mount NFS Shares under /mnt/unraid
-  hosts: your_target_hosts
+  hosts: ubuntu
   become: true
   tasks:
     - name: Ensure NFS packages are installed
