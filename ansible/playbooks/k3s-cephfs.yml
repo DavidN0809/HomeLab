@@ -6,28 +6,17 @@
     ansible_user: "ubuntu"
     ceph_client_name: "k3suser"
     ceph_admin_key: "AQABl8VlyvEkOhAAI84zOAHfUuZSkGkpGITwuA=="
-    monitor_ips: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789"
+    monitor_ips: "192.168.68.135,192.168.68.99,192.168.68.127"
+    ceph_fsid: "bdb7f01f-af6a-4dab-a236-2eb8075ef90b"
     mount_point: "/mnt/cephfs"
-    ceph_secret_file: "/home/ubuntu/ceph.client.k3suser.keyring"
-    ceph_conf_path: "/home/ubuntu/ceph.conf"
+    ceph_secret_file: "/etc/ceph/ceph.client.k3suser.keyring"
+    ceph_conf_path: "/etc/ceph/ceph.conf"
     pv_pvc_definition_path: "/home/ubuntu/pv-pvc-definition.yaml"
 
   tasks:
-    - name: Install ceph-common
-      apt:
-        name: ceph-common
-        update_cache: yes
-        state: present
-
-    - name: Create mount directory
+    - name: Ensure /etc/ceph directory exists
       file:
-        path: "{{ mount_point }}"
-        state: directory
-        mode: '0755'
-
-    - name: Ensure /home/ubuntu directory exists for Ceph config
-      file:
-        path: "/home/ubuntu"
+        path: "/etc/ceph"
         state: directory
         mode: '0755'
 
@@ -37,26 +26,16 @@
         content: |
           [client.{{ ceph_client_name }}]
           key = {{ ceph_admin_key }}
-          caps mds = "allow rw path=/"
-          caps mon = "allow r"
-          caps osd = "allow rw pool=cephfs"
         mode: '0600'
 
-    - name: Copy Ceph configuration to all nodes
+    - name: Generate ceph.conf file
       copy:
-        src: "{{ ceph_conf_path }}"
-        dest: "/etc/ceph/ceph.conf"
-        owner: root
-        group: root
+        dest: "{{ ceph_conf_path }}"
+        content: |
+          [global]
+          fsid = {{ ceph_fsid }}
+          mon_host = {{ monitor_ips | join(',') }}
         mode: '0644'
-
-    - name: Mount CephFS (ensure mounted)
-      mount:
-        path: "{{ mount_point }}"
-        src: "{{ monitor_ips }}:/"
-        fstype: "ceph"
-        opts: "name={{ ceph_client_name }},secretfile={{ ceph_secret_file }},_netdev,noatime"
-        state: mounted
 
 - name: Setup Kubernetes Resources for CephFS on localhost
   hosts: localhost
@@ -64,12 +43,48 @@
   vars:
     ceph_admin_key_base64: "{{ ceph_admin_key | b64encode }}"
     pv_pvc_definition_path: "/home/ubuntu/pv-pvc-definition.yaml"
+    ceph_client_name: "k3suser"
+    monitor_ips: "192.168.68.135,192.168.68.99,192.168.68.127"
   tasks:
     - name: Create Kubernetes secret for Ceph authentication
-      shell: |
-        kubectl create secret generic ceph-secret --from-literal=key="{{ ceph_admin_key_base64 }}" --namespace=default
+      shell: kubectl create secret generic ceph-secret --from-literal=key="{{ ceph_admin_key_base64 }}" --namespace=default
       args:
         executable: /bin/bash
+
+    - name: Generate PV and PVC definition for CephFS
+      copy:
+        dest: "{{ pv_pvc_definition_path }}"
+        content: |
+          apiVersion: v1
+          kind: PersistentVolume
+          metadata:
+            name: cephfs-pv
+          spec:
+            capacity:
+              storage: 1Gi
+            accessModes:
+              - ReadWriteMany
+            cephfs:
+              monitors: [{{ monitor_ips | join('","') }}]
+              path: "/"
+              user: "{{ ceph_client_name }}"
+              secretRef:
+                name: ceph-secret
+              readOnly: false
+            persistentVolumeReclaimPolicy: Retain
+          ---
+          apiVersion: v1
+          kind: PersistentVolumeClaim
+          metadata:
+            name: cephfs-pvc
+          spec:
+            accessModes:
+              - ReadWriteMany
+            resources:
+              requests:
+                storage: 1Gi
+            volumeName: cephfs-pv
+        mode: '0644'
 
     - name: Deploy Persistent Volume and Persistent Volume Claim for CephFS
       shell: kubectl apply -f "{{ pv_pvc_definition_path }}"
