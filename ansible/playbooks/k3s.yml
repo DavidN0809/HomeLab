@@ -1,0 +1,65 @@
+- name: Setup CephFS on Ubuntu Servers
+  hosts: master
+  become: yes
+  
+- name: Testing kube config and kubectl    
+  hosts: localhost
+  become: true
+  environment:
+    HOME: "/home/ubuntu"
+    KUBECONFIG: "/home/ubuntu/.kube/config"
+  tasks:
+    - name: Print KUBECONFIG
+      ansible.builtin.debug:
+        msg: "{{ lookup('env', 'KUBECONFIG') }}"
+    - name: Test kubectl
+      ansible.builtin.shell: kubectl get nodes
+      register: test_output
+    - name: Print kubectl output
+      ansible.builtin.debug:
+        msg: "{{ test_output.stdout }}"
+
+# Helm and Cert-Manager Installation
+- name: Install Helm and setup Cert-Manager
+  hosts: localhost
+  become: true
+  environment:
+    HOME: "/home/ubuntu"
+    KUBECONFIG: "/home/ubuntu/.kube/config"
+  tasks:
+    - name: Download Helm installation script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get_helm.sh
+        mode: '0700'
+    
+    - name: Execute Helm installation script
+      ansible.builtin.shell: /tmp/get_helm.sh
+
+    - name: Apply cert-manager CRDs
+      ansible.builtin.shell: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.1/cert-manager.crds.yaml
+
+    - name: Add jetstack Helm repository
+      ansible.builtin.shell: helm repo add jetstack https://charts.jetstack.io
+
+    - name: Update Helm repository
+      ansible.builtin.shell: helm repo update
+
+    - name: Install cert-manager from Helm chart
+      ansible.builtin.shell: >
+        helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace
+
+# Rancher Installation
+- name: Install Rancher
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Add Rancher Helm repository
+      ansible.builtin.shell: helm repo add rancher-latest https://releases.rancher.com/server-charts/latest  
+
+    - name: Create namespace for Rancher
+      ansible.builtin.command: kubectl create namespace cattle-system
+
+    - name: Install Rancher
+      ansible.builtin.shell: >
+        helm install rancher rancher-latest/rancher --namespace cattle-system --set hostname=rancher.lan --set bootstrapPassword=admin
