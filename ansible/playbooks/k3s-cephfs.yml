@@ -1,0 +1,77 @@
+---
+- name: Setup CephFS on Ubuntu Servers
+  hosts: ubuntu
+  become: yes
+  vars:
+    ansible_user: "ubuntu"
+    ceph_admin_key: " AQBivrVlvKZNKhAAqKyVBiLRHmwyBehOnsFrHA=="
+    monitor_ips: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789"
+    mount_point: "/mnt/cephfs"
+    ceph_secret_file: "/home/ubuntu/ceph.client.admin.keyring"
+    ceph_conf_path: "/home/ubuntu/ceph.conf"
+    pv_pvc_definition_path: "/home/ubuntu/pv-pvc-definition.yaml"
+
+  tasks:
+    - name: Install ceph-common
+      apt:
+        name: ceph-common
+        update_cache: yes
+        state: present
+
+    - name: Create mount directory
+      file:
+        path: "{{ mount_point }}"
+        state: directory
+        mode: '0755'
+
+    - name: Ensure /home/ubuntu directory exists for Ceph config
+      file:
+        path: "/home/ubuntu"
+        state: directory
+        mode: '0755'
+
+    - name: Create Ceph keyring file
+      copy:
+        dest: "{{ ceph_secret_file }}"
+        content: |
+          [client.admin]
+          key = {{ ceph_admin_key }}
+          caps mds = "allow *"
+          caps mgr = "allow *"
+          caps mon = "allow *"
+          caps osd = "allow *"
+        mode: '0600'
+
+    - name: Copy Ceph configuration to all nodes
+      copy:
+        src: "{{ ceph_conf_path }}"
+        dest: "/etc/ceph/ceph.conf"
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Mount CephFS (ensure mounted)
+      mount:
+        path: "{{ mount_point }}"
+        src: "{{ monitor_ips }}:/"
+        fstype: "ceph"
+        opts: "name=admin,secretfile={{ ceph_secret_file }},_netdev,noatime"
+        state: mounted
+
+- name: Setup Kubernetes Resources for CephFS on localhost
+  hosts: localhost
+  become: no
+  vars:
+    ceph_admin_key_base64: "{{ ceph_admin_key | b64encode }}"
+    pv_pvc_definition_path: "/home/ubuntu/pv-pvc-definition.yaml"
+  tasks:
+    - name: Create Kubernetes secret for Ceph authentication
+      shell: |
+        kubectl create secret generic ceph-secret --from-literal=key="{{ ceph_admin_key_base64 }}" --namespace=default
+      args:
+        executable: /bin/bash
+
+    - name: Deploy Persistent Volume and Persistent Volume Claim for CephFS
+      shell: kubectl apply -f "{{ pv_pvc_definition_path }}"
+      args:
+        executable: /bin/bash
