@@ -1,6 +1,6 @@
 ---
 - name: Grant ubuntu user passwordless sudo
-  hosts: manager_nodes
+  hosts: ubuntu
   become: yes
   tasks:
     - name: Ensure ubuntu has passwordless sudo
