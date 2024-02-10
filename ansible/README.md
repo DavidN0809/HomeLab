@@ -18,7 +18,7 @@ The following Ansible playbooks are available:
   Usage: `ansible-playbook -i inventory.ini ./playbooks/setup-cephfs.yml` 
 
 - sudo.yml: grants ubuntu user sudo access
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/sudo.yml` 
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/sudo.yaml --ask-become-pass` 
 
 - sync_time_zones.yml: Synchronizes the timezone across the target machines.  
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
