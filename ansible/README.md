@@ -38,4 +38,6 @@ open `~/.bashrc`
 
 add the line `export PATH="$HOME/.local/bin:$PATH"`
 
+` source ~/.bashrc`
+
 `python3 -m pip install --user ansible`
