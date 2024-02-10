@@ -31,3 +31,11 @@ The following Ansible playbooks are available:
 
 - create_vms: creating ubuntu vms
   Usage: `ansible-playbook playbook.yml --ask-vault-pass -e @secrets.yml`
+## Ansible install
+`curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
+`python3 get-pip.py`
+open `~/.bashrc`
+
+add the line `export PATH="$HOME/.local/bin:$PATH"`
+
+`python3 -m pip install --user ansible`
