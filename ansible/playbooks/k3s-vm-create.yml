@@ -48,9 +48,9 @@
         memory: "{{ item.memory }}"
         disk: "{{ item.disk }}"
         cpu: host
-        net: |
-          net0: virtio,bridge=vmbr0
-          net1: virtio,bridge=vmbr1
+        net:
+          net0: "virtio,bridge=vmbr0"
+          net1: "virtio,bridge=vmbr1"
         state: present
       loop: "{{ vm_definitions }}"
       when: node_available is defined and node_available
