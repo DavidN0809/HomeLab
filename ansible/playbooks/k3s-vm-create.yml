@@ -1,24 +1,5 @@
 ---
-- name: Check Proxmox Node Availability
-  hosts: proxmox
-  gather_facts: no
-  tasks:
-    - name: Ping Proxmox Node
-      ansible.builtin.ping:
-      register: ping_result
-      ignore_errors: yes
-
-    - name: Set fact for node availability
-      set_fact:
-        node_available: true
-      when: ping_result is succeeded
-
-    - name: Set fact for node unavailability
-      set_fact:
-        node_unavailable: true
-      when: ping_result is failed
-
-- name: Deploy VMs to Available Proxmox Nodes
+- name: Deploy VMs to Proxmox Nodes
   hosts: proxmox
   gather_facts: no
   vars:
@@ -27,66 +8,16 @@
     vm_definitions:
       - name: ubuntu-master
         template: ubuntu-template
-        cores: 4
-        memory: 4096
-        disk: 32
       - name: ubuntu-worker
         template: ubuntu-template
-        cores: 8
-        memory: 16384
-        disk: 64
   tasks:
-    - name: Deploy VMs to this node
+    - name: Clone VMs from template
       community.general.proxmox_kvm:
         api_user: "{{ proxmox_api_user }}"
         api_password: "{{ proxmox_api_password }}"
         api_host: "{{ ansible_host }}"
         node: "{{ inventory_hostname }}"
-        name: "{{ item.name }}-{{ inventory_hostname }}"
+        name: "{{ item.name }}"
         clone: "{{ item.template }}"
-        cores: "{{ item.cores }}"
-        memory: "{{ item.memory }}"
-        disk: "{{ item.disk }}"
-        cpu: host
-        net:
-          net0: "virtio,bridge=vmbr0"
-          net1: "virtio,bridge=vmbr1"
         state: present
       loop: "{{ vm_definitions }}"
-      when: node_available is defined and node_available
-
-- name: Fallback Deployment to dl380 for Unavailable Nodes
-  hosts: proxmox
-  gather_facts: no
-  vars:
-    fallback_host: dl380
-    proxmox_api_user: root@pam
-    proxmox_api_password: your_password
-    vm_definitions:
-      - name: ubuntu-master
-        template: ubuntu-template
-        cores: 4
-        memory: 4096
-        disk: 64
-      - name: ubuntu-worker
-        template: ubuntu-template
-        cores: 8
-        memory: 16384
-        disk: 64
-  tasks:
-    - name: Deploy VMs to fallback node
-      community.general.proxmox_kvm:
-        api_user: "{{ proxmox_api_user }}"
-        api_password: "{{ proxmox_api_password }}"
-        api_host: "{{ hostvars[fallback_host].ansible_host }}"
-        node: "{{ fallback_host }}"
-        name: "{{ item.name }}-{{ inventory_hostname }}"
-        clone: "{{ item.template }}"
-        cores: "{{ item.cores }}"
-        memory: "{{ item.memory }}"
-        disk: "{{ item.disk }}"
-        cpu: host
-        net: "{'net0':'virtio,bridge=vmbr0'}"
-        state: present
-      loop: "{{ vm_definitions }}"
-      when: node_unavailable is defined and node_unavailable
