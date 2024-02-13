@@ -1,0 +1,53 @@
+---
+- name: Gather Proxmox Node Information
+  hosts: proxmox
+  gather_facts: no
+  tasks:
+    - name: Get total memory on the node
+      ansible.builtin.shell: free -m | grep Mem: | awk '{print $2}'
+      register: total_memory
+      become: yes
+
+    - name: Get total CPU cores on the node
+      ansible.builtin.shell: nproc
+      register: total_cores
+      become: yes
+
+    - name: Print node capabilities
+      ansible.builtin.debug:
+        msg: "Node {{ inventory_hostname }} has {{ total_memory.stdout }} MB of memory and {{ total_cores.stdout }} CPU cores."
+
+- name: Deploy VMs on Proxmox Based on Node Capabilities
+  hosts: localhost
+  gather_facts: no
+  vars:
+    proxmox_api_user: root@pam
+    proxmox_api_password: your_password
+    proxmox_api_host: 192.168.1.101 # Example, adjust accordingly
+    vm_definitions:
+      - name: ubuntu-master01
+        template: ubuntu-template
+        cores: 4
+        memory: 4096
+        disk: 32
+      - name: ubuntu-worker01
+        template: ubuntu-template
+        cores: 8
+        memory: 16384
+        disk: 64
+  tasks:
+    - name: Deploy or update VMs
+      community.general.proxmox_kvm:
+        api_user: "{{ proxmox_api_user }}"
+        api_password: "{{ proxmox_api_password }}"
+        api_host: "{{ proxmox_api_host }}"
+        node: proxmox_node_1 # Adjust based on your logic or variable
+        name: "{{ item.name }}"
+        clone: "{{ item.template }}"
+        cores: "{{ item.cores }}"
+        memory: "{{ item.memory }}"
+        disk: "{{ item.disk }}"
+        cpu: host
+        net: "{'net0':'virtio,bridge=vmbr0'}"
+        state: present
+      loop: "{{ vm_definitions }}"
