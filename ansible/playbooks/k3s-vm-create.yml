@@ -1,6 +1,6 @@
 ---
 - name: Check Proxmox Node Availability
-  hosts: proxmox_nodes
+  hosts: proxmox
   gather_facts: no
   tasks:
     - name: Ping Proxmox Node
@@ -19,7 +19,7 @@
       when: ping_result is failed
 
 - name: Deploy VMs to Available Proxmox Nodes
-  hosts: proxmox_nodes
+  hosts: proxmox
   gather_facts: no
   vars:
     proxmox_api_user: root@pam
@@ -56,7 +56,7 @@
       when: node_available is defined and node_available
 
 - name: Fallback Deployment to dl380 for Unavailable Nodes
-  hosts: proxmox_nodes
+  hosts: proxmox
   gather_facts: no
   vars:
     fallback_host: dl380
