@@ -1,6 +1,6 @@
 ---
 - name: Check which Python Ansible is using
-    ansible.builtin.debug:
+   ansible.builtin.debug:
       msg: "{{ ansible_python_interpreter }}"
 
 - name: Deploy VMs to Proxmox Nodes
