@@ -30,11 +30,7 @@ The following Ansible playbooks are available:
   Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`  
 
 - create_vms: creating ubuntu vms
-  Usage: `ansible-playbook playbook.yml --ask-vault-pass -e @secrets.yml`
-## Ansible install
-`curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py`
-`python3 get-pip.py`
-open `~/.bashrc`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/k3s-vm-create.yml -k`
 
 add the line `export PATH="$HOME/.local/bin:$PATH"`
 
