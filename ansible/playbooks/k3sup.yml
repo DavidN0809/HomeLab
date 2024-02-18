@@ -6,7 +6,7 @@
     vip_ip: 192.168.68.79
     master01_ip: 192.168.68.80
     interface_name: enp6s18
-    metallb_address_pool: 192.168.10.120-192.168.10.129
+    metallb_address_pool: 192.168.168.80-192.168.68.85
 
   tasks:
     - name: Install k3sup on the first master node
