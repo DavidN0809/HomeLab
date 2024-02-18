@@ -3,7 +3,6 @@
 
 The following Ansible playbooks are available:
 
-
 - docker.yml: installs docker, adds to /etc/hosts, creates docker swarm
   Usage: `ansible-playbook -i inventory.ini ./playbooks/docker.yml`
 
@@ -29,7 +28,7 @@ The following Ansible playbooks are available:
   Usage: `ansible-playbook -i inventory.ini ./playbooks/sudo.yaml --ask-pass --ask-become-pass` 
 
 - sync_time_zones.yml: Synchronizes the timezone across the target machines.  
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/timezone_sync.yml`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/sync_time_zones.yml`
 
 - update_containers.yml: updates all contaienrs
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/update_containers.yml`
