@@ -1,6 +1,6 @@
 ---
 - name: Install and configure a k3s cluster with kube-vip and MetalLB
-  hosts: all
+  hosts: ubuntu
   become: yes
   vars:
     vip_ip: 192.168.68.79
