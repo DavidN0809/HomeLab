@@ -3,7 +3,7 @@
   hosts: ubuntu
   gather_facts: no
   vars:
-    ssh_public_key_path: "/home/ubuntu/.ssh/id_rsa"
+    ssh_public_key_path: "/home/ubuntu/.ssh/id_rsa.pub"
 
   tasks:
     - name: Copy SSH public key to authorized_keys
