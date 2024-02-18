@@ -1,4 +1,4 @@
-- name: Setup CephFS on Ubuntu Servers
+- name: Setup helm, cert manager, rancher
   hosts: master
   become: yes
   
