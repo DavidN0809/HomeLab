@@ -8,7 +8,7 @@
   tasks:
     - name: Copy SSH public key to authorized_keys
       ansible.builtin.authorized_key:
-        user: ubuntu-template
+        user: ubuntu
         state: present
         key: "{{ lookup('file', ssh_public_key_path) }}"
 
