@@ -1,37 +1,42 @@
 ---
 - name: Install and configure a k3s cluster with kube-vip and MetalLB
-  hosts: ubuntu
+  hosts: all
   become: yes
   vars:
     vip_ip: 192.168.68.79
     master01_ip: 192.168.68.80
     interface_name: enp6s18
-    metallb_address_pool: 192.168.168.80-192.168.68.85
+    metallb_address_pool: 192.168.10.120-192.168.10.129
 
   tasks:
+    - name: Define the first master node manually
+      set_fact:
+        first_master_node: "dl380"
+      run_once: true
+
     - name: Install k3sup on the first master node
       ansible.builtin.shell: |
         curl -sLS https://get.k3sup.dev | sudo install /dev/stdin /usr/local/bin/k3sup
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Initialize the cluster on the first master node
       ansible.builtin.shell: |
-        k3sup install --ip {{ master01_ip }} \
+        k3sup install --ip {{ hostvars[first_master_node].ansible_host }} \
         --user ubuntu \
         --sudo \
         --tls-san {{ vip_ip }} \
         --cluster --local-path ~/.kube/config \
         --context k8s-cluster-ha \
-        --k3s-extra-args "--disable servicelb --node-ip={{ master01_ip }}"
-      when: inventory_hostname == 'first_master_node'
+        --k3s-extra-args "--disable servicelb --node-ip={{ hostvars[first_master_node].ansible_host }}"
+      when: inventory_hostname == first_master_node
 
     - name: Apply RBAC for kube-vip
       ansible.builtin.shell: kubectl apply -f https://kube-vip.io/manifests/rbac.yaml
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Pull the kube-vip image on the first master node
       ansible.builtin.shell: ctr image pull ghcr.io/kube-vip/kube-vip:latest
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Create kube-vip manifest
       ansible.builtin.shell: |
@@ -44,7 +49,7 @@
         --leaderElection \
         --taint \
         --inCluster | tee /var/lib/rancher/k3s/server/manifests/kube-vip.yaml
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Join the rest of the master nodes to the cluster
       ansible.builtin.shell: |
@@ -52,7 +57,7 @@
         --user ubuntu --sudo --server --server-ip {{ master01_ip }} \
         --server-user ubuntu \
         --k3s-extra-args "--disable servicelb --node-ip={{ ansible_host }}"
-      when: inventory_hostname in groups['master_nodes'] and inventory_hostname != 'first_master_node'
+      when: "'master' in group_names and inventory_hostname != first_master_node"
 
     - name: Join worker nodes to the cluster
       ansible.builtin.shell: |
@@ -60,13 +65,13 @@
         --k3s-channel stable \
         --server-user ubuntu \
         --k3s-extra-args " --disable servicelb"
-      when: inventory_hostname in groups['worker_nodes']
+      when: "'worker' in group_names"
 
     - name: Install MetalLB on the first master node
       ansible.builtin.shell: |
         kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/manifests/namespace.yaml
         kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.3/manifests/metallb.yaml
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Apply MetalLB configuration
       ansible.builtin.copy:
@@ -84,8 +89,8 @@
                 protocol: layer2
                 addresses:
                 - {{ metallb_address_pool }}
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
 
     - name: Deploy MetalLB configuration
       ansible.builtin.shell: kubectl apply -f /home/ubuntu/config.yml
-      when: inventory_hostname == 'first_master_node'
+      when: inventory_hostname == first_master_node
