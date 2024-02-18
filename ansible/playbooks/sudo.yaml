@@ -1,25 +1,16 @@
-- name: Copy SSH key to multiple hosts using ssh-copy-id
-  hosts: ubuntu
-  gather_facts: no
-  vars:
-    ssh_public_key_path: "/home/ubuntu-template/.ssh/id_rsa.pub"
-    remote_user: ubuntu
+---
+#- name: Copy SSH key to multiple hosts
+#  hosts: ubuntu
+#  gather_facts: no
+#  vars:
+#    ssh_public_key_path: "/home/ubuntu/.ssh/id_rsa.pub"
 
-  tasks:
-    - name: Install sshpass (required for password-based SSH login)
-      ansible.builtin.package:
-        name: sshpass
-        state: present
-      delegate_to: localhost
-
-    - name: Copy SSH public key using ssh-copy-id
-      ansible.builtin.shell: |
-        sshpass -p "{{ ansible_ssh_pass }}" ssh-copy-id -i {{ ssh_public_key_path }} {{ remote_user }}@{{ inventory_hostname }}
-      args:
-        executable: /bin/bash
-      become: false
-      delegate_to: localhost
-      ignore_errors: true
+#  tasks:
+ #   - name: Copy SSH public key to authorized_keys
+ #     ansible.builtin.authorized_key:
+ #       user: ubuntu
+ #       state: present
+ #       key: "{{ lookup('file', ssh_public_key_path) }}"
 
 - name: Grant ubuntu user passwordless sudo
   hosts: ubuntu
