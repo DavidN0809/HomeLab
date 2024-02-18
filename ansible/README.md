@@ -27,10 +27,7 @@ The following Ansible playbooks are available:
   Usage: `ansible-playbook -i inventory.ini ./playbooks/timezone/update_containers.yml`
 
 - update_packages.yml: Manages packages using APT package manager.  
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/apt.yml`  
-
-- create_vms: creating ubuntu vms
-  Usage: `ansible-playbook -i inventory.ini ./playbooks/k3s-vm-create.yml -k`
+  Usage: `ansible-playbook -i inventory.ini ./playbooks/update_packaes.yml`  
 
 add the line `export PATH="$HOME/.local/bin:$PATH"`
 
