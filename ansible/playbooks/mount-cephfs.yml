@@ -3,8 +3,8 @@
   hosts: master
   become: yes
   vars:
-    ansible_user: ansibleuser
-    ceph_admin_key: "AQBz8YllITjQJRAAomL3671SquuPjg98GlwAuQ=="
+    ansible_user: ubuntu
+    ceph_admin_key: "AQC/bNZlMD+SLhAAoHwUaTrAtI+9s9uOBkD33g=="
     monitor_ips: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789"
     mount_point: "/mnt/cephfs"
     ceph_secret_file: "/etc/ceph/ceph.client.admin.keyring"
