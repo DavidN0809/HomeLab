@@ -5,16 +5,18 @@
   vars:
     ansible_user: ubuntu
     ceph_swarm_key: "AQC/bNZlMD+SLhAAoHwUaTrAtI+9s9uOBkD33g=="
-    monitor_ips: "192.168.68.135:6789,192.168.68.127:6789"
+    monitor_ips: "192.168.68.135:6789,192.168.68.127:6789,192.168.68.99:6789"
     mount_point: "/mnt/cephfs"
     ceph_secret_file: "/etc/ceph/ceph.client.swarm.keyring"
 
   tasks:
-    - name: Install ceph-fuse
+    - name: Install ceph-fuse and ceph common
       apt:
-        name: ceph-fuse
-        update_cache: yes
-        state: present
+      name:
+        - ceph-fuse
+        - ceph-common        
+      update_cache: yes
+      state: present
 
     - name: Create mount directory
       file:
@@ -56,7 +58,7 @@
     - name: Mount CephFS (ensure mounted)
       ansible.builtin.mount:
         path: "{{ mount_point }}"
-        src: "192.168.68.135:6789,192.168.68.127:6789:/"
+        src: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789:/"
         fstype: "ceph"
         opts: "name=swarm,secretfile={{ ceph_secret_file }},_netdev,noatime"
         state: mounted
