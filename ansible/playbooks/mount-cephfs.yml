@@ -4,10 +4,10 @@
   become: yes
   vars:
     ansible_user: ubuntu
-    ceph_admin_key: "AQC/bNZlMD+SLhAAoHwUaTrAtI+9s9uOBkD33g=="
+    ceph_swarm_key: "AQC/bNZlMD+SLhAAoHwUaTrAtI+9s9uOBkD33g=="
     monitor_ips: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789"
     mount_point: "/mnt/cephfs"
-    ceph_secret_file: "/etc/ceph/ceph.client.admin.keyring"
+    ceph_secret_file: "/etc/ceph/ceph.client.swarm.keyring"
 
   tasks:
     - name: Install ceph-fuse
@@ -32,8 +32,8 @@
       copy:
         dest: "{{ ceph_secret_file }}"
         content: |
-          [client.admin]
-          key = {{ ceph_admin_key }}
+          [client.swarm]
+          key = {{ ceph_swarm_key }}
           caps mds = "allow *"
           caps mgr = "allow *"
           caps mon = "allow *"
@@ -58,6 +58,7 @@
         path: "{{ mount_point }}"
         src: "192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789:/"
         fstype: "ceph"
-        opts: "name=admin,secretfile={{ ceph_secret_file }},_netdev,noatime"
+        opts: "name=swarm,secretfile={{ ceph_secret_file }},_netdev,noatime"
         state: mounted
-      when: mount_point not in [item.mount for item in ansible_facts.mounts]
+      when: mount_point not in ansible_facts.mounts | map(attribute='mount') | list
+
