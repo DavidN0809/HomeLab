@@ -19,12 +19,12 @@
         state: present
 
     - name: Ensure ceph.conf is present
-    copy:
-      dest: "/etc/ceph/ceph.conf"
-      content: |
-        [global]
-        mon_host = 192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789
-      mode: '0644'
+      copy:
+        dest: "/etc/ceph/ceph.conf"
+        content: |
+          [global]
+          mon_host = 192.168.68.135:6789,192.168.68.99:6789,192.168.68.127:6789
+        mode: '0644'
 
 
     - name: Create mount directory
