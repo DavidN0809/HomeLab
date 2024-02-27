@@ -1,0 +1,56 @@
+version: '3.7'  # Updated for newer Docker Compose version compatibility with Swarm features
+
+services:
+  primary:
+    hostname: 'primary'
+    image: crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=10
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=primary
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=testdb
+      - PG_USER=testuser
+      - PG_PASSWORD=password
+      - PG_ROOT_PASSWORD=password
+      - PG_PRIMARY_PORT=5432
+    volumes:
+      - type: bind
+        source: /mnt/cephfs/docker/appdata/postgresql-swarm/primary
+        target: /pgdata
+    ports:
+      - '5432'
+    networks:
+      - crunchynet
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager 
+  replica:
+    image: crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    environment:
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=10
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=replica
+      - PG_PRIMARY_HOST=primary
+      - PG_PRIMARY_PORT=5432
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=testdb
+      - PG_USER=testuser
+      - PG_PASSWORD=password
+      - PG_ROOT_PASSWORD=password
+    volumes:
+      - type: bind
+        source: /mnt/cephfs/docker/appdata/postgresql-swarm/replica
+        target: /pgdata
+    ports:
+      - '5432'
+    deploy:
+      mode: replicated
+      replicas: 3
