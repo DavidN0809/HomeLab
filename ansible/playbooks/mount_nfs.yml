@@ -29,6 +29,7 @@
         - 'Recordings'
         - 'Servers'
         - 'temp'
+        - 'isos'
     
     - name: Mount NFS shares under /mnt/unraid
       ansible.builtin.mount:
@@ -48,3 +49,4 @@
         - { mount: 'NVR', source: 'NVR' }
         - { mount: 'Recordings', source: 'Recordings' }
         - { mount: 'temp', source: 'temp'}
+        - { mount: 'isos', source: 'isos'}
