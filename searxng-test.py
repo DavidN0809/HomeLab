@@ -6,7 +6,7 @@ import time
 def send_search_query(query, url="http://192.168.68.133:7006/"):
     try:
         start_time = time.time()
-        response = requests.get(url, params={'q': query})
+        response = requests.get(url, params={'q': query}, timeout=60)
         latency = time.time() - start_time
         return response.status_code, latency
     except requests.RequestException as e:
