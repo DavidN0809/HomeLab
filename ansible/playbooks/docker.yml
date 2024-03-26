@@ -100,12 +100,11 @@
       systemd:
         name: keepalived
         state: restarted
-
+        
 - name: Join Docker Swarm as Manager Nodes
   hosts: ubuntu:!dl380
   become: yes
   remote_user: ansibleuser
-
   tasks:
     - name: Join Swarm as a Manager
       command: docker swarm join --token {{ hostvars['dl380']['swarm_manager_token'] }} 192.168.68.80:2377
