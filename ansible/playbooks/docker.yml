@@ -57,6 +57,12 @@
         groups: docker
         append: yes
 
+    - name: Install Keepalived
+      apt:
+        name: keepalived
+        state: present
+
+            
 - name: Initialize Docker Swarm
   hosts: dl380
   become: yes
@@ -71,6 +77,30 @@
       set_fact:
         swarm_manager_token: "{{ swarm_init.stdout | regex_search('(SWMTKN[^\\n]+)', '\\1') }}"
       when: swarm_init is changed
+
+
+- name: Configure Keepalived on all nodes
+  hosts: ubuntu
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: Configure Keepalived
+      template:
+        src: keepalived.conf.j2
+        dest: /etc/keepalived/keepalived.conf
+      vars:
+        priority_map:
+          dl380: 150
+          r730: 100
+          x3650: 50
+        virtual_ip: 192.168.68.79
+      notify: restart keepalived
+
+  handlers:
+    - name: restart keepalived
+      systemd:
+        name: keepalived
+        state: restarted
 
 - name: Join Docker Swarm as Manager Nodes
   hosts: ubuntu:!dl380
