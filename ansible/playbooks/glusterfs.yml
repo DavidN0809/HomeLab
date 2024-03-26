@@ -1,0 +1,80 @@
+- name: Install and configure GlusterFS on all nodes
+  hosts: ubuntu
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: Install GlusterFS server
+      apt:
+        name: glusterfs-server
+        state: present
+        update_cache: yes
+
+    - name: Start and enable GlusterFS service
+      systemd:
+        name: glusterd
+        enabled: yes
+        state: started
+
+- name: Configure GlusterFS Storage
+  hosts: ubuntu
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: List all NVMe devices
+      command: ls /dev/nvme*n1
+      register: nvme_devices
+      changed_when: false
+
+    - name: Create physical volumes on all NVMe devices
+      lvg:
+        vg: "glustervg"
+        pvs: "{{ nvme_devices.stdout_lines }}"
+      when: nvme_devices.stdout_lines | length > 0
+
+    - name: Create a volume group 'glustervg' on NVMe devices
+      lvg:
+        vg: "glustervg"
+        pvs: "{{ nvme_devices.stdout_lines }}"
+        state: present
+      when: nvme_devices.stdout_lines | length > 0
+
+    - name: Create a logical volume that uses 100% of the volume group space
+      lvol:
+        vg: "glustervg"
+        lv: "glusterlv"
+        size: 100%VG
+
+    - name: Format the logical volume with XFS
+      filesystem:
+        fstype: xfs
+        dev: "/dev/glustervg/glusterlv"
+
+    - name: Mount the logical volume
+      mount:
+        path: "/glusterfs"
+        src: "/dev/glustervg/glusterlv"
+        fstype: xfs
+        state: mounted
+        opts: defaults
+
+- name: Setup GlusterFS Trusted Pool
+  hosts: dl380
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: Probe other nodes into the cluster
+      command: gluster peer probe {{ item }}
+      loop: ["192.168.68.81", "192.168.68.82"] 
+      ignore_errors: yes
+
+- name: Create GlusterFS Volume
+  hosts: dl380
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: Create a replicated GlusterFS volume
+      command: gluster volume create gv0 replica 3 192.168.68.80:/glusterfs 192.168.68.81:/glusterfs 192.168.68.82:/glusterfs force
+      ignore_errors: yes
+
+    - name: Start the GlusterFS volume
+      command: gluster volume start gv0
