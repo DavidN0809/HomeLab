@@ -58,13 +58,13 @@
         append: yes
 
 - name: Initialize Docker Swarm
-  hosts: ubuntu
+  hosts: dl380
   become: yes
   remote_user: ansibleuser
 
   tasks:
     - name: Initialize Docker Swarm on Manager Node
-      command: docker swarm init --advertise-addr 192.168.68.81
+      command: docker swarm init --advertise-addr 192.168.68.80
       register: swarm_init
 
     - name: Set Swarm Manager Token Fact
