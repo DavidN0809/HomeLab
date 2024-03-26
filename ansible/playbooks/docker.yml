@@ -72,11 +72,11 @@
         swarm_manager_token: "{{ swarm_init.stdout | regex_search('(SWMTKN[^\\n]+)', '\\1') }}"
       when: swarm_init is changed
 
-- name: Join Docker Swarm as Worker Nodes
-  hosts: workers
+- name: Join Docker Swarm as Manager Nodes
+  hosts: all:!manager-1
   become: yes
   remote_user: ansibleuser
 
   tasks:
-    - name: Join Swarm as Worker
-      command: docker swarm join --token {{ hostvars['manager']['swarm_manager_token'] }} 192.168.68.81:2377
+    - name: Join Swarm as a Manager
+      command: docker swarm join --token {{ hostvars['manager-1']['swarm_manager_token'] }} 192.168.68.80:2377
