@@ -1,6 +1,6 @@
 ---
 - name: Configure Cluster Hosts and Install Docker CE
-  hosts: all
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
 
@@ -58,7 +58,7 @@
         append: yes
 
 - name: Initialize Docker Swarm
-  hosts: manager
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
 
@@ -73,7 +73,7 @@
       when: swarm_init is changed
 
 - name: Join Docker Swarm as Manager Nodes
-  hosts: all:!manager-1
+  hosts: all:!dl380
   become: yes
   remote_user: ansibleuser
 
