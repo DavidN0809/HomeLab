@@ -10,9 +10,9 @@
         path: /etc/hosts
         line: "{{ item }}"
       loop:
-        - "192.168.68.80 manager-1"
-        - "192.168.68.82 manager-2"
-        - "192.168.68.82 manager-3"
+        - "192.168.68.80 dl380"
+        - "192.168.68.81 x3650"
+        - "192.168.68.82 xr730
 
     - name: Update system packages
       apt:
