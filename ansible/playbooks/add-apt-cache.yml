@@ -1,0 +1,16 @@
+---
+- name: Configure apt to use apt-cacher-ng proxy
+  hosts: ubuntu
+  become: yes
+  remote_user: ansibleuser
+  tasks:
+    - name: Set apt proxy configuration for all hosts
+      lineinfile:
+        path: /etc/apt/apt.conf.d/02proxy
+        create: yes
+        line: 'Acquire::http::Proxy "http://192.168.68.73:3142";'
+        state: present
+
+    - name: Ensure apt-cacher-ng client configuration is applied
+      apt:
+        update_cache: yes
