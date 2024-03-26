@@ -1,5 +1,5 @@
 vrrp_instance VI_1 {
-    state {{ 'MASTER' if ansible_hostname == 'ubuntu-dl380' else 'BACKUP' }}
+    state {{ 'MASTER' if ansible_hostname == 'dl380' else 'BACKUP' }}
     interface enp6s18
     virtual_router_id 51
     priority {{ priority_map[ansible_hostname] }}
