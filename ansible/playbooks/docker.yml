@@ -79,7 +79,7 @@
       copy:
         content: "{{ swarm_worker_token }}"
         dest: "./swarm_worker_token.txt"
-      delegate_to: dl380
+      delegate_to: localhost
       
     - name: Get Swarm Manager Join Token
       command: docker swarm join-token --quiet manager
@@ -93,7 +93,7 @@
       copy:
         content: "{{ swarm_manager_token }}"
         dest: "./swarm_manager_token.txt"
-      delegate_to: dl380
+      delegate_to: localhost
 
 - name: Join Docker Swarm as Manager Nodes
   hosts: ubuntu:!dl380
