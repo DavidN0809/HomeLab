@@ -70,7 +70,17 @@
     - name: Initialize Docker Swarm on Manager Node
       command: docker swarm init --advertise-addr 192.168.68.80
       register: swarm_init_output
-
+      
+    - name: Set Swarm Worker Token Fact
+      set_fact:
+        swarm_worker_token: "{{ swarm_init_output.stdout | regex_search('docker swarm join --token (\\S+)', '\\1') | first }}"
+    
+    - name: Store Swarm Worker Token
+      copy:
+        content: "{{ swarm_worker_token }}"
+        dest: "./swarm_worker_token.txt"
+      delegate_to: dl380
+      
     - name: Get Swarm Manager Join Token
       command: docker swarm join-token --quiet manager
       register: swarm_manager_token_output
@@ -78,6 +88,12 @@
     - name: Set Swarm Manager Token Fact
       set_fact:
         swarm_manager_token: "{{ swarm_manager_token_output.stdout }}"
+
+  - name: Store Swarm Manager Token
+      copy:
+        content: "{{ swarm_manager_token }}"
+        dest: "./swarm_manager_token.txt"
+      delegate_to: dl380
 
 - name: Join Docker Swarm as Manager Nodes
   hosts: ubuntu:!dl380
