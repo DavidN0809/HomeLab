@@ -1,7 +1,8 @@
 - name: Install and configure GlusterFS on all nodes
-  hosts: ubuntu
+  hosts: all
   become: yes
   remote_user: ansibleuser
+  
   tasks:
     - name: Install GlusterFS server
       apt:
@@ -16,14 +17,16 @@
         state: started
 
 - name: Configure GlusterFS Storage
-  hosts: ubuntu
+  hosts: all
   become: yes
   remote_user: ansibleuser
+
   tasks:
     - name: List all NVMe devices
       command: ls /dev/nvme*n1
       register: nvme_devices
       changed_when: false
+      failed_when: false
 
     - name: Create physical volumes on all NVMe devices
       lvg:
@@ -43,11 +46,13 @@
         vg: "glustervg"
         lv: "glusterlv"
         size: 100%VG
+      when: nvme_devices.stdout_lines | length > 0
 
     - name: Format the logical volume with XFS
       filesystem:
         fstype: xfs
         dev: "/dev/glustervg/glusterlv"
+      when: nvme_devices.stdout_lines | length > 0
 
     - name: Mount the logical volume
       mount:
@@ -56,25 +61,54 @@
         fstype: xfs
         state: mounted
         opts: defaults
+      when: nvme_devices.stdout_lines | length > 0
 
 - name: Setup GlusterFS Trusted Pool
-  hosts: dl380
+  hosts: r730
   become: yes
   remote_user: ansibleuser
+
   tasks:
-    - name: Probe other nodes into the cluster
+    - name: Probe other nodes with NVMe drives into the cluster
       command: gluster peer probe {{ item }}
-      loop: ["192.168.68.81", "192.168.68.82"] 
+      loop: "{{ groups['all'] }}"
+      when: hostvars[item]['nvme_devices']['stdout_lines'] | length > 0
       ignore_errors: yes
 
 - name: Create GlusterFS Volume
-  hosts: dl380
+  hosts: r730
   become: yes
   remote_user: ansibleuser
+
   tasks:
     - name: Create a replicated GlusterFS volume
-      command: gluster volume create gv0 replica 3 192.168.68.80:/glusterfs 192.168.68.81:/glusterfs 192.168.68.82:/glusterfs force
+      command: >
+        gluster volume create gv0 replica {{ groups['all'] | length }}
+        {% for host in groups['all'] %}
+        {% if hostvars[host]['nvme_devices']['stdout_lines'] | length > 0 %}
+        {{ host }}:/glusterfs
+        {% endif %}
+        {% endfor %}
+        force
       ignore_errors: yes
 
     - name: Start the GlusterFS volume
       command: gluster volume start gv0
+
+- name: Mount GlusterFS Volume on All Nodes
+  hosts: all
+  become: yes
+  remote_user: ansibleuser
+
+  tasks:
+    - name: Create a mount point directory
+      file:
+        path: /mnt/glusterfs
+        state: directory
+
+    - name: Mount the GlusterFS volume
+      mount:
+        path: /mnt/glusterfs
+        src: "{{ groups['r730'][0] }}:/gv0"
+        fstype: glusterfs
+        state: mounted
