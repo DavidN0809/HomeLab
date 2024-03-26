@@ -3,7 +3,6 @@
   hosts: ubuntu
   become: yes
   remote_user: ansibleuser
-
   tasks:
     - name: Update /etc/hosts file
       lineinfile:
@@ -61,6 +60,7 @@
       apt:
         name: keepalived
         state: present
+
 - name: Initialize Docker Swarm
   hosts: dl380
   become: yes
@@ -101,6 +101,12 @@
   tasks:
     - name: Join Swarm as a Manager
       command: docker swarm join --token {{ hostvars['dl380']['swarm_manager_token'] }} 192.168.68.80:2377
+
+- name: Configure Keepalived
+  hosts: ubuntu
+  become: yes
+  remote_user: ansibleuser
+  tasks:
     - name: Configure Keepalived
       template:
         src: keepalived.conf.j2
@@ -112,8 +118,9 @@
           r730: 50
         virtual_ip: 192.168.68.79
       notify: restart keepalived
-      handlers:
-        - name: restart keepalived
-          systemd:
-            name: keepalived
-            state: restarted
+
+  handlers:
+    - name: restart keepalived
+      systemd:
+        name: keepalived
+        state: restarted
