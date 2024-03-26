@@ -1,5 +1,5 @@
 - name: Install and configure GlusterFS on all nodes
-  hosts: all
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
   
@@ -17,7 +17,7 @@
         state: started
 
 - name: Configure GlusterFS Storage
-  hosts: all
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
 
@@ -64,7 +64,7 @@
       when: nvme_devices.stdout_lines | length > 0
 
 - name: Setup GlusterFS Trusted Pool
-  hosts: r730
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
 
@@ -76,7 +76,7 @@
       ignore_errors: yes
 
 - name: Create GlusterFS Volume
-  hosts: r730
+  hosts: r730:x3650
   become: yes
   remote_user: ansibleuser
 
@@ -90,13 +90,15 @@
         {% endif %}
         {% endfor %}
         force
+      run_once: true
       ignore_errors: yes
 
     - name: Start the GlusterFS volume
       command: gluster volume start gv0
+      run_once: true
 
 - name: Mount GlusterFS Volume on All Nodes
-  hosts: all
+  hosts: ubuntu
   become: yes
   remote_user: ansibleuser
 
