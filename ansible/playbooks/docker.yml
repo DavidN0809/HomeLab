@@ -101,23 +101,17 @@
   tasks:
     - name: Join Swarm as a Manager
       command: docker swarm join --token {{ hostvars['dl380']['swarm_manager_token'] }} 192.168.68.80:2377
-    - name: Configure Keepalived on all nodes
-      hosts: ubuntu
-      become: yes
-      remote_user: ansibleuser
-      tasks:
-        - name: Configure Keepalived
-          template:
-            src: keepalived.conf.j2
-            dest: /etc/keepalived/keepalived.conf
-          vars:
-            priority_map:
-              dl380: 150
-              x3650: 100
-              r730: 50
-            virtual_ip: 192.168.68.79
-          notify: restart keepalived
-    
+    - name: Configure Keepalived
+      template:
+        src: keepalived.conf.j2
+        dest: /etc/keepalived/keepalived.conf
+      vars:
+        priority_map:
+          dl380: 150
+          x3650: 100
+          r730: 50
+        virtual_ip: 192.168.68.79
+      notify: restart keepalived
       handlers:
         - name: restart keepalived
           systemd:
